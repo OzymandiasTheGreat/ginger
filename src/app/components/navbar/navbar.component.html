@@ -1,0 +1,52 @@
+<div class="nav-wrapper container">
+	<mat-toolbar class="navbar is-size-5" color="accent">
+		<mat-toolbar-row class="level is-mobile">
+			<div class="level-left">
+				<div class="level-item">
+					<a
+						[routerLink]="[]"
+						(click)="toggleSidebar.emit()"
+						matTooltip="Show / Hide Sidebar"
+					>
+					<mat-icon class="sidebar-toggle is-size-1 is-size-3-touch" fontIcon="mdi-music" color="primary"></mat-icon>
+				</a>
+				</div>
+
+				<div class="level-item is-hidden-touch">
+					<nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
+						<ul>
+							<li *ngFor="let crumb of breadcrumbs; index as index; last as here" [class.is-active]="here">
+								<a [routerLink]="[breadcrumbLinks[index]]" [attr.aria-current]="here ? 'page' : null">{{ crumb === 'queue' ? 'Now Playing' : (crumb | capitalize) }}</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<div class="level-item is-hidden-desktop">
+					<nav>
+						<mat-form-field class="is-size-6">
+							<mat-select [value]="breadcrumbs[breadcrumbs.length - 1]" (selectionChange)="onCrumbSelected($event.value)">
+								<mat-option *ngFor="let crumb of breadcrumbs" [value]="crumb">
+									{{ crumb === 'current' ? 'Now Playing' : (crumb | capitalize) }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</nav>
+				</div>
+			</div>
+
+			<div class="level-right">
+				<div class="level-item">
+					<form (submit)="onSearch(query)">
+						<mat-form-field class="searchbar is-size-4 is-size-6-touch">
+							<mat-label>Search...</mat-label>
+							<input #search appInputListener matInput (valueChanged)="onQuery($event)" [(ngModel)]="query" name="search" type="text">
+							<button mat-button matSuffix mat-icon-button type="submit" aria-label="Search">
+								<mat-icon fontIcon="mdi-magnify"></mat-icon>
+							</button>
+						</mat-form-field>
+					</form>
+				</div>
+			</div>
+		</mat-toolbar-row>
+	</mat-toolbar>
+</div>

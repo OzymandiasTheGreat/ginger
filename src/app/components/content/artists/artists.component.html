@@ -1,0 +1,32 @@
+<virtual-scroller #scroll [items]="artists" class="virtual-scroller">
+	<mat-card *ngFor="let artist of scroll.viewPortItems">
+		<mat-card-header  [routerLink]="['./', artist]">
+			<mat-card-title class="is-truncated">{{ artist }}</mat-card-title>
+		</mat-card-header>
+		<app-album-art mat-card-lg-image [artist]="artist" [size]="[152, 152]" [large]="true" [margin]="false" [routerLink]="['./', artist]"></app-album-art>
+		<mat-card-actions>
+			<a mat-mini-fab color="accent" class="play-button" (click)="playArtist(artist)"><mat-icon fontIcon="mdi-play"></mat-icon></a>
+			<a mat-icon-button [matMenuTriggerFor]="artistMenu" class="menu-button"><mat-icon fontIcon="mdi-dots-vertical"></mat-icon></a>
+		</mat-card-actions>
+		<mat-menu #artistMenu="matMenu" class="artist-menu" xPosition="before" yPosition="above" overlapTrigger="true">
+			<a mat-menu-item (click)="addQueue(artist)">
+				<mat-icon fontIcon="mdi-plus"></mat-icon>
+				<span class="artist-menu-label">Add to Queue</span>
+			</a>
+			<a mat-menu-item [matMenuTriggerFor]="playlistsMenu">
+				<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
+				<span class="artist-menu-label">Add to Playlist</span>
+			</a>
+		</mat-menu>
+		<mat-menu #playlistsMenu="matMenu" class="artist-menu">
+			<a mat-menu-item (click)="addNewPlaylist(artist)">
+				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
+				<span class="artist-menu-label">New Playlist</span>
+			</a>
+			<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(artist, playlist.name)">
+				<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
+				<span class="artist-menu-label">{{ playlist.name }}</span>
+			</a>
+		</mat-menu>
+	</mat-card>
+</virtual-scroller>

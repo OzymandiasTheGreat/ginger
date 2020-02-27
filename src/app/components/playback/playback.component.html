@@ -1,0 +1,183 @@
+<div class="playback-wrapper">
+	<mat-toolbar class="playback container is-size-5">
+		<mat-toolbar-row class="level is-mobile">
+			<mat-slider
+				class="seek-slider"
+				min="0"
+				step="1"
+				[max]="seekMax"
+				[value]="seekPos"
+				[thumbLabel]="true"
+				[displayWith]="seekDisplay"
+				(change)="seek($event.value)"
+				[disabled]="!connected"
+			>
+			</mat-slider>
+			<div class="level-left">
+				<div class="level-item">
+					<a class="playback-info" [routerLink]="[]" *ngIf="connected">
+						<!-- <div class="album-art" [style.background-image]="'url(http://placebeard.it/64x64)' | safeStyle"></div> -->
+						<app-album-art
+							[artist]="currentSong?.albumArtist"
+							[album]="currentSong?.album"
+							[size]="artSize"
+						>
+						</app-album-art>
+						<div>
+							<div class="playback-artist is-truncated is-size-7-touch">{{ currentSong?.artist }}</div>
+							<div class="playback-title is-truncated is-size-7-touch">{{ currentSong?.title }}</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="level-right">
+				<div class="level-item">
+					<div class="playback-options">
+						<mat-button-toggle-group multiple="true" [disabled]="!connected">
+							<mat-button-toggle
+								#optionsButton="matButtonToggle"
+								[matMenuTriggerFor]="optionsMenu"
+								matTooltip="Playback Options"
+								matTooltipPosition="above"
+								aria-label="Playback Options"
+							>
+								<mat-icon fontIcon="mdi-dots-vertical"></mat-icon>
+							</mat-button-toggle>
+						</mat-button-toggle-group>
+						<mat-menu #optionsMenu="matMenu" class="options-menu" (closed)="optionsButton.checked = false" >
+							<mat-button-toggle-group vertical="true" multiple="true">
+								<mat-button-toggle
+									[checked]="repeat !== repeatState.normal"
+									(change)="toggleRepeat()"
+									(click)="$event.stopPropagation()"
+									aria-label="Repeat"
+								>
+									<mat-icon
+										[fontIcon]="repeat === repeatState.normal ? 'mdi-arrow-right' : repeat === repeatState.repeat ? 'mdi-repeat' : repeat === repeatState.repeat_single ? 'mdi-repeat-once' : 'mdi-numeric-1'"
+									>
+									</mat-icon>
+									<span class="menu-label">Repeat</span>
+								</mat-button-toggle>
+								<mat-button-toggle
+									(change)="toggleShuffle()"
+									(click)="$event.stopPropagation()"
+									aria-label="Shuffle"
+								>
+									<mat-icon [fontIcon]="shuffle ? 'mdi-shuffle' : 'mdi-shuffle-disabled'"></mat-icon>
+									<span class="menu-label">Shuffle</span>
+								</mat-button-toggle>
+								<mat-button-toggle
+									(change)="toggleCrossfade()"
+									(click)="$event.stopPropagation()"
+									aria-label="Crossfade"
+								>
+									<mat-icon fontIcon="mdi-swap-horizontal"></mat-icon>
+									<span class="menu-label">Crossfade</span>
+								</mat-button-toggle>
+								<mat-button-toggle
+									(change)="toggleConsume()"
+									(click)="$event.stopPropagation()"
+									aria-label="Consume"
+								>
+									<mat-icon fontIcon="mdi-coffee-to-go"></mat-icon>
+									<span class="menu-label">Consume</span>
+								</mat-button-toggle>
+							</mat-button-toggle-group>
+						</mat-menu>
+					</div>
+					<div class="playback-volume">
+						<mat-button-toggle-group multiple="true" [disabled]="!connected">
+							<mat-button-toggle
+								#volumeButton="matButtonToggle"
+								[matMenuTriggerFor]="volumeMenu"
+								matTooltip="Volume"
+								matTooltipPosition="above"
+								aria-label="Volume"
+							>
+								<mat-icon fontIcon="mdi-volume-high"></mat-icon>
+							</mat-button-toggle>
+						</mat-button-toggle-group>
+						<mat-menu #volumeMenu="matMenu" class="volume-menu" (closed)="volumeButton.checked = false">
+							<div mat-menu-item disableRipple="true">
+								<button mat-icon-button
+									(click)="toggleMute($event)"
+								>
+									<mat-icon fontIcon="mdi-volume-mute"></mat-icon>
+								</button>
+								<button mat-icon-button
+									(click)="$event.stopPropagation(); setVolume(volume - 5)"
+								>
+									<mat-icon fontIcon="mdi-volume-minus"></mat-icon>
+								</button>
+								<mat-slider
+									#volumeSlider
+									max="100"
+									min="0"
+									step="1"
+									thumbLabel="true"
+									[value]="volume"
+									(change)="setVolume($event.value)"
+									(click)="$event.stopPropagation()"
+									class="volume-slider"
+								>
+								</mat-slider>
+								<button mat-icon-button
+									(click)="$event.stopPropagation(); setVolume(volume + 5)"
+								>
+									<mat-icon fontIcon="mdi-volume-plus"></mat-icon>
+								</button>
+							</div>
+						</mat-menu>
+					</div>
+					<div class="playback-controls">
+						<mat-button-toggle-group #controls="matButtonToggleGroup" multiple="true" [disabled]="!connected">
+							<mat-button-toggle
+								#previousButton
+								matTooltip="Previous Song"
+								matTooltipPosition="above"
+								(change)="previousButton.checked = false"
+								(click)="previous()"
+								aria-label="Previous"
+							>
+								<mat-icon fontIcon="mdi-skip-backward"></mat-icon>
+							</mat-button-toggle>
+							<mat-button-toggle
+								#playButton
+								matTooltip="Play / Pause"
+								matTooltipPosition="above"
+								[checked]="state === 'play'"
+								(change)="playButton.checked = state === 'play'"
+								(click)="play()"
+								aria-label="Play/Pause"
+							>
+								<mat-icon [fontIcon]="state === 'play' ? 'mdi-pause' : 'mdi-play'"></mat-icon>
+							</mat-button-toggle>
+							<mat-button-toggle
+								#stopButton
+								class="is-hidden-touch"
+								matTooltip="Stop"
+								matTooltipPosition="above"
+								[checked]="state === 'stop'"
+								(change)="stopButton.checked = state === 'stop'"
+								(click)="stop()"
+								aria-label="Stop"
+							>
+								<mat-icon fontIcon="mdi-stop"></mat-icon>
+							</mat-button-toggle>
+							<mat-button-toggle
+								#forwardButton
+								matTooltip="Next Song"
+								matTooltipPosition="above"
+								(change)="forwardButton.checked = false"
+								(click)="forward()"
+								aria-label="Forward"
+							>
+								<mat-icon fontIcon="mdi-skip-forward"></mat-icon>
+							</mat-button-toggle>
+						</mat-button-toggle-group>
+					</div>
+				</div>
+			</div>
+		</mat-toolbar-row>
+	</mat-toolbar>
+</div>

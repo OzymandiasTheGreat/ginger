@@ -1,0 +1,13 @@
+<form (submit)="onSubmit(data.name)">
+	<h4 mat-dialog-title>{{ data.title }}</h4>
+	<div mat-dialog-content>
+		<mat-form-field>
+			<mat-label>{{ data.label }}</mat-label>
+			<input matInput [(ngModel)]="data.name" name="playlist-name">
+		</mat-form-field>
+	</div>
+	<div mat-dialog-actions>
+		<button mat-button mat-dialog-close>Cancel</button>
+		<button mat-button type="submit">{{ data.action }}</button>
+	</div>
+</form>

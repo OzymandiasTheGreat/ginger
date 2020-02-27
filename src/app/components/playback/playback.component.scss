@@ -1,0 +1,142 @@
+@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/base/all";
+
+
+.playback-wrapper {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1100;
+}
+
+.playback {
+	margin: auto;
+
+	.mat-toolbar-row {
+		height: 74px !important;
+		padding: 0;
+
+		.level-left {
+			width: 70%;
+
+			.level-item {
+				justify-content: flex-start;
+				align-items: center;
+				max-width: 100%;
+			}
+		}
+
+		.level-right {
+			width: 25%;
+
+			.level-item {
+				flex-flow: row-reverse nowrap;
+				justify-content: space-around;
+				align-items: center;
+				margin-right: 10px;
+			}
+		}
+	}
+
+	.seek-slider {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+
+		::ng-deep .mat-slider-wrapper {
+			top: 0;
+			left: 5px;
+			right: 5px;
+		}
+	}
+
+	.playback-info {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-items: center;
+		max-width: 100%;
+
+		.album-art {
+			flex: 1 0 auto;
+		}
+
+		div:not(.album-art) {
+			order: 4;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-around;
+			align-items: flex-start;
+			max-width: 100%;
+
+			* {
+				line-height: 1.5;
+			}
+		}
+	}
+}
+
+::ng-deep .mat-button-toggle .mat-button-toggle-button .mat-button-toggle-label-content {
+	padding: 0;
+
+	.mat-icon {
+		font-size: 32px;
+		line-height: 48px;
+		vertical-align: middle;
+		height: 48px;
+		width: 48px;
+	}
+}
+
+::ng-deep .cdk-overlay-container {
+	position: fixed;
+	z-index: 1200;
+
+	.mat-menu-panel {
+		&.volume-menu, &.options-menu {
+			overflow: visible;
+
+			.mat-menu-item {
+				overflow: visible;
+
+				.mat-icon {
+					font-size: 24px;
+					line-height: 1;
+					height: 24px;
+					width: 24px;
+					margin: 0;
+				}
+			}
+
+			.mat-button-toggle .mat-button-toggle-button .mat-button-toggle-label-content {
+				@extend .is-size-5;
+				padding: 0 16px;
+				text-align: left;
+			}
+		}
+	}
+}
+
+
+@include touch {
+	.playback .mat-toolbar-row {
+		height: 48px !important;
+
+		.level-left {
+			width: 35%;
+		}
+	}
+
+	::ng-deep .mat-button-toggle .mat-button-toggle-button .mat-button-toggle-label-content {
+		line-height: 32px;
+
+		.mat-icon {
+			font-size: 24px;
+			line-height: 32px;
+			height: 32px;
+			width: 32px;
+		}
+	}
+}

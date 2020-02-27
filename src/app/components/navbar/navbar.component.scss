@@ -1,0 +1,76 @@
+@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/base/all";
+$mdi-font-path: "~@mdi/font/fonts";
+@import "~@mdi/font/scss/materialdesignicons";
+
+
+.nav-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1100;
+}
+
+.navbar {
+	margin: auto;
+
+	.breadcrumb.has-succeeds-separator li + li {
+		@extend .mdi, .mdi-chevron-right;
+
+		&::before {
+			font-size: inherit;
+			color: inherit;
+		}
+	}
+
+	.searchbar {
+		@extend .is-size-6;
+	}
+}
+
+.sidebar-toggle {
+	line-height: 1;
+	width: min-content;
+}
+
+
+@include touch {
+
+	mat-toolbar-row.level {
+		justify-content: space-between;
+		padding: 0;
+
+		.level-left {
+			flex: 0 1 auto;
+			max-width: 50%;
+
+			.level-item {
+				flex: 0 1 auto;
+				max-width: 100%;
+
+				.mat-form-field {
+					flex: 0 1 auto;
+					min-width: 3rem;
+					max-width: 8rem;
+				}
+			}
+		}
+
+		.level-right {
+			flex: 0 1 auto;
+			max-width: 50%;
+
+			.level-item {
+				flex: 0 1 auto;
+				max-width: 100%;
+
+				.mat-form-field {
+					flex: 0 1 auto;
+					min-width: 2rem;
+					max-width: 6rem;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,43 @@
+$mdi-font-path: "~@mdi/font/fonts";
+@import "~@mdi/font/scss/materialdesignicons";
+
+
+div {
+	background-color: transparent;
+	background-position: center;
+	background-repeat: no-repeat;
+	// border: 1px solid $primary;
+	box-sizing: border-box;
+	position: relative;
+
+	&.album-art {
+		background-size: contain;
+		z-index: 2;
+	}
+
+	&.artist-art {
+		background-size: cover;
+		z-index: 2;
+	}
+
+	&.fallback-art {
+		line-height: 1;
+		z-index: 1;
+
+		&.album-art {
+			@extend .mdi-album;
+		}
+
+		&.artist-art {
+			@extend .mdi-artist;
+		}
+	}
+
+	&.album-art, &.artist-art, &.fallback-art {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+}

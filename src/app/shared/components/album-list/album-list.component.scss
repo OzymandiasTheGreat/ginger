@@ -1,0 +1,172 @@
+@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/base/all";
+
+
+.playlist-toolbar-wrapper {
+	height: 2.5rem;
+	position: relative;
+
+	.playlist-toolbar {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-end;
+		align-items: center;
+		height: 2.5rem;
+
+		.mat-icon {
+			@extend .is-size-5, .is-size-6-touch;
+		}
+
+		.play-fab {
+			position: relative;
+			z-index: 1000;
+			transform: translateY(35%);
+
+			.mat-icon {
+				width: 32px;
+				height: 32px;
+
+				&::before {
+					font-size: 32px;
+				}
+			}
+		}
+	}
+}
+
+::ng-deep .cdk-overlay-container {
+	position: fixed;
+	z-index: 1200;
+
+	.mat-menu-panel.sort-menu {
+		width: 130%;
+
+		.mat-button-toggle-group {
+			width: 100%;
+
+			.mat-button-toggle {
+				width: 100%;
+
+				.mat-button-toggle-button {
+					width: 100%;
+
+					.mat-button-toggle-label-content {
+						@extend .is-size-6, .is-size-7-touch;
+						width: 100%;
+						padding: 0 16px;
+						margin: 0;
+						text-align: left;
+					}
+				}
+			}
+		}
+	}
+
+	.mat-menu-panel.playlist-menu {
+		width: 130%;
+
+		.mat-menu-item {
+			.mat-icon {
+				font-size: 24px;
+				line-height: 24px;
+				vertical-align: middle;
+			}
+
+			.playlist-menu-label {
+				font-size: 14px;
+				line-height: 24px;
+				vertical-align: baseline;
+			}
+		}
+	}
+}
+
+.cdk-virtual-scroll-viewport {
+	height: calc(100% - 2.5rem);
+	width: 100%;
+}
+
+.current-playlist {
+	display: block;
+	height: calc(100% - 2.5rem);
+	width: 100%;
+	overflow: auto;
+
+	::ng-deep .mat-content {
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	.mat-expansion-panel-header {
+		padding: 0;
+	}
+
+	.mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
+		order: 2;
+		justify-content: flex-start;
+		align-items: center;
+		max-width: 60%;
+
+		h3, h4 {
+			margin: 0;
+		}
+	}
+
+	.mat-expansion-panel-header-title {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: flex-start;
+		h3 {
+			font-weight: bold;
+		}
+	}
+
+	.actions {
+		order: 3;
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		max-width: 30%;
+		padding: 0 50px;
+		margin-right: -0.5rem;
+
+		.action {
+			background-color: transparent;
+			box-shadow: none;
+
+			.mat-icon {
+				font-size: 24px;
+				vertical-align: middle;
+				color: $primary;
+			}
+		}
+	}
+
+	.mat-list-item {
+		.mat-icon {
+			font-size: 24px;
+			vertical-align: middle;
+			color: $primary;
+
+			&.playing-indicator {
+				margin-right: 15px;
+
+				&:not(.playing) {
+					visibility: hidden;
+				}
+			}
+		}
+
+		a:hover .mat-icon.playing-indicator:not(.playing) {
+			visibility: visible;
+			opacity: 0.3;
+		}
+	}
+}

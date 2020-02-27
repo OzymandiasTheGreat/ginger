@@ -1,0 +1,88 @@
+$mdi-font-path: "~@mdi/font/fonts";
+@import "~@mdi/font/scss/materialdesignicons";
+
+
+.mat-card {
+	display: inline-block;
+	width: 114px;
+	padding: 0;
+	margin: 7px;
+
+	::ng-deep .mat-card-header {
+		cursor: pointer;
+
+		.mat-card-header-text {
+			width: calc(100% - 7px - 7px);
+			height: 16px;
+			padding: 6px 7px;
+			margin: 0;
+			position: relative;
+
+			.mat-card-title {
+				font-size: 12px;
+				margin: 0;
+				position: absolute;
+				top: 6px;
+				left: 7px;
+			}
+		}
+	}
+
+	::ng-deep .entry-image {
+		cursor: pointer;
+		position: relative;
+		width: 114px;
+		height: 114px;
+		font-size: 114px;
+		line-height: 1;
+
+		&::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		&.directory {
+			@extend .mdi, .mdi-folder-music;
+		}
+
+		&.song {
+			@extend .mdi, .mdi-file-music;
+		}
+	}
+
+	::ng-deep .mat-card-actions {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 16px;
+		padding: 0;
+		margin: 0;
+		position: relative;
+
+		.play-button {
+			font-size: 24px;
+			position: absolute;
+			top: -40px;
+			left: 7px;
+			z-index: 5;
+
+			.mat-icon {
+				vertical-align: baseline;
+			}
+		}
+
+		.menu-button {
+			font-size: 18px;
+			position: absolute;
+			top: -22px;
+			right: -9px;
+			z-index: 5;
+
+			.mat-icon {
+				vertical-align: baseline;
+			}
+		}
+	}
+}
