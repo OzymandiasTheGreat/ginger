@@ -1,5 +1,8 @@
 {
-  "extends": "tslint:recommended",
+  "extends": [
+    "tslint:recommended",
+    "@nativescript/tslint-rules"
+  ],
   "rules": {
     "array-type": [
       true,
@@ -170,7 +173,15 @@
       "always",
       "ignore-bound-class-methods"
     ],
-    "no-angle-bracket-type-assertion": false
+    "no-angle-bracket-type-assertion": false,
+    "prefer-mapped-imports": [
+      true,
+      {
+        "prefix": "@src/",
+        "prefix-mapped-to": "src/",
+        "base-url": "./"
+      }
+    ]
   },
   "rulesDirectory": [
     "codelyzer"
