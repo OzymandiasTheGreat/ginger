@@ -105,7 +105,7 @@
     "no-duplicate-switch-case": true,
     "no-duplicate-variable": true,
     "no-for-in-array": true,
-    "no-implicit-dependencies": true,
+    "no-implicit-dependencies": false,
     "no-invalid-template-strings": true,
     "no-promise-as-boolean": true,
     "no-return-await": true,
