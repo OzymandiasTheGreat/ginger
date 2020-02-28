@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.route.queryParamMap.subscribe((queryParams) => {
-			this.query = queryParams.get("q")?.toLowerCase();
+			this.query = (queryParams.get("q") && queryParams.get("q").toLowerCase()) || "";
 			this.mpd.db.search([["any", this.query]])
 				.subscribe((songs) => this.sortResults(songs));
 			this.mpd.stored.list()
@@ -71,27 +71,30 @@ export class SearchComponent implements OnInit {
 		const albums = {};
 		const genres = {};
 		songs.forEach((song) => {
-			if (song.albumArtist?.toLowerCase().includes(this.query)) {
+			if (song.albumArtist && song.albumArtist.toLowerCase().includes(this.query)) {
 				if (!artists.includes(song.albumArtist)) {
 					artists.push(song.albumArtist);
 				}
-			} else if (song.artist?.toLowerCase().includes(this.query)) {
+			} else if (song.artist && song.artist.toLowerCase().includes(this.query)) {
 				if (!artists.includes(song.artist)) {
 					artists.push(song.artist);
 				}
-			} else if (song.album?.toLowerCase().includes(this.query)) {
+			} else if (song.album && song.album.toLowerCase().includes(this.query)) {
 				if (song.album in albums) {
 					albums[song.album].push(song);
 				} else {
 					albums[song.album] = [song];
 				}
-			} else if (song.title?.toLowerCase().includes(this.query) || song.name?.toLowerCase().includes(this.query)) {
+			} else if (
+				(song.title && song.title.toLowerCase().includes(this.query))
+				|| (song.name && song.name.toLowerCase().includes(this.query))
+			) {
 				if (song.album in albums) {
 					albums[song.album].push(song);
 				} else {
 					albums[song.album] = [song];
 				}
-			} else if (song?.genre.toLowerCase().includes(this.query)) {
+			} else if (song.genre && song.genre.toLowerCase().includes(this.query)) {
 				if (song.genre in genres) {
 					if (song.album in genres[song.genre]) {
 						genres[song.genre][song.album].push(song);

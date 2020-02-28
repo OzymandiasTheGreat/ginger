@@ -40,7 +40,7 @@ export class ArtistsComponent implements OnInit {
 					query = query.toLowerCase();
 					this.artists = query.length > 0
 						// tslint:disable-next-line:newline-per-chained-call
-						? this.sorted.filter((artist) => artist?.toLowerCase().includes(query))
+						? this.sorted.filter((artist) => artist && artist.toLowerCase().includes(query))
 						: this.artists = [...this.sorted];
 				});
 			});

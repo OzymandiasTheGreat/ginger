@@ -60,7 +60,7 @@ export class GenresComponent implements OnInit {
 						query = query.toLowerCase();
 						this.genres = query.length > 0
 							// tslint:disable-next-line:newline-per-chained-call
-							? this.sorted.filter(([genre, albums]) => genre?.toLowerCase().includes(query))
+							? this.sorted.filter(([genre, albums]) => genre && genre.toLowerCase().includes(query))
 							: [...this.sorted];
 					});
 				},

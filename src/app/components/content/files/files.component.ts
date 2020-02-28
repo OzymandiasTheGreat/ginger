@@ -54,7 +54,7 @@ export class FilesComponent implements OnInit {
 					query = query.toLowerCase();
 					this.entries = query.length > 0
 						// tslint:disable-next-line:newline-per-chained-call
-						? this.sorted.filter((entry) => this.basename(entry?.path)?.toLowerCase().includes(query))
+						? this.sorted.filter((entry) => entry && this.basename(entry.path).toLowerCase().includes(query))
 						: [...this.sorted];
 				});
 			});

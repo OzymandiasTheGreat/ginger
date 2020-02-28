@@ -52,7 +52,7 @@ export class PlaylistsComponent implements OnInit {
 										query = query.toLowerCase();
 										this.playlists = query.length > 0
 											// tslint:disable-next-line:newline-per-chained-call
-											? this.sorted.filter(([pls, albums]) => pls?.toLowerCase().includes(query))
+											? this.sorted.filter(([pls, albums]) => pls && pls.toLowerCase().includes(query))
 											: [...this.sorted];
 									});
 								},
