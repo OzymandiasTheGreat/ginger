@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
 
-import { MpdService } from "./mpd.service";
+import { MpdService } from "@src/app/shared/services/mpd.service";
 
 
 @Injectable({

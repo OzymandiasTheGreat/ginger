@@ -3,7 +3,7 @@ import { CanLoad, Route, UrlSegment, Router } from "@angular/router";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "@src/app/shared/services/auth.service";
 
 
 @Injectable({

@@ -3,9 +3,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { map, concatAll } from "rxjs/operators";
 import { StoredPlaylist } from "mpc-js-web";
 
-import { MpdService } from "../../../shared/services/mpd.service";
-import { SearchService } from "../../../shared/services/search.service";
-import { PlaylistInputComponent } from "../../../shared/components/playlist-input/playlist-input.component";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { SearchService } from "@src/app/shared/services/search.service";
+import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
 @Component({

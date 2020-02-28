@@ -5,9 +5,9 @@ import { MatAccordion } from "@angular/material/expansion";
 import { MatDialog } from "@angular/material/dialog";
 import { PlaylistItem, Song, StoredPlaylist } from "mpc-js-web";
 
-import { MpdService } from "../../services/mpd.service";
-import { extractArtists, extractYear } from "../../functions/album-extract";
-import { PlaylistInputComponent } from "../../../shared/components/playlist-input/playlist-input.component";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { extractArtists, extractYear } from "@src/app/shared/functions/album-extract";
+import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
 @Component({

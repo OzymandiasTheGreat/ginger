@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 
-import { flattenUrl } from "../../shared/functions/route";
-import { SearchService } from "../../shared/services/search.service";
+import { flattenUrl } from "@src/app/shared/functions/route";
+import { SearchService } from "@src/app/shared/services/search.service";
 
 
 @Component({

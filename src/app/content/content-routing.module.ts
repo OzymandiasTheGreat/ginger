@@ -1,16 +1,16 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { CurrentComponent } from "./current/current.component";
-import { ArtistsComponent } from "./artists/artists.component";
-import { ArtistComponent } from "./artist/artist.component";
-import { PlaylistsComponent } from "./playlists/playlists.component";
-import { PlaylistComponent } from "./playlist/playlist.component";
-import { GenresComponent } from "./genres/genres.component";
-import { GenreComponent } from "./genre/genre.component";
-import { AlbumsComponent } from "./albums/albums.component";
-import { FilesComponent } from "./files/files.component";
-import { SearchComponent } from "./search/search.component";
+import { CurrentComponent } from "@src/app/content/current/current.component";
+import { ArtistsComponent } from "@src/app/content/artists/artists.component";
+import { ArtistComponent } from "@src/app/content/artist/artist.component";
+import { PlaylistsComponent } from "@src/app/content/playlists/playlists.component";
+import { PlaylistComponent } from "@src/app/content/playlist/playlist.component";
+import { GenresComponent } from "@src/app/content/genres/genres.component";
+import { GenreComponent } from "@src/app/content/genre/genre.component";
+import { AlbumsComponent } from "@src/app/content/albums/albums.component";
+import { FilesComponent } from "@src/app/content/files/files.component";
+import { SearchComponent } from "@src/app/content/search/search.component";
 
 
 const routes: Routes = [

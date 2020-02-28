@@ -1,6 +1,6 @@
 import { Component, OnChanges, SimpleChanges, Input, ViewChild, ElementRef } from "@angular/core";
 
-import { ArtService } from "../../services/art.service";
+import { ArtService } from "@src/app/shared/services/art.service";
 
 
 @Component({

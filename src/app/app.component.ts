@@ -4,7 +4,7 @@ import { MediaMatcher } from "@angular/cdk/layout";
 import { MatIconRegistry } from "@angular/material/icon";
 import { MatDrawer } from "@angular/material/sidenav";
 
-import { MpdService } from "./shared/services/mpd.service";
+import { MpdService } from "@src/app/shared/services/mpd.service";
 
 @Component({
 	selector: "app-root",

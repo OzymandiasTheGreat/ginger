@@ -4,9 +4,9 @@ import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { MediaMatcher } from "@angular/cdk/layout";
 import { PlaylistItem } from "mpc-js-web";
 
-import { AuthService } from "../../shared/services/auth.service";
-import { MpdService } from "../../shared/services/mpd.service";
-import { flattenUrl } from "../../shared/functions/route";
+import { AuthService } from "@src/app/shared/services/auth.service";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { flattenUrl } from "@src/app/shared/functions/route";
 
 
 export enum RepeatState {

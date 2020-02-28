@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 
-import { MpdService } from "../../shared/services/mpd.service";
-import { ConnectionComponent } from "../../shared/components/connection/connection.component";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
 
 @Component({
 	selector: "app-login",

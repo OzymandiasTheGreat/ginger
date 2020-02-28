@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "../../../shared/services/mpd.service";
-import { SearchService } from "../../../shared/services/search.service";
-import { extractArtists } from "../../../shared/functions/album-extract";
-import { PlaylistInputComponent } from "../../../shared/components/playlist-input/playlist-input.component";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { SearchService } from "@src/app/shared/services/search.service";
+import { extractArtists } from "@src/app/shared/functions/album-extract";
+import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
 @Component({

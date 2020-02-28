@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "../../../shared/services/mpd.service";
-import { SearchService } from "../../../shared/services/search.service";
-import { filterView } from "../../../shared/functions/filter";
+import { MpdService } from "@src/app/shared/services/mpd.service";
+import { SearchService } from "@src/app/shared/services/search.service";
+import { filterView } from "@src/app/shared/functions/filter";
 
 
 @Component({

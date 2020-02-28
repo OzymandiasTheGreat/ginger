@@ -25,15 +25,15 @@ import { MatCardModule } from "@angular/material/card";
 
 import { VirtualScrollerModule } from "ngx-virtual-scroller";
 
-import { AuthGuard } from "./router/auth.guard";
-import { AuthService } from "./services/auth.service";
-import { CapitalizePipe } from "./pipes/capitalize.pipe";
-import { SafePipe, SafeResourcePipe, SafeStylePipe } from "./pipes/safe.pipe";
-import { AlbumListComponent } from "./components/album-list/album-list.component";
-import { ConnectionComponent } from "./components/connection/connection.component";
-import { AlbumArtComponent } from "./components/album-art/album-art.component";
-import { PlaylistInputComponent } from "./components/playlist-input/playlist-input.component";
-import { InputListenerDirective } from "./directives/input-listener.directive";
+import { AuthGuard } from "@src/app/shared/router/auth.guard";
+import { AuthService } from "@src/app/shared/services/auth.service";
+import { CapitalizePipe } from "@src/app/shared/pipes/capitalize.pipe";
+import { SafePipe, SafeResourcePipe, SafeStylePipe } from "@src/app/shared/pipes/safe.pipe";
+import { AlbumListComponent } from "@src/app/shared/components/album-list/album-list.component";
+import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
+import { AlbumArtComponent } from "@src/app/shared/components/album-art/album-art.component";
+import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
+import { InputListenerDirective } from "@src/app/shared/directives/input-listener.directive";
 
 
 export const TOOLTIP_OPTIONS: MatTooltipDefaultOptions = {

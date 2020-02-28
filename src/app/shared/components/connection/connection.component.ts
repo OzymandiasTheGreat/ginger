@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialogRef } from "@angular/material/dialog";
 
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "@src/app/shared/services/auth.service";
 
 
 @Component({
