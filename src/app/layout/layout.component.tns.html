@@ -2,12 +2,26 @@
 	<NavigationButton icon="font://&#xf013;" class="mdi"></NavigationButton>
 	<ActionItem icon="font://&#xf013;" class="mdi"></ActionItem>
 </ActionBar>
-<RadSideDrawer>
+<RadSideDrawer #sidebar>
 	<StackLayout tkDrawerContent>
+		<ListView [items]="sideLinks" class="list-group" [itemTemplateSelector]="templateSelector">
+			<ng-template nsTemplateKey="header" let-item="item" let-i="index">
+				<DockLayout stretchLastChild="true">
+					<Label class="mdi h2" [text]="item.icon" dock="left" textWrap="false"></Label>
+					<Label class="h2" [text]="item.title" textWrap="false"></Label>
+				</DockLayout>
+			</ng-template>
 
+			<ng-template nsTemplateKey="link" let-item="item" let-i="index">
+				<DockLayout [nsRouterLink]="[item.path]" stretchLastChild="true">
+					<Label class="mdi" [text]="item.icon" dock="left" textWrap="false"></Label>
+					<Label [text]="item.title" textWrap="false"></Label>
+				</DockLayout>
+			</ng-template>
+		</ListView>
 	</StackLayout>
 	<DockLayout tkMainContent stretchLastChild="true">
 		<app-playback dock="bottom"></app-playback>
-		<Label text="I am streched!" textWrap="true"></Label>
+		<page-router-outlet actionBarVisibility="never"></page-router-outlet>
 	</DockLayout>
 </RadSideDrawer>
