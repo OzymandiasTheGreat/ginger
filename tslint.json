@@ -118,7 +118,7 @@
       true,
       "allow-fast-null-checks"
     ],
-    "no-unused-variable": true,
+    "no-unused-variable": false,
     "no-var-keyword": true,
     "prefer-conditional-expression": [
       true,
@@ -181,7 +181,16 @@
         "prefix-mapped-to": "src/",
         "base-url": "./"
       }
-    ]
+    ],
+    "rxjs-finnish": { "severity": "warning" },
+    "rxjs-just": { "severity": "error" },
+    "rxjs-no-create": { "severity": "error" },
+    "rxjs-no-deep-operators": { "severity": "error" },
+    "rxjs-no-exposed-subjects": { "severity": "error" },
+    "rxjs-no-ignored-subscribe": { "severity": "error" },
+    "rxjs-no-operator": { "severity": "error" },
+    "rxjs-no-unsafe-takeuntil": { "severity": "warning" },
+    "rxjs-prefer-angular-takeuntil": { "severity": "warning" }
   },
   "rulesDirectory": [
     "codelyzer"
