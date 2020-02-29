@@ -1,0 +1,9 @@
+<FlexboxLayout class="nt-form connect-form">
+	<StackLayout class="nt-input form-field">
+		<TextField hint="Address" [(ngModel)]="address" autocapitalizationType="none" keyboardType="url" returnKeyType="next"></TextField>
+	</StackLayout>
+	<StackLayout class="nt-input form-field">
+		<TextField hint="Password" [(ngModel)]="password" secure="true" returnKeyType="done" (returnPress)="openConnection()"></TextField>
+	</StackLayout>
+	<Button class="nt-button -primary" text="Connect" (tap)="openConnection()"></Button>
+</FlexboxLayout>

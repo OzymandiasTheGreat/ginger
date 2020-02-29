@@ -6,11 +6,11 @@ import { MpdService } from "@src/app/shared/services/mpd.service";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
 
 @Component({
-	selector: "app-login",
-	templateUrl: "./login.component.html",
-	styleUrls: ["./login.component.scss"]
+	selector: "app-connect",
+	templateUrl: "./connect.component.html",
+	styleUrls: ["./connect.component.scss"],
 })
-export class LoginComponent implements OnInit {
+export class ConnectComponent implements OnInit {
 	public address = "";
 	public password = "";
 

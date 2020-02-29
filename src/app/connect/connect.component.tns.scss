@@ -1,0 +1,19 @@
+.connect-form {
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: flex-end;
+	width: 60%;
+	margin: auto;
+	margin-top: 50;
+	margin-bottom: 50;
+
+	.form-field {
+		width: 100%;
+		margin-bottom: 25;
+
+		TextField {
+			font-size: 18;
+		}
+	}
+}

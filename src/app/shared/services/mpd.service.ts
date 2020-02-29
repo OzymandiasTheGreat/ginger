@@ -233,7 +233,7 @@ export class Database {
 export class MpdService {
 	private MPD: MPC;
 	private connectedSource: BehaviorSubject<boolean>;
-	private pingTimer: number;
+	private pingTimer: any;
 	public connected: Observable<boolean>;
 	public current: CurrentPlaylist;
 	public playback: Playback;
@@ -255,16 +255,18 @@ export class MpdService {
 			.then(() => this.MPD.connection.password(password)
 				.then(() => {
 					this.connectedSource.next(true);
-					this.pingTimer = window.setInterval(() => this.ping(), 1000);
+					this.pingTimer = setInterval(() => this.ping(), 1000);
 					return true;
 				})
 				.catch((err) => {
 					console.error("Wrong password?", err);
+					this.MPD.disconnect();
 					this.connectedSource.next(false);
 					return false;
 				}))
 			.catch((err) => {
 				console.error("Wrong address?", err);
+				this.MPD.disconnect();
 				this.connectedSource.next(false);
 				return false;
 			})
@@ -287,8 +289,8 @@ export class MpdService {
 
 	private ping(): void {
 		const timeout = new Promise((resolve, reject) => {
-			const id = window.setTimeout(() => {
-				window.clearTimeout(id);
+			const id = setTimeout(() => {
+				clearTimeout(id);
 				reject();
 			}, 1000);
 		});
@@ -301,7 +303,7 @@ export class MpdService {
 				this.MPD.connection.close();
 				this.MPD.disconnect();
 				this.connectedSource.next(false);
-				window.clearInterval(this.pingTimer);
+				clearInterval(this.pingTimer);
 			}
 		});
 	}

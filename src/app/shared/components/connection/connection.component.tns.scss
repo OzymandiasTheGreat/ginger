@@ -1,5 +1,18 @@
-/*
-Add your NativeScript specific styles here.
-To learn more about styling in NativeScript see:
-https://docs.nativescript.org/angular/ui/styling
-*/
+.connect-dialog {
+	ActivityIndicator {
+		width: 250;
+		height: 250;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	Label {
+		font-size: 18;
+		width: 250;
+		text-align: center;
+		top: 116;
+		left: 0;
+	}
+}

@@ -1,15 +1,4 @@
-<StackLayout>
-  <Label text="ConnectionComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
-
-<!--
-Original Web template:
-
-<div class="conn-wrapper">
-	<mat-spinner color="accent" diameter="150"></mat-spinner>
-	<h4>Connecting...</h4>
-</div>
-
--->
+<AbsoluteLayout class="connect-dialog">
+	<ActivityIndicator [busy]="true"></ActivityIndicator>
+	<Label text="Connecting..." textWrap="false"></Label>
+</AbsoluteLayout>
