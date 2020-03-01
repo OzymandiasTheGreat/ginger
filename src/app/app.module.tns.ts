@@ -15,6 +15,7 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 
 import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular";
+import { TNSImageCacheItModule } from "nativescript-image-cache-it/angular";
 
 import { SharedModule } from "@src/app/shared/shared.module";
 import { LayoutComponent } from "@src/app/layout/layout.component";
@@ -38,6 +39,7 @@ import { ConnectComponent } from "@src/app/connect/connect.component";
 		NativeScriptHttpClientModule,
 		// BarcelonaModule,
 		NativeScriptUISideDrawerModule,
+		TNSImageCacheItModule,
 		SharedModule,
 	],
 	providers: [],

@@ -4,10 +4,10 @@
 	justifyContent="space-between"
 	alignItems="center"
 >
-	<GridLayout flexGrow="1" rows="auto, auto" columns="42, auto">
-		<Image col="0" row="0" rowSpan="2" src="font://&#xF025;" class="mdi"></Image>
-		<Label col="1" row="0" text="Placebo" textWrap="false"></Label>
-		<Label col="1" row="1" text="Follow the Cops Back Home" textWrap="false"></Label>
+	<GridLayout flexGrow="1" rows="auto, auto" columns="auto, auto">
+		<app-album-art col="0" row="0" rowSpan="2" [artist]="'Placebo'" [album]="'Meds'" [size]="[48, 48]"></app-album-art>
+		<Label col="1" row="0" class="m-y-2" text="Placebo" textWrap="false"></Label>
+		<Label col="1" row="1" class="m-y-2" text="Follow the Cops Back Home" textWrap="false"></Label>
 	</GridLayout>
 	<StackLayout flexGrow="0" orientation="horizontal">
 		<Button class="mdi" text="&#xF40A;" [isEnabled]="connected" (tap)="play()"></Button>

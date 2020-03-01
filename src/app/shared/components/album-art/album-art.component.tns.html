@@ -1,19 +1,5 @@
-<StackLayout>
-  <Label text="AlbumArtComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
-
-<!--
-Original Web template:
-
-<div
-	#wrapper
-	class="art-wrapper"
-	[ngStyle]="{ 'width.px': size[0] + (margin ? 20 : 0), 'height.px': size[1] + (margin ? 10 : 0), 'font-size.px': size[1] }"
->
-	<div #art [ngStyle]="{ 'background-image': src, 'width.px': size[0], 'height.px': size[1], 'margin-top.px': (margin ? 5 : 0), 'margin-bottom.px': (margin ? 5 : 0), 'margin-left.px': (margin ? 10 : 0), 'margin-right.px': (margin ? 10 : 0) }"></div>
-	<div #fallback class="fallback-art mdi" [ngStyle]="{ 'width.px': size[0], 'height.px': size[1], 'margin-top.px': (margin ? 5 : 0), 'margin-bottom.px': (margin ? 5 : 0), 'margin-left.px': (margin ? 10 : 0), 'margin-right.px': (margin ? 10 : 0) }"></div>
-</div>
-
--->
+<GridLayout rows="auto" columns="auto">
+	<Image #placeholder row="0" col="0" class="mdi" [width]="size[0]" [height]="size[1]" [margin]="margin ? 5 : 0" stretch="aspectFit"></Image>
+	<ImageCacheIt #fallback row="0" col="0" [width]="size[0]" [height]="size[1]" [margin]="margin ? 5 : 0" [decodedWidth]="size[0]" [decodedHeight]="size[1]" stretch="aspectFit"></ImageCacheIt>
+	<ImageCacheIt #image row="0" col="0" [width]="size[0]" [height]="size[1]" [margin]="margin ? 5 : 0" [decodedWidth]="size[0]" [decodedHeight]="size[1]" stretch="aspectFit"></ImageCacheIt>
+</GridLayout>
