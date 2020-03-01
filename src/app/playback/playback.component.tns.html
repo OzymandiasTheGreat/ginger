@@ -10,6 +10,6 @@
 		<Label col="1" row="1" text="Follow the Cops Back Home" textWrap="false"></Label>
 	</GridLayout>
 	<StackLayout flexGrow="0" orientation="horizontal">
-		<Button class="mdi" text="&#xF40A;" (tap)="play()"></Button>
+		<Button class="mdi" text="&#xF40A;" [isEnabled]="connected" (tap)="play()"></Button>
 	</StackLayout>
 </FlexboxLayout>

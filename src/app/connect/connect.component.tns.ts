@@ -4,12 +4,15 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { Page } from "tns-core-modules/ui/page";
 import * as appSettings from "tns-core-modules/application-settings";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, skip } from "rxjs/operators";
+
+import * as Toast from "nativescript-toast";
 
 import { MpdService } from "@src/app/shared/services/mpd.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
 import { Connect } from "@src/app/connect/connect.component.base";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
+
 
 @Component({
 	selector: "app-connect",
@@ -51,16 +54,26 @@ export class ConnectComponent extends Connect implements OnInit {
 			this.modalService.showModal(ConnectionComponent, options);
 
 			this.connect()
-				.pipe(takeUntil(this.ngUnsubscribe))
+				.pipe(
+					skip(1),
+					takeUntil(this.ngUnsubscribe),
+				)
 				.subscribe((authorized) => {
 					if (this.page && this.page.modal) {
 						this.page.modal.closeModal();
 					}
-					if (authorized && this.redirect) {
-						this.router.navigateByUrl(
-							this.auth.redirectUrl ? this.auth.redirectUrl : "/library/queue",
-							{ clearHistory: true },
-						);
+					if (authorized) {
+						Toast.makeText("Connected")
+							.show();
+						if (this.redirect) {
+							this.router.navigateByUrl(
+								this.auth.redirectUrl ? this.auth.redirectUrl : "/library/queue",
+								{ clearHistory: true },
+							);
+						}
+					} else {
+						Toast.makeText("Failed to connect", "long")
+							.show();
 					}
 				});
 		}, 250);
