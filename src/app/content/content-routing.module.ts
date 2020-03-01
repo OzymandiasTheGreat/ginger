@@ -14,7 +14,6 @@ import { SearchComponent } from "@src/app/content/search/search.component";
 
 
 const routes: Routes = [
-	{ path: "", redirectTo: "queue", pathMatch: "full"},
 	{ path: "queue", component: CurrentComponent },
 	{ path: "artists", component: ArtistsComponent },
 	{ path: "artists/:artist", component: ArtistComponent },
@@ -27,6 +26,7 @@ const routes: Routes = [
 		{ path: "**", component: FilesComponent },
 	] },
 	{ path: "search", component: SearchComponent },
+	{ path: "", redirectTo: "queue", pathMatch: "full"},
 ];
 
 @NgModule({

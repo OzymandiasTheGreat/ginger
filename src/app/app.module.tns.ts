@@ -19,7 +19,7 @@ import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angul
 import { SharedModule } from "@src/app/shared/shared.module";
 import { LayoutComponent } from "@src/app/layout/layout.component";
 import { PlaybackComponent } from "@src/app/playback/playback.component";
-import { ConnectComponent } from '@src/app/connect/connect.component';
+import { ConnectComponent } from "@src/app/connect/connect.component";
 
 
 @NgModule({
