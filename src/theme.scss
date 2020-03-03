@@ -1,28 +1,27 @@
+@import "./theme.base";
 @import "~@angular/material/theming";
 
 
 @include mat-core();
-$default-primary: mat-palette($mat-grey, 800, 500, 900);
-$default-accent:  mat-palette($mat-orange, A700, 600, 900);
-$default-warn:    mat-palette($mat-pink, A400, A200, A700);
 $default-theme:   mat-dark-theme($default-primary, $default-accent, $default-warn);
 
 
 $primary: mat-color($default-primary, default);
 $link: mat-color($default-primary, default-contrast);
-$link-hover: mat-color($default-primary, darker-contrast);
-$info: mat-color($default-primary, lighter-contrast);
+$link-hover: mat-color($default-primary, lighter-contrast);
+$info: mat-color($default-primary, darker-contrast);
 $success: mat-color($default-accent, lighter);
 $warning: mat-color($default-warn, default);
 $danger: mat-color($default-warn, darker);
-$dark: mat-color($default-primary, darker);
 $text: mat-color($default-primary, default-contrast);
 $background: $primary;
-$light: mat-color($default-primary, lighter-contrast);
+$light: mat-color($default-primary, lighter);
 $dark: mat-color($default-primary, darker);
 
-$breadcrumb-item-active-color: mat-color($default-accent, default-contrast);
-$breadcrumb-item-separator-color: $link;
+$breadcrumb-item-color: mat-color($default-accent, default-contrast) !important;
+$breadcrumb-item-hover-color: mat-color($default-accent, lighter-contrast) !important;
+$breadcrumb-item-active-color: mat-color($default-accent, lighter-contrast) !important;
+$breadcrumb-item-separator-color: mat-color($default-accent, default-contrast) !important;
 
 
 @mixin default-theme($theme) {
@@ -30,20 +29,20 @@ $breadcrumb-item-separator-color: $link;
 	$accent:  map-get($theme, accent);
 	$warn:    map-get($theme, warn);
 
-	.themed {
+	.themed.themed.themed.themed.themed {
 		background-color:     mat-color($primary);
 		color:                mat-color($primary, default-contrast);
 
 		a {
-			color:            $link !important;
+			color:            $link;
 
 			&:hover, &:focus, &:acctive {
-				color: $link-hover !important;
+				color: $link-hover;
 			}
 		}
 
 		.active {
-			background-color: mat-color($accent, lighter) !important;
+			background-color: mat-color($accent, lighter);
 		}
 
 		.mat-button-toggle:hover, .mat-button-toggle:active {

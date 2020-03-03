@@ -1,0 +1,32 @@
+@import "./theme.base";
+
+
+$font-size: 16;
+$btn-font-size: $font-size + 2;
+$btn-min-width: 48;
+$btn-height: 48;
+$btn-padding-x: 5;
+$btn-padding-y: 5;
+$btn-margin-x: 0;
+$btn-margin-y: 0;
+$border-width: 1;
+$border-radius: null;
+$border-radius-sm: 4;
+$border-radius-lg: 50%;
+$disabled-opacity: 0.5;
+
+$background: mat-color($default-primary);
+$primary: mat-color($default-primary, default-contrast);
+$secondary: mat-color($default-accent, default-contrast);
+$background-dark: mat-color($default-primary);
+$primary-dark: mat-color($default-primary, default-contrast);
+$secondary-dark: mat-color($default-accent, default-contrast);
+$accent: mat-color($default-accent, darker);
+$accent-dark: mat-color($default-accent, darker);
+$complementary: mat-color($default-accent, darker);
+$complementary-color: mat-color($default-accent, darker-contrast);
+$complementary-dark: mat-color($default-accent, darker);
+$complementary-color-dark: mat-color($default-accent, darker-contrast);
+
+
+@import "~@nativescript/theme/index";
