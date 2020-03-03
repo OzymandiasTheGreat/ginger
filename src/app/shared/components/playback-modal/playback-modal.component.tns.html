@@ -1,0 +1,25 @@
+<FlexboxLayout class="layout" (swipe)="onSwipe($event)">
+	<StackLayout class="m-x-auto m-y-15">
+		<app-album-art [artist]="currentSong?.albumArtist" [album]="currentSong?.album" [size]="[384, 384]" [large]=true></app-album-art>
+	</StackLayout>
+	<StackLayout class="control-panel">
+		<StackLayout class="m-x-auto m-b-25 volume" orientation="horizontal">
+			<Button class="mdi" text="&#xF75E;" (tap)="toggleMute()"></Button>
+			<Button class="mdi" text="&#xF75D;" (tap)="setVolume(volume - 5)"></Button>
+			<Slider minValue="0" maxValue="100" [value]="volume" (touch)="onTouch($event)" (valueChange)="onVolumeChanged($event.value)"></Slider>
+			<Button class="mdi" text="&#xF75C;" (tap)="setVolume(volume + 5)"></Button>
+		</StackLayout>
+		<StackLayout class="m-x-auto m-b-25 seeker" orientation="horizontal">
+			<Label [text]="formatTime(seekPos)" textWrap="false"></Label>
+			<Slider minValue="0" [maxValue]="seekMax" [value]="seekPos" (touch)="onTouch($event)" (valueChange)="onPosChanged($event.value)"></Slider>
+			<Label [text]="formatTime(seekMax)" textWrap="false"></Label>
+		</StackLayout>
+		<StackLayout class="m-x-auto m-b-15 buttons" orientation="horizontal">
+			<Button class="mdi" text="&#xF4AB;" (tap)="previous()"></Button>
+			<Button class="mdi" [ngClass]="{ active: state === 'play' }" [text]="state === 'play' ? '&#xF3E4;' : '&#xF40A;'" (tap)="play()"></Button>
+			<Button class="mdi" text="&#xF4DB;" (tap)="stop()"></Button>
+			<Button class="mdi" text="&#xF4AC;" (tap)="forward()"></Button>
+			<Button class="mdi" text="&#xF1D9;" (tap)="openMenu()"></Button>
+		</StackLayout>
+	</StackLayout>
+</FlexboxLayout>

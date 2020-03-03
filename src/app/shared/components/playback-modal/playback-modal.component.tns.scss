@@ -1,0 +1,43 @@
+@import "../../../../theme.base";
+
+.layout.layout.layout.layout.layout {
+	background-color: mat-color($default-accent, darker);
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: center;
+
+	.control-panel {
+		Slider {
+			color: mat-color($default-accent, darker-contrast);
+			background-color: mat-color($default-accent, lighter);
+			width: 224;
+			vertical-align: center;
+		}
+
+		.volume {
+			Button {
+				background-color: mat-color($default-accent, darker);
+				font-size: 24;
+				width: 48;
+				height: 48;
+				android-elevation: 1;
+			}
+		}
+
+		.seeker {
+			Label {
+				vertical-align: center;
+			}
+		}
+
+		.buttons {
+			Button {
+				font-size: 48;
+				width: 64;
+				height: 64;
+				android-elevation: 5;
+			}
+		}
+	}
+}

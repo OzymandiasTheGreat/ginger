@@ -198,7 +198,7 @@ export class Playback implements OnInit, OnDestroy {
 		this.seekPos = status.elapsed * this.seekMultiplier;
 		switch (status.state) {
 			case "play":
-				this.seekTimer = setInterval(() => this.seekPos += 1, this.seekInterval);
+				this.seekTimer = setInterval(() => this.seekPos += 0.1, this.seekInterval);
 				break;
 			case "stop":
 				this.seekPos = 0;

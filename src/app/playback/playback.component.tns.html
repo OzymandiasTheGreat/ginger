@@ -1,5 +1,5 @@
-<FlexboxLayout class="layout">
-	<GridLayout rows="auto, auto" columns="auto, auto">
+<FlexboxLayout class="layout" (swipe)="openModal($event)">
+	<GridLayout rows="auto, auto" columns="auto, auto" (tap)="openModal()">
 		<app-album-art col="0" row="0" rowSpan="2" [artist]="currentSong?.albumArtist" [album]="currentSong?.album" [size]="[56, 56]"></app-album-art>
 		<Label col="1" row="0" class="m-y-2" [text]="currentSong?.artist" textWrap="false"></Label>
 		<Label col="1" row="1" class="m-y-2" [text]="currentSong?.title || currentSong?.name" textWrap="false"></Label>

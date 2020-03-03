@@ -1,10 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, ViewContainerRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
+import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
+import { SwipeGestureEventData, SwipeDirection } from "tns-core-modules/ui/gestures";
 
 import { AuthService } from "@src/app/shared/services/auth.service";
 import { MpdService } from "@src/app/shared/services/mpd.service";
 import { Playback } from "@src/app/playback/playback.component.base";
+import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 
 
 @Component({
@@ -18,8 +21,21 @@ export class PlaybackComponent extends Playback {
 		router: RouterExtensions,
 		mpc: MpdService,
 		auth: AuthService,
+		private vcRef: ViewContainerRef,
+		private modalService: ModalDialogService,
 	) {
 		super(route, router, mpc, auth);
+	}
+
+	public openModal(data?: SwipeGestureEventData) {
+		if (!data || data.direction === SwipeDirection.up) {
+			const options: ModalDialogOptions = {
+				viewContainerRef: this.vcRef,
+				animated: true,
+				fullscreen: true,
+			};
+			this.modalService.showModal(PlaybackModalComponent, options);
+		}
 	}
 
 	protected redirect() {

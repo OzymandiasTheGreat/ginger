@@ -3,6 +3,7 @@ import { NativeScriptCommonModule } from "nativescript-angular/common";
 
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
 import { AlbumArtComponent } from "@src/app/shared/components/album-art/album-art.component";
+import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 // import { AlbumListComponent } from "@src/app/shared/components/album-list/album-list.component";
 // import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 import { AuthGuard } from "@src/app/shared/router/auth.guard";
@@ -15,11 +16,13 @@ import { AuthService } from "@src/app/shared/services/auth.service";
 	declarations: [
 		ConnectionComponent,
 		AlbumArtComponent,
+		PlaybackModalComponent,
 		// AlbumListComponent,
 		// PlaylistInputComponent,
 	],
 	entryComponents: [
 		ConnectionComponent,
+		PlaybackModalComponent,
 	],
 	providers: [
 		AuthGuard,
@@ -31,6 +34,7 @@ import { AuthService } from "@src/app/shared/services/auth.service";
 	exports: [
 		ConnectionComponent,
 		AlbumArtComponent,
+		PlaybackModalComponent,
 	],
 })
 export class SharedModule { }

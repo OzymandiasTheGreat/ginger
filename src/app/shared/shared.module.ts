@@ -34,6 +34,7 @@ import { ConnectionComponent } from "@src/app/shared/components/connection/conne
 import { AlbumArtComponent } from "@src/app/shared/components/album-art/album-art.component";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 import { InputListenerDirective } from "@src/app/shared/directives/input-listener.directive";
+import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 
 
 export const TOOLTIP_OPTIONS: MatTooltipDefaultOptions = {
@@ -54,6 +55,7 @@ export const TOOLTIP_OPTIONS: MatTooltipDefaultOptions = {
 		AlbumArtComponent,
 		PlaylistInputComponent,
 		InputListenerDirective,
+		PlaybackModalComponent,
 	],
 	entryComponents: [
 		ConnectionComponent,
