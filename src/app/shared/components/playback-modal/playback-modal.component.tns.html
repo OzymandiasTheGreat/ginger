@@ -19,7 +19,7 @@
 			<Button class="mdi" [ngClass]="{ active: state === 'play' }" [text]="state === 'play' ? '&#xF3E4;' : '&#xF40A;'" (tap)="play()"></Button>
 			<Button class="mdi" text="&#xF4DB;" (tap)="stop()"></Button>
 			<Button class="mdi" text="&#xF4AC;" (tap)="forward()"></Button>
-			<Button class="mdi" text="&#xF1D9;" (tap)="openMenu()"></Button>
+			<Button #menuButton class="mdi" text="&#xF1D9;" (tap)="openMenu()"></Button>
 		</StackLayout>
 	</StackLayout>
 </FlexboxLayout>
