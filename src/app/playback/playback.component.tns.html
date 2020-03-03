@@ -1,15 +1,12 @@
-<FlexboxLayout
-	flexDirection="row"
-	flexWrap="nowrap"
-	justifyContent="space-between"
-	alignItems="center"
->
-	<GridLayout flexGrow="1" rows="auto, auto" columns="auto, auto">
-		<app-album-art col="0" row="0" rowSpan="2" [artist]="'Placebo'" [album]="'Meds'" [size]="[48, 48]"></app-album-art>
-		<Label col="1" row="0" class="m-y-2" text="Placebo" textWrap="false"></Label>
-		<Label col="1" row="1" class="m-y-2" text="Follow the Cops Back Home" textWrap="false"></Label>
+<FlexboxLayout class="layout">
+	<GridLayout rows="auto, auto" columns="auto, auto">
+		<app-album-art col="0" row="0" rowSpan="2" [artist]="currentSong?.albumArtist" [album]="currentSong?.album" [size]="[56, 56]"></app-album-art>
+		<Label col="1" row="0" class="m-y-2" [text]="currentSong?.artist" textWrap="false"></Label>
+		<Label col="1" row="1" class="m-y-2" [text]="currentSong?.title || currentSong?.name" textWrap="false"></Label>
 	</GridLayout>
-	<StackLayout flexGrow="0" orientation="horizontal">
-		<Button class="mdi" text="&#xF40A;" [isEnabled]="connected" (tap)="play()"></Button>
+	<StackLayout orientation="horizontal" class="control-panel">
+		<Button class="mdi m-x-0" text="&#xF4AB;" [isEnabled]="connected" (tap)="previous()"></Button>
+		<Button class="mdi" [text]="state === 'play' ? '&#xF3E4;' : '&#xF40A;'" [ngClass]="{ active: state === 'play' }" [isEnabled]="connected" (tap)="play()"></Button>
+		<Button class="mdi m-x-0" text="&#xF4AC;" [isEnabled]="connected" (tap)="forward()"></Button>
 	</StackLayout>
 </FlexboxLayout>

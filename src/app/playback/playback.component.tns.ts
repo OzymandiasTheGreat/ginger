@@ -21,4 +21,15 @@ export class PlaybackComponent extends Playback {
 	) {
 		super(route, router, mpc, auth);
 	}
+
+	protected redirect() {
+		(<RouterExtensions> this.router).navigate(
+			["/connect"],
+			{
+				queryParams: { redirect: true },
+				skipLocationChange: true,
+				clearHistory: true,
+			}
+		);
+	}
 }

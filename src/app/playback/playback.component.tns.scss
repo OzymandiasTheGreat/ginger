@@ -1,5 +1,28 @@
-/*
-Add your NativeScript specific styles here.
-To learn more about styling in NativeScript see:
-https://docs.nativescript.org/angular/ui/styling
-*/
+@import "../../theme.base";
+
+
+.layout {
+	background-color: mat-color($default-primary, darker);
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: center;
+
+	GridLayout {
+		flex-grow: 0;
+		flex-shrink: 1;
+		width: 60%;
+	}
+
+	.control-panel {
+		flex-grow: 1;
+		flex-shrink: 0;
+
+		Button {
+			font-size: 48;
+			height: 56;
+			width: 56;
+			padding: 0;
+		}
+	}
+}

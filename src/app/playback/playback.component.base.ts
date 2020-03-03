@@ -20,7 +20,7 @@ export enum RepeatState {
 
 
 export class Playback implements OnInit, OnDestroy {
-	public artSize = [32, 32];
+	public artSize = [48, 48];
 	public repeatState = RepeatState;
 	public state = "stop";
 	public repeat: RepeatState;
@@ -82,12 +82,12 @@ export class Playback implements OnInit, OnDestroy {
 							.subscribe((status) => this.updateStatus(status)));
 					this.connected = true;
 				} else {
+					this.connected = false;
 					const segments = flattenUrl(this.route.snapshot.children);
 					this.auth.redirectUrl = this.codec.encodeKey(segments.join("/"))
 						.replace(/\(/, "%28")
 						.replace(/\)/, "%29");
-					// this.router.navigate(["/connect"], { queryParams: { redirect: true } });
-					this.connected = false;
+					this.redirect();
 				}
 			});
 	}
@@ -98,6 +98,90 @@ export class Playback implements OnInit, OnDestroy {
 		} else {
 			this.mpc.playback.pause();
 		}
+	}
+
+	public stop() {
+		this.mpc.playback.stop();
+	}
+
+	public previous() {
+		this.mpc.playback.previous();
+	}
+
+	public forward() {
+		this.mpc.playback.next();
+	}
+
+	public toggleRepeat() {
+		switch (this.repeat) {
+			case RepeatState.normal:
+				this.mpc.playback.repeat(true);
+				break;
+			case RepeatState.repeat:
+				this.mpc.playback.single(true);
+				break;
+			case RepeatState.repeat_single:
+				this.mpc.playback.repeat(false);
+				break;
+			case RepeatState.single:
+				this.mpc.playback.single(false);
+		}
+	}
+
+	public toggleShuffle() {
+		this.mpc.playback.shuffle(!this.shuffle);
+	}
+
+	public toggleCrossfade() {
+		this.mpc.playback.crossfade(this.crossfade ? 0 : 5);
+	}
+
+	public toggleConsume() {
+		this.mpc.playback.consume(!this.consume);
+	}
+
+	public setVolume(volume: number) {
+		this.mpc.playback.volume(volume);
+	}
+
+	public toggleMute(event?: Event) {
+		if (event) {
+			event.stopPropagation();
+		}
+		if (this.volume > 0) {
+			this.previousVolume = this.volume;
+			this.setVolume(0);
+		} else {
+			this.setVolume(this.previousVolume);
+		}
+	}
+
+	public seek(time: number) {
+		clearInterval(this.seekTimer);
+		this.mpc.playback.seek(Math.floor(time / this.seekMultiplier));
+	}
+
+	protected formatTime(value: number) {
+		if (!isNaN(value)) {
+			const time = Math.floor(value / this.seekMultiplier);
+			const minutes = Math.floor(time / 60);
+			let seconds: string | number = Math.floor(time % 60);
+			if (seconds < 10) {
+				seconds = `0${seconds}`;
+			}
+			return `${minutes}:${seconds}`;
+		}
+		return "0:00";
+	}
+
+	protected redirect() {
+		this.router.navigate(
+			["/connect"],
+			{
+				queryParams: { redirect: true },
+				skipLocationChange: true,
+			},
+		);
 	}
 
 	protected updateStatus(status: Status) {

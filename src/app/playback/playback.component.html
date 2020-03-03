@@ -25,7 +25,7 @@
 						</app-album-art>
 						<div>
 							<div class="playback-artist is-truncated is-size-7-touch">{{ currentSong?.artist }}</div>
-							<div class="playback-title is-truncated is-size-7-touch">{{ currentSong?.title }}</div>
+							<div class="playback-title is-truncated is-size-7-touch">{{ currentSong?.title || currentSong?.name }}</div>
 						</div>
 					</a>
 				</div>
