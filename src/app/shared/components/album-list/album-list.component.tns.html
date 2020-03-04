@@ -1,221 +1,50 @@
-<StackLayout>
-  <Label text="AlbumListComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
+<GridLayout rows="48, *", cols="*">
+	<Accordion class="albums" row="1" col="0" [items]="songs" allowMultiple="true">
 
-<!--
-Original Web template:
+		<ng-template let-i="index" let-album="item" acTemplateKey="title">
+			<DockLayout stretchLastChild="true">
+				<app-album-art dock="left" class="album-art" [artist]="album.artist" [album]="album.title"></app-album-art>
+				<StackLayout dock="right" class="actions" orientation="horizontal">
+					<Label *ngIf="!queue" class="mdi label-button action" text="&#xF40A;" (tap)="playAlbum(album.title, album.artist, null)"></Label>
+					<Label *ngIf="!playlist" class="mdi label-button action" text="&#xF415;" (tap)="openPlaylistsMenu(album.title, album.artist)"></Label>
+					<Label *ngIf="playlist" class="mdi label-button action" text="&#xF415;" (tap)="addAlbum(album.title, album.artistm, null)"></Label>
+					<Label *ngIf="queue || playlist" class="mdi label-button action" text="&#xF374;" (tap)="removeAlbum(album.title, null)"></Label>
+				</StackLayout>
+				<StackLayout class="album-info">
+					<Label class="album-artist" [text]="album.artist" textWrap="false"></Label>
+					<Label class="album-title" [text]="album.title" textWrap="false"></Label>
+				</StackLayout>
+			</DockLayout>
+		</ng-template>
 
-<div *ngIf="!search" class="playlist-toolbar-wrapper">
-	<mat-toolbar class="playlist-toolbar">
-		<a mat-mini-fab *ngIf="!queue"
-			class="play-fab"
-			color="accent"
-			(click)="playAll()"
-		>
-			<mat-icon fontIcon="mdi-play"></mat-icon>
-		</a>
-		<!-- This is broken due to virtual scroll ->
-		<button mat-icon-button *ngIf="false"
-			matTooltip="Scroll to Playing Song"
-			(click)="scrollCurrent()"
-		>
-			<mat-icon fontIcon="mdi-subdirectory-arrow-right"></mat-icon>
-		</button>
-		<button mat-icon-button
-			matTooltip="Sort Playlist"
-			[matMenuTriggerFor]="sortMenu"
-		>
-			<mat-icon fontIcon="mdi-sort"></mat-icon>
-		</button>
-		<button mat-icon-button *ngIf="queue || playlist"
-			matTooltip="Clear Playlist"
-			(click)="clearPlaylist()"
-		>
-			<mat-icon fontIcon="mdi-broom"></mat-icon>
-		</button>
-		<button mat-icon-button
-			[matTooltip]="queue ? 'Save Playlist as...' : 'Add to...'"
-			[matMenuTriggerFor]="playlistMenu"
-		>
-			<mat-icon [fontIcon]="playlist ? 'mdi-playlist-check' : 'mdi-playlist-plus'"></mat-icon>
-		</button>
-		<mat-menu #sortMenu="matMenu" class="sort-menu">
-			<mat-button-toggle-group (change)="sortView($event.value)" vertical="true" aria-label="Playlist Sort">
-				<mat-button-toggle [value]="playlistSort.none">
-					<mat-icon fontIcon="mdi-sort"></mat-icon>
-					Initial
-				</mat-button-toggle>
-				<mat-button-toggle *ngIf="!artist" [value]="playlistSort.artistAsc">
-					<mat-icon fontIcon="mdi-sort-alphabetical-ascending"></mat-icon>
-					Artist
-				</mat-button-toggle>
-				<mat-button-toggle *ngIf="!artist" [value]="playlistSort.artistDesc">
-					<mat-icon fontIcon="mdi-sort-alphabetical-descending"></mat-icon>
-					Artist
-				</mat-button-toggle>
-				<mat-button-toggle [value]="playlistSort.albumAsc">
-					<mat-icon fontIcon="mdi-sort-alphabetical-ascending"></mat-icon>
-					Album
-				</mat-button-toggle>
-				<mat-button-toggle [value]="playlistSort.albumDesc">
-					<mat-icon fontIcon="mdi-sort-alphabetical-descending"></mat-icon>
-					Album
-				</mat-button-toggle>
-				<mat-button-toggle [value]="playlistSort.yearAsc">
-					<mat-icon fontIcon="mdi-sort-ascending"></mat-icon>
-					Year
-				</mat-button-toggle>
-				<mat-button-toggle [value]="playlistSort.yearDesc">
-					<mat-icon fontIcon="mdi-sort-descending"></mat-icon>
-					Year
-				</mat-button-toggle>
-			</mat-button-toggle-group>
-		</mat-menu>
-		<mat-menu #playlistMenu="matMenu" class="playlist-menu">
-			<a mat-menu-item *ngIf="!queue" (click)="addAll()">
-				<mat-icon fontIcon="mdi-plus"></mat-icon>
-				<span class="playlist-menu-label">Add to Queue</span>
-			</a>
-			<a mat-menu-item *ngIf="!queue && !playlist" [matMenuTriggerFor]="playlistsMenu">
-				<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-				<span class="playlist-menu-label">Add to Playlist</span>
-			</a>
-			<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog()">
-				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-				<span class="playlist-menu-label">New Playlist</span>
-			</a>
-			<ng-container *ngIf="queue">
-				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)">
-					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-					<span class="playlist-menu-label">{{ playlist.name }}</span>
-				</a>
-			</ng-container>
-			<a mat-menu-item *ngIf="playlist" (click)="deletePlaylist()">
-				<mat-icon fontIcon="mdi-playlist-remove"></mat-icon>
-				<span class="playlist-menu-label">Delete Playlist</span>
-			</a>
-		</mat-menu>
-		<mat-menu #playlistsMenu="matMenu" class="playlist-menu">
-			<a mat-menu-item (click)="openPlaylistInputDialog()">
-				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-				<span class="playlist-menu-label">New Playlist</span>
-			</a>
-			<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)">
-				<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-				<span class="playlist-menu-label">{{ playlist.name }}</span>
-			</a>
-		</mat-menu>
-	</mat-toolbar>
-</div>
-<cdk-virtual-scroll-viewport #scrollViewPort itemSize="75" orientation="vertical">
-	<mat-accordion #accordion="matAccordion" class="current-playlist" displayMode="flat" multi="true">
-		<mat-expansion-panel hideToggle *cdkVirtualFor="let album of songs">
-			<mat-expansion-panel-header collapsedHeight="74px">
-				<app-album-art [artist]="extractArtists(album[1])" [album]="album[0]"></app-album-art>
-				<mat-panel-title>
-					<h3 class="is-size-5 is-size-7-touch is-truncated">{{ extractArtists(album[1]) }}</h3>
-					<h4 class="is-size-5 is-size-7-touch is-truncated">{{ album[0] }}</h4>
-				</mat-panel-title>
-				<div class="actions">
-					<button mat-icon-button *ngIf="!queue" class="action" (click)="playAlbum(album[0], extractArtists(album[1]), $event)">
-						<mat-icon fontIcon="mdi-play"></mat-icon>
-					</button>
-					<button mat-icon-button *ngIf="!playlist" class="action" [matMenuTriggerFor]="albumPlaylistMenu" (click)="$event.stopPropagation()">
-						<mat-icon fontIcon="mdi-plus"></mat-icon>
-					</button>
-					<button mat-icon-button *ngIf="playlist" class="action" (click)="addAlbum(album[0], extractArtists(album[1]), $event)">
-						<mat-icon fontIcon="mdi-plus"></mat-icon>
-					</button>
-					<button mat-icon-button *ngIf="queue || playlist" (click)="removeAlbum(album[0], $event)" class="action">
-						<mat-icon fontIcon="mdi-minus"></mat-icon>
-					</button>
-				</div>
-				<mat-menu #albumPlaylistMenu class="playlist-menu">
-					<a mat-menu-item *ngIf="!queue" (click)="addAlbum(album[0], extractArtists(album[1]))">
-						<mat-icon fontIcon="mdi-plus"></mat-icon>
-						<span class="playlist-menu-label">Add to Queue</span>
-					</a>
-					<a mat-menu-item *ngIf="!queue && !playlist" [matMenuTriggerFor]="albumPlaylistsMenu">
-						<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-						<span class="playlist-menu-label">Add to Playlist</span>
-					</a>
-					<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog(album[1])">
-						<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-						<span class="playlist-menu-label">New Playlist</span>
-					</a>
-					<ng-container *ngIf="queue">
-						<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album[1])">
-							<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-							<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
-						</a>
-					</ng-container>
-				</mat-menu>
-				<mat-menu #albumPlaylistsMenu="matMenu" class="playlist-menu">
-					<a mat-menu-item (click)="openPlaylistInputDialog(album[1])">
-						<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-						<span class="playlist-menu-label">New Playlist</span>
-					</a>
-					<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album[1])">
-						<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-						<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
-					</a>
-				</mat-menu>
-			</mat-expansion-panel-header>
 
-			<mat-nav-list>
-				<mat-list-item *ngFor="let song of album[1]">
-					<a matLine
-						(click)="playSong(queue ? song.id : song.path)">
-						<mat-icon
-							fontIcon="mdi-play"
-							class="playing-indicator"
-							[class.playing]="currentSong ? currentSong.id === song.id : null"
-						>
-						</mat-icon>
-						{{ song.title }}
-					</a>
-					<button mat-icon-button class="action" [matMenuTriggerFor]="songPlaylistMenu" (click)="$event.stopPropagation()">
-						<mat-icon fontIcon="mdi-plus"></mat-icon>
-					</button>
-					<button mat-icon-button *ngIf="queue || playlist" (click)="removeSong(queue ? song.id : song.path)">
-						<mat-icon fontIcon="mdi-minus"></mat-icon>
-					</button>
-					<mat-menu #songPlaylistMenu class="playlist-menu">
-						<a mat-menu-item *ngIf="!queue" (click)="addSong(song.path)">
-							<mat-icon fontIcon="mdi-plus"></mat-icon>
-							<span class="playlist-menu-label">Add to Queue</span>
-						</a>
-						<a mat-menu-item *ngIf="!queue" [matMenuTriggerFor]="songPlaylistsMenu">
-							<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-							<span class="playlist-menu-label">Add to Playlist</span>
-						</a>
-						<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog([song])">
-							<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-							<span class="playlist-menu-label">New Playlist</span>
-						</a>
-						<ng-container *ngIf="queue">
-							<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])">
-								<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-								<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
-							</a>
-						</ng-container>
-					</mat-menu>
-					<mat-menu #songPlaylistsMenu="matMenu" class="playlist-menu">
-						<a mat-menu-item (click)="openPlaylistInputDialog([song])">
-							<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-							<span class="playlist-menu-label">New Playlist</span>
-						</a>
-						<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])">
-							<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-							<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
-						</a>
-					</mat-menu>
-				</mat-list-item>
-			</mat-nav-list>
-		</mat-expansion-panel>
-	</mat-accordion>
-</cdk-virtual-scroll-viewport>
+		<!-- <ng-template let-i="index" let-item="item" acTemplateKey="header">
+			<StackLayout>
+				<Label text="I am a header!" textWrap="true"></Label>
+			</StackLayout>
+		</ng-template> -->
 
--->
+		<ng-template let-i="index" let-song="item" acTemplateKey="content">
+			<DockLayout class="p-y-5" stretchLastChild="true">
+				<Label dock="left" class="mdi playing-indicator" [text]="(currentSong && currentSong.id === song.id) ? '&#xF40A;' : ''"></Label>
+				<StackLayout dock="right" class="actions" orientation="horizontal">
+					<Label class="mdi label-button action" text="&#xF415;" (tap)="openSongPlaylistsMenu(song)"></Label>
+					<Label class="mdi label-button action" text="&#xF374;" (tap)="removeSong(song)"></Label>
+				</StackLayout>
+				<Label class="song-title" [text]="song.title || song.name" textWrap="false"></Label>
+			</DockLayout>
+		</ng-template>
+
+
+		<!-- <ng-template let-i="index" let-item="item" acTemplateKey="footer">
+			<StackLayout>
+				<Label text="I am a footer!"></Label>
+			</StackLayout>
+		</ng-template> -->
+	</Accordion>
+	<GridLayout class="toolbar-wrapper" row="0" col="0" rows="*" cols="*, auto">
+		<StackLayout class="toolbar" row="0" col="1" orientation="horizontal">
+			<Button class="mdi -primary play-fab" text="&#xF40A;"></Button>
+		</StackLayout>
+	</GridLayout>
+</GridLayout>

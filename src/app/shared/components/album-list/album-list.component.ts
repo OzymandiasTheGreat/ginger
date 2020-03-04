@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
-import { MatAccordion } from "@angular/material/expansion";
-import { MatDialog } from "@angular/material/dialog";
+// import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
+// import { MatAccordion } from "@angular/material/expansion";
+// import { MatDialog } from "@angular/material/dialog";
 import { PlaylistItem, Song, StoredPlaylist } from "mpc-js-web";
 
 import { MpdService } from "@src/app/shared/services/mpd.service";
 import { extractArtists, extractYear } from "@src/app/shared/functions/album-extract";
-import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
+// import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
 @Component({
@@ -22,8 +22,16 @@ export class AlbumListComponent implements OnInit {
 	@Input() public albums = false;
 	@Input() public genres = false;
 	@Input() public search = false;
-	@Input() public songs: Array<[ string, PlaylistItem[] | Song[] ]>;
-	@Input() public unsorted: Array<[ string, PlaylistItem[] | Song[] ]>;
+	@Input() public songs: Array<{
+		title: string,
+		artist: string,
+		items: Array<(PlaylistItem | Song)>,
+	}>;
+	@Input() public unsorted: Array<{
+		title: string,
+		artist: string,
+		items: Array<(PlaylistItem | Song)>,
+	}>;
 	@Input() public currentSong: PlaylistItem;
 	@Input() public currentPlaylist: string;
 	@Input() public albumArtist: string;
@@ -32,37 +40,62 @@ export class AlbumListComponent implements OnInit {
 	public extractArtists = extractArtists;
 	public extractYear = extractYear;
 	public playlistSort: {
-		none(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		artistAsc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		artistDesc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		albumAsc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		albumDesc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		yearAsc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
-		yearDesc(a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number,
+		none(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		artistAsc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		artistDesc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		albumAsc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		albumDesc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		yearAsc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
+		yearDesc(
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		): number,
 	};
 	public playlists: StoredPlaylist[];
 
-	@ViewChild("scrollViewPort", { static: true }) public scrollViewPort: CdkVirtualScrollViewport;
-	@ViewChild("accordion", { static: true }) public accordion: MatAccordion;
+	// @ViewChild("scrollViewPort", { static: true }) public scrollViewPort: CdkVirtualScrollViewport;
+	// @ViewChild("accordion", { static: true }) public accordion: MatAccordion;
 
 	constructor(
-		public playlistInputDialog: MatDialog,
+		// public playlistInputDialog: MatDialog,
 		private router: Router,
 		private mpd: MpdService,
 	) {
 		this.playlistSort = {
-			none: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
+			none: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
 				const aIndex = this.unsorted.indexOf(a);
 				const bIndex = this.unsorted.indexOf(b);
 				return aIndex < bIndex ? -1 : aIndex > bIndex ? 1 : 0;
 			},
-			artistAsc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aArtist = this.extractArtists(a[1])
-					.toLocaleLowerCase();
-				const bArtist = this.extractArtists(b[1])
-					.toLocaleLowerCase();
-				const aAlbum = a[0].toLocaleLowerCase();
-				const bAlbum = b[0].toLocaleLowerCase();
+			artistAsc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aArtist = a.artist.toLocaleLowerCase();
+				const bArtist = b.artist.toLocaleLowerCase();
+				const aAlbum = a.title.toLocaleLowerCase();
+				const bAlbum = b.title.toLocaleLowerCase();
 				if (aArtist < bArtist) {
 					return -1;
 				}
@@ -77,13 +110,14 @@ export class AlbumListComponent implements OnInit {
 				}
 				return 0;
 			},
-			artistDesc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aArtist = this.extractArtists(a[1])
-					.toLocaleLowerCase();
-				const bArtist = this.extractArtists(b[1])
-					.toLocaleLowerCase();
-				const aAlbum = a[0].toLocaleLowerCase();
-				const bAlbum = b[0].toLocaleLowerCase();
+			artistDesc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aArtist = a.artist.toLocaleLowerCase();
+				const bArtist = b.artist.toLocaleLowerCase();
+				const aAlbum = a.title.toLocaleLowerCase();
+				const bAlbum = b.title.toLocaleLowerCase();
 				if (aArtist > bArtist) {
 					return -1;
 				}
@@ -98,27 +132,39 @@ export class AlbumListComponent implements OnInit {
 				}
 				return 0;
 			},
-			albumAsc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aAlbum = a[0].toLocaleLowerCase();
-				const bAlbum = b[0].toLocaleLowerCase();
+			albumAsc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aAlbum = a.title.toLocaleLowerCase();
+				const bAlbum = b.title.toLocaleLowerCase();
 				return aAlbum < bAlbum ? -1 : aAlbum > bAlbum ? 1 : 0;
 			},
-			albumDesc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aAlbum = a[0].toLocaleLowerCase();
-				const bAlbum = b[0].toLocaleLowerCase();
+			albumDesc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aAlbum = a.title.toLocaleLowerCase();
+				const bAlbum = b.title.toLocaleLowerCase();
 				return aAlbum > bAlbum ? -1 : aAlbum < bAlbum ? 1 : 0;
 			},
-			yearAsc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aDate = this.extractYear(a[1])
+			yearAsc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aDate = this.extractYear(a.items)
 					.getTime();
-				const bDate = this.extractYear(b[1])
+				const bDate = this.extractYear(b.items)
 					.getTime();
 				return aDate < bDate ? -1 : aDate > bDate ? 1 : 0;
 			},
-			yearDesc: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]): number => {
-				const aDate = this.extractYear(a[1])
+			yearDesc: (
+				a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+				b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			): number => {
+				const aDate = this.extractYear(a.items)
 					.getTime();
-				const bDate = this.extractYear(b[1])
+				const bDate = this.extractYear(b.items)
 					.getTime();
 				return aDate > bDate ? -1 : aDate < bDate ? 1 : 0;
 			},
@@ -156,62 +202,62 @@ export class AlbumListComponent implements OnInit {
 		}
 	}
 
-	public openPlaylistInputDialog(songs?: Array<PlaylistItem | Song>): void {
-		const dialogRef = this.playlistInputDialog.open(PlaylistInputComponent, {
-			width: "25%",
-			data: {
-				name: "",
-				title: "Create New Playlist",
-				label: "Enter Name...",
-				action: "Create",
-			},
-		});
+	// public openPlaylistInputDialog(songs?: Array<PlaylistItem | Song>): void {
+	// 	const dialogRef = this.playlistInputDialog.open(PlaylistInputComponent, {
+	// 		width: "25%",
+	// 		data: {
+	// 			name: "",
+	// 			title: "Create New Playlist",
+	// 			label: "Enter Name...",
+	// 			action: "Create",
+	// 		},
+	// 	});
 
-		dialogRef.afterClosed()
-			.subscribe((name) => {
-				if (name) {
-					if (!songs) {
-						const tag = this.artist ? "AlbumArtist" : this.genres ? "Genre" : undefined;
-						const query = this.artist ? this.albumArtist : this.genres ? this.currentGenre : undefined;
-						if (this.artist || this.genres) {
-							this.mpd.db.searchAddPlaylist([[tag, query]], name);
-						} else if (this.albums) {
-							this.mpd.stored.add(name, "/");
-						} else {
-							this.mpd.stored.save(name);
-						}
-					} else {
-						for (const song of songs) {
-							this.mpd.stored.add(name, song.path);
-						}
-					}
-					this.mpd.stored.list()
-						.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
-				}
-			});
-	}
+	// 	dialogRef.afterClosed()
+	// 		.subscribe((name) => {
+	// 			if (name) {
+	// 				if (!songs) {
+	// 					const tag = this.artist ? "AlbumArtist" : this.genres ? "Genre" : undefined;
+	// 					const query = this.artist ? this.albumArtist : this.genres ? this.currentGenre : undefined;
+	// 					if (this.artist || this.genres) {
+	// 						this.mpd.db.searchAddPlaylist([[tag, query]], name);
+	// 					} else if (this.albums) {
+	// 						this.mpd.stored.add(name, "/");
+	// 					} else {
+	// 						this.mpd.stored.save(name);
+	// 					}
+	// 				} else {
+	// 					for (const song of songs) {
+	// 						this.mpd.stored.add(name, song.path);
+	// 					}
+	// 				}
+	// 				this.mpd.stored.list()
+	// 					.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
+	// 			}
+	// 		});
+	// }
 
-	public addPlaylist(playlist: string, songs?: Array<PlaylistItem | Song>) {
-		if (songs) {
-			for (const song of songs) {
-				this.mpd.stored.add(playlist, song.path);
-			}
-		} else {
-			const tag = this.artist ? "AlbumArtist" : this.genres ? "Genre" : undefined;
-			const query = this.artist ? this.albumArtist : this.genres ? this.currentGenre : undefined;
-			if (this.artist || this.genres) {
-				this.mpd.db.searchAddPlaylist([[tag, query]], playlist);
-			} else if (this.albums) {
-				this.mpd.stored.add(playlist, "/");
-			} else {
-				for (const [album, items] of this.songs) {
-					for (const song of items) {
-						this.mpd.stored.add(playlist, song.path);
-					}
-				}
-			}
-		}
-	}
+	// public addPlaylist(playlist: string, songs?: Array<PlaylistItem | Song>) {
+	// 	if (songs) {
+	// 		for (const song of songs) {
+	// 			this.mpd.stored.add(playlist, song.path);
+	// 		}
+	// 	} else {
+	// 		const tag = this.artist ? "AlbumArtist" : this.genres ? "Genre" : undefined;
+	// 		const query = this.artist ? this.albumArtist : this.genres ? this.currentGenre : undefined;
+	// 		if (this.artist || this.genres) {
+	// 			this.mpd.db.searchAddPlaylist([[tag, query]], playlist);
+	// 		} else if (this.albums) {
+	// 			this.mpd.stored.add(playlist, "/");
+	// 		} else {
+	// 			for (const [album, items] of this.songs) {
+	// 				for (const song of items) {
+	// 					this.mpd.stored.add(playlist, song.path);
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	public deletePlaylist() {
 		if (this.playlist) {
@@ -279,13 +325,18 @@ export class AlbumListComponent implements OnInit {
 		this.mpd.current.add(song);
 	}
 
-	public scrollCurrent() {
-		const index = this.songs.findIndex((album) => album[1].some((song) => song.id === this.currentSong.id));
-		this.scrollViewPort.scrollToIndex(index);
-		this.accordion.openAll();
-	}
+	// public scrollCurrent() {
+	// 	const index = this.songs.findIndex((album) => album[1].some((song) => song.id === this.currentSong.id));
+	// 	this.scrollViewPort.scrollToIndex(index);
+	// 	this.accordion.openAll();
+	// }
 
-	public sortView(comparator: (a: [ string, PlaylistItem[] ], b: [ string, PlaylistItem[] ]) => number) {
+	public sortView(
+		comparator: (
+			a: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+			b: { title: string, artist: string, items: Array<(PlaylistItem | Song)> },
+		) => number
+	) {
 		this.songs = [...this.songs.sort(comparator)];
 	}
 

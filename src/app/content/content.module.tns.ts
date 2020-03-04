@@ -1,6 +1,7 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
 
+import { SharedModule } from "@src/app/shared/shared.module";
 import { ContentRoutingModule } from "@src/app/content/content-routing.module";
 import { CurrentComponent } from "@src/app/content/current/current.component";
 import { ArtistsComponent } from "@src/app/content/artists/artists.component";
@@ -17,6 +18,7 @@ import { SearchComponent } from "@src/app/content/search/search.component";
 	imports: [
 		NativeScriptCommonModule,
 		ContentRoutingModule,
+		SharedModule,
 	],
 	declarations: [
 		CurrentComponent,

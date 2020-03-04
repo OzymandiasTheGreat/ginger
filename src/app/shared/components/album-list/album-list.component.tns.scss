@@ -1,5 +1,73 @@
-/*
-Add your NativeScript specific styles here.
-To learn more about styling in NativeScript see:
-https://docs.nativescript.org/angular/ui/styling
-*/
+@import "../../../../theme.base";
+
+.toolbar-wrapper {
+	z-index: 999;
+
+	.toolbar {
+		background-color: mat-color($default-primary, darker);
+		height: 48;
+		z-index: 1000;
+
+		.play-fab {
+			font-size: 48;
+			width: 48;
+			height: 48;
+			padding: 0;
+			border-radius: 50%;
+			margin: 0;
+			transform: translate(0, 24);
+			z-index: 1005;
+			// android-elevation: 10;
+		}
+	}
+}
+
+.albums {
+	z-index: 0;
+
+	.album-art {
+		vertical-align: center;
+	}
+
+	.actions {
+		padding: 0;
+		margin: 0;
+		vertical-align: center;
+
+		.label-button {
+			font-size: 32;
+			width: 32;
+			height: 32;
+			padding: 0;
+			border-radius: 50%;
+			margin: 0;
+			margin-right: 3;
+			vertical-align: center;
+		}
+	}
+
+	.album-info {
+		font-size: 20;
+		vertical-align: center;
+
+		.album-artist {
+			font-weight: bold;
+		}
+	}
+
+	.playing-indicator {
+		font-size: 32;
+		width: 32;
+		height: 32;
+		margin: 0;
+		margin-left: 6;
+		margin-right: 6;
+		margin-bottom: 3;
+		vertical-align: center;
+	}
+
+	.song-title {
+		font-size: 20;
+		vertical-align: center;
+	}
+}
