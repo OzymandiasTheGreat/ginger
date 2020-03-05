@@ -28,6 +28,7 @@
     "@mdi/font": "^4.9.95",
     "@nativescript/schematics": "^1.0.0",
     "@nativescript/theme": "~2.2.1",
+    "@nstudio/nativescript-floatingactionbutton": "^1.1.0",
     "bulma": "^0.8.0",
     "hammerjs": "^2.0.8",
     "mpc-js-web": "^1.2.0",

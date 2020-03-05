@@ -73,14 +73,12 @@
 				<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
 				<span class="playlist-menu-label">Add to Playlist</span>
 			</a>
-			<!-- <a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog()"> -->
-			<a mat-menu-item *ngIf="queue">
+			<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog()">
 				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 				<span class="playlist-menu-label">New Playlist</span>
 			</a>
 			<ng-container *ngIf="queue">
-				<!-- <a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)"> -->
-				<a mat-menu-item *ngFor="let playlist of playlists">
+				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)">
 					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 					<span class="playlist-menu-label">{{ playlist.name }}</span>
 				</a>
@@ -91,13 +89,11 @@
 			</a>
 		</mat-menu>
 		<mat-menu #playlistsMenu="matMenu" class="playlist-menu">
-			<!-- <a mat-menu-item (click)="openPlaylistInputDialog()"> -->
-			<a mat-menu-item>
+			<a mat-menu-item (click)="openPlaylistInputDialog()">
 				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 				<span class="playlist-menu-label">New Playlist</span>
 			</a>
-			<!-- <a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)"> -->
-			<a mat-menu-item *ngFor="let playlist of playlists">
+			<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name)">
 				<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 				<span class="playlist-menu-label">{{ playlist.name }}</span>
 			</a>
@@ -136,27 +132,23 @@
 						<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
 						<span class="playlist-menu-label">Add to Playlist</span>
 					</a>
-					<!-- <a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog(album.items)"> -->
-					<a mat-menu-item *ngIf="queue">
+					<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog(album.items)">
 						<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 						<span class="playlist-menu-label">New Playlist</span>
 					</a>
 					<ng-container *ngIf="queue">
-						<!-- <a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album.items)"> -->
-						<a mat-menu-item *ngFor="let storedPlaylist of playlists">
+						<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album.items)">
 							<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 							<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
 						</a>
 					</ng-container>
 				</mat-menu>
 				<mat-menu #albumPlaylistsMenu="matMenu" class="playlist-menu">
-					<!-- <a mat-menu-item (click)="openPlaylistInputDialog(album.items)"> -->
-					<a mat-menu-item>
+					<a mat-menu-item (click)="openPlaylistInputDialog(album.items)">
 						<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 						<span class="playlist-menu-label">New Playlist</span>
 					</a>
-					<!-- <a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album.items)"> -->
-					<a mat-menu-item *ngFor="let storedPlaylist of playlists">
+					<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, album.items)">
 						<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 						<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
 					</a>
@@ -190,27 +182,23 @@
 							<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
 							<span class="playlist-menu-label">Add to Playlist</span>
 						</a>
-						<!-- <a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog([song])"> -->
-						<a mat-menu-item *ngIf="queue">
+						<a mat-menu-item *ngIf="queue" (click)="openPlaylistInputDialog([song])">
 							<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 							<span class="playlist-menu-label">New Playlist</span>
 						</a>
 						<ng-container *ngIf="queue">
-							<!-- <a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])"> -->
-							<a mat-menu-item *ngFor="let storedPlaylist of playlists">
+							<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])">
 								<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 								<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
 							</a>
 						</ng-container>
 					</mat-menu>
 					<mat-menu #songPlaylistsMenu="matMenu" class="playlist-menu">
-						<!-- <a mat-menu-item (click)="openPlaylistInputDialog([song])"> -->
-						<a mat-menu-item>
+						<a mat-menu-item (click)="openPlaylistInputDialog([song])">
 							<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 							<span class="playlist-menu-label">New Playlist</span>
 						</a>
-						<!-- <a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])"> -->
-						<a mat-menu-item *ngFor="let storedPlaylist of playlists">
+						<a mat-menu-item *ngFor="let storedPlaylist of playlists" (click)="addPlaylist(storedPlaylist.name, [song])">
 							<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
 							<span class="playlist-menu-label">{{ storedPlaylist.name }}</span>
 						</a>

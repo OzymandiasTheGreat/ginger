@@ -1,30 +1,27 @@
 @import "../../../../theme.base";
 
-.toolbar-wrapper {
-	z-index: 999;
+.toolbar {
+	background-color: mat-color($default-primary, darker);
+	height: 48;
 
-	.toolbar {
-		background-color: mat-color($default-primary, darker);
+	.play-fab {
+		background-color: mat-color($default-accent, darker);
+		margin-right: 5;
+		transform: translate(0, 24);
+		android-elevation: 10;
+	}
+
+	Button {
+		background-color: transparent;
+		font-size: 32;
+		width: 48;
 		height: 48;
-		z-index: 1000;
-
-		.play-fab {
-			font-size: 48;
-			width: 48;
-			height: 48;
-			padding: 0;
-			border-radius: 50%;
-			margin: 0;
-			transform: translate(0, 24);
-			z-index: 1005;
-			// android-elevation: 10;
-		}
+		margin-right: 5;
+		android-elevation: 0;
 	}
 }
 
-.albums {
-	z-index: 0;
-
+	.albums {
 	.album-art {
 		vertical-align: center;
 	}

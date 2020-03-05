@@ -1,14 +1,13 @@
-<GridLayout rows="48, *", cols="*">
+<GridLayout #layout rows="48, *", cols="*">
 	<Accordion class="albums" row="1" col="0" [items]="songs" allowMultiple="true">
-
 		<ng-template let-i="index" let-album="item" acTemplateKey="title">
 			<DockLayout stretchLastChild="true">
 				<app-album-art dock="left" class="album-art" [artist]="album.artist" [album]="album.title"></app-album-art>
 				<StackLayout dock="right" class="actions" orientation="horizontal">
 					<Label *ngIf="!queue" class="mdi label-button action" text="&#xF40A;" (tap)="playAlbum(album.title, album.artist, null)"></Label>
-					<Label *ngIf="!playlist" class="mdi label-button action" text="&#xF415;" (tap)="openPlaylistsMenu(album.title, album.artist)"></Label>
-					<Label *ngIf="playlist" class="mdi label-button action" text="&#xF415;" (tap)="addAlbum(album.title, album.artistm, null)"></Label>
-					<Label *ngIf="queue || playlist" class="mdi label-button action" text="&#xF374;" (tap)="removeAlbum(album.title, null)"></Label>
+					<Label #albumMenu *ngIf="!playlist" class="mdi label-button action" text="&#xF415;" (tap)="openPlaylistMenu(false, albumMenu, null, album)"></Label>
+					<Label *ngIf="playlist" class="mdi label-button action" text="&#xF415;" (tap)="addAlbum(album.title, album.artistm)"></Label>
+					<Label *ngIf="queue || playlist" class="mdi label-button action" text="&#xF374;" (tap)="removeAlbum(album.title)"></Label>
 				</StackLayout>
 				<StackLayout class="album-info">
 					<Label class="album-artist" [text]="album.artist" textWrap="false"></Label>
@@ -17,34 +16,25 @@
 			</DockLayout>
 		</ng-template>
 
-
-		<!-- <ng-template let-i="index" let-item="item" acTemplateKey="header">
-			<StackLayout>
-				<Label text="I am a header!" textWrap="true"></Label>
-			</StackLayout>
-		</ng-template> -->
-
 		<ng-template let-i="index" let-song="item" acTemplateKey="content">
 			<DockLayout class="p-y-5" stretchLastChild="true">
 				<Label dock="left" class="mdi playing-indicator" [text]="(currentSong && currentSong.id === song.id) ? '&#xF40A;' : ''"></Label>
 				<StackLayout dock="right" class="actions" orientation="horizontal">
-					<Label class="mdi label-button action" text="&#xF415;" (tap)="openSongPlaylistsMenu(song)"></Label>
-					<Label class="mdi label-button action" text="&#xF374;" (tap)="removeSong(song)"></Label>
+					<Label #songMenu class="mdi label-button action" text="&#xF415;" (tap)="openPlaylistMenu(false, songMenu, [song])"></Label>
+					<Label class="mdi label-button action" text="&#xF374;" (tap)="removeSong(queue ? song.id : song.path)"></Label>
 				</StackLayout>
 				<Label class="song-title" [text]="song.title || song.name" textWrap="false"></Label>
 			</DockLayout>
 		</ng-template>
-
-
-		<!-- <ng-template let-i="index" let-item="item" acTemplateKey="footer">
-			<StackLayout>
-				<Label text="I am a footer!"></Label>
-			</StackLayout>
-		</ng-template> -->
 	</Accordion>
-	<GridLayout class="toolbar-wrapper" row="0" col="0" rows="*" cols="*, auto">
-		<StackLayout class="toolbar" row="0" col="1" orientation="horizontal">
-			<Button class="mdi -primary play-fab" text="&#xF40A;"></Button>
+
+	<DockLayout #toolbarWrapper class="toolbar" row="0" col="0" stretchLastChild="true">
+		<StackLayout #toolbar dock="right" orientation="horizontal">
+			<FAB *ngIf="!queue" class="mdi play-fab" text="&#xF40A;" (tap)="playAll()"></FAB>
+			<Button #sortButton class="mdi" text="&#xF4BA;" (tap)="openSortMenu()"></Button>
+			<Button *ngIf="queue || playlist" class="mdi" text="&#xF0E2;" (tap)="clearPlaylist()"></Button>
+			<Button #playlistButton class="mdi" [text]="playlist ? '&#xF5C7;' : '&#xF412;'" (tap)="openPlaylistMenu(true, playlistButton)"></Button>
 		</StackLayout>
-	</GridLayout>
+		<StackLayout></StackLayout>
+	</DockLayout>
 </GridLayout>

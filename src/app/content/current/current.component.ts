@@ -70,7 +70,7 @@ export class CurrentComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.ngUnsubscribe))
 			.subscribe(() => {
 				albums = {};
-				this.mpc.current.playlist.pipe(first())
+				this.mpc.current.playlist.pipe(takeUntil(this.ngUnsubscribe))
 					.subscribe({
 						next: (song) => {
 							this.groupByAlbum(song, albums);
