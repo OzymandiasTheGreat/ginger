@@ -25,8 +25,6 @@ import { MatCardModule } from "@angular/material/card";
 
 import { VirtualScrollerModule } from "ngx-virtual-scroller";
 
-import { AuthGuard } from "@src/app/shared/router/auth.guard";
-import { AuthService } from "@src/app/shared/services/auth.service";
 import { CapitalizePipe } from "@src/app/shared/pipes/capitalize.pipe";
 import { SafePipe, SafeResourcePipe, SafeStylePipe } from "@src/app/shared/pipes/safe.pipe";
 import { AlbumListComponent } from "@src/app/shared/components/album-list/album-list.component";
@@ -62,8 +60,6 @@ export const TOOLTIP_OPTIONS: MatTooltipDefaultOptions = {
 		PlaylistInputComponent,
 	],
 	providers: [
-		AuthGuard,
-		AuthService,
 		{ provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: TOOLTIP_OPTIONS },
 	],
 	imports: [

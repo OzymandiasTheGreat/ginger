@@ -2,7 +2,7 @@ import { OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, skip } from "rxjs/operators";
 
 import { Status, PlaylistItem } from "mpc-js-web";
 
@@ -58,6 +58,7 @@ export class Playback implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		this.auth.authorized.pipe(takeUntil(this.ngUnsubscribe))
+			.pipe(skip(1))
 			.subscribe((authorized) => {
 				if (authorized) {
 					this.mpc.currentSong.pipe(takeUntil(this.ngUnsubscribe))
@@ -83,11 +84,13 @@ export class Playback implements OnInit, OnDestroy {
 					this.connected = true;
 				} else {
 					this.connected = false;
-					const segments = flattenUrl(this.route.snapshot.children);
-					this.auth.redirectUrl = this.codec.encodeKey(segments.join("/"))
-						.replace(/\(/, "%28")
-						.replace(/\)/, "%29");
-					this.redirect();
+					setTimeout(() => {
+						const segments = flattenUrl(this.route.snapshot.children);
+						this.auth.redirectUrl = this.codec.encodeKey(segments.join("/"))
+							.replace(/\(/, "%28")
+							.replace(/\)/, "%29");
+						this.redirect();
+					}, 250);
 				}
 			});
 	}

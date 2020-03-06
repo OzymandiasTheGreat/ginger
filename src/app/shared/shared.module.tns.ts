@@ -8,8 +8,6 @@ import { ConnectionComponent } from "@src/app/shared/components/connection/conne
 import { AlbumArtComponent } from "@src/app/shared/components/album-art/album-art.component";
 import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 import { AlbumListComponent } from "@src/app/shared/components/album-list/album-list.component";
-import { AuthGuard } from "@src/app/shared/router/auth.guard";
-import { AuthService } from "@src/app/shared/services/auth.service";
 
 @NgModule({
 	imports: [
@@ -22,16 +20,12 @@ import { AuthService } from "@src/app/shared/services/auth.service";
 		AlbumArtComponent,
 		PlaybackModalComponent,
 		AlbumListComponent,
-		// PlaylistInputComponent,
 	],
 	entryComponents: [
 		ConnectionComponent,
 		PlaybackModalComponent,
 	],
-	providers: [
-		AuthGuard,
-		AuthService,
-	],
+	providers: [],
 	schemas: [
 		NO_ERRORS_SCHEMA,
 	],

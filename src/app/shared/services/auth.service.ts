@@ -10,8 +10,8 @@ import { MpdService } from "@src/app/shared/services/mpd.service";
 export class AuthService {
 	private authSource: BehaviorSubject<boolean>;
 
-	public authorized: Observable<boolean>;
 	public redirectUrl: string;
+	public authorized: Observable<boolean>;
 
 	constructor(private mpd: MpdService) {
 		this.authSource = new BehaviorSubject(false);
