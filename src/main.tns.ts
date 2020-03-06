@@ -6,8 +6,7 @@ import { registerElement } from "nativescript-angular/element-registry";
 import { AppModule } from "@src/app/app.module";
 
 // WebSocket Support
-// tslint:disable-next-line:no-require-imports
-require("nativescript-websockets");
+import "nativescript-websockets";
 
 // Image Caching
 import { ImageCacheIt } from "nativescript-image-cache-it";

@@ -176,7 +176,7 @@ export class Playback implements OnInit, OnDestroy {
 
 	protected redirect() {
 		this.router.navigate(
-			["/connect"],
+			["/settings/connect"],
 			{
 				queryParams: { redirect: true },
 				skipLocationChange: true,

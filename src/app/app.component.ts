@@ -34,7 +34,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 			title: "Preferences",
 			icon: "mdi-cogs",
 			links: [
-				{ title: "Connection", icon: "mdi-web", path: "/connect" },
+				{ title: "Connection", icon: "mdi-web", path: "/settings/connect" },
 			],
 		},
 	];

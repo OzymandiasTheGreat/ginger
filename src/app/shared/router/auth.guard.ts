@@ -29,7 +29,7 @@ export class AuthGuard implements CanLoad {
 			const url = `/${segments.map((s) => this.codec.encodeKey(s.path).replace(/\(/, "%28").replace(/\)/, "%29")).join("/")}`;
 			if (!authorized) {
 				this.auth.redirectUrl = url;
-				this.router.navigate(["/connect"], { queryParams: { redirect: true } });
+				this.router.navigate(["/settings/connect"], { queryParams: { redirect: true } });
 			}
 			subject.next(authorized);
 			subject.complete();

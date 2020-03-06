@@ -10,7 +10,7 @@ import * as Toast from "nativescript-toast";
 
 import { MpdService } from "@src/app/shared/services/mpd.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
-import { Connect } from "@src/app/connect/connect.component.base";
+import { Connect } from "@src/app/settings/connect/connect.component.base";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
 
 
@@ -59,9 +59,11 @@ export class ConnectComponent extends Connect implements OnInit {
 					takeUntil(this.ngUnsubscribe),
 				)
 				.subscribe((authorized) => {
-					if (this.page && this.page.modal) {
-						this.page.modal.closeModal();
-					}
+					setTimeout(() => {
+						if (this.page && this.page.modal) {
+							this.page.modal.closeModal();
+						}
+					}, 100);
 					if (authorized) {
 						Toast.makeText("Connected")
 							.show();

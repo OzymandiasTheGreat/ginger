@@ -1,5 +1,6 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptCommonModule } from "nativescript-angular/common";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
 
 import { AccordionModule } from "nativescript-accordion/angular";
 
@@ -7,13 +8,13 @@ import { ConnectionComponent } from "@src/app/shared/components/connection/conne
 import { AlbumArtComponent } from "@src/app/shared/components/album-art/album-art.component";
 import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 import { AlbumListComponent } from "@src/app/shared/components/album-list/album-list.component";
-// import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 import { AuthGuard } from "@src/app/shared/router/auth.guard";
 import { AuthService } from "@src/app/shared/services/auth.service";
 
 @NgModule({
 	imports: [
 		NativeScriptCommonModule,
+		NativeScriptRouterModule,
 		AccordionModule,
 	],
 	declarations: [

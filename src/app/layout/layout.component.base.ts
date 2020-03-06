@@ -18,7 +18,7 @@ export class Layout {
 		{ title: "Genres", icon: "\uF386", iconClass: "mdi-music-circle", path: "/library/genres", type: "link" },
 		{ title: "File System", icon: "\uF223", iconClass: "mdi-file-music", path: "/library/files", type: "link" },
 		{ title: "Preferences", icon: "\uF8D5", iconClass: "mdi-cogs", path: null, type: "header" },
-		{ title: "Connection", icon: "\uF59F", iconClass: "mdi-web", path: "/connect", type: "link" },
+		{ title: "Connection", icon: "\uF59F", iconClass: "mdi-web", path: "/settings/connect", type: "link" },
 	];
 
 	constructor() {}

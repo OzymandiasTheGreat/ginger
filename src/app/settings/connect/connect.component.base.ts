@@ -23,7 +23,7 @@ export class Connect implements OnDestroy {
 	}
 
 	public connect(): Observable<boolean> {
-		this.mpc.connect(this.address, this.password);
+		this.mpc.connect(this.address.trim(), this.password);
 		return this.auth.authorized;
 	}
 

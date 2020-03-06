@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { Routes } from "@angular/router";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
 
 import { CurrentComponent } from "@src/app/content/current/current.component";
 import { ArtistsComponent } from "@src/app/content/artists/artists.component";
@@ -30,7 +31,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule],
+	imports: [NativeScriptRouterModule.forChild(routes)],
+	exports: [NativeScriptRouterModule],
 })
 export class ContentRoutingModule { }

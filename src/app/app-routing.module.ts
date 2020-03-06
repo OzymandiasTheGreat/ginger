@@ -2,13 +2,14 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { AuthGuard } from "@src/app/shared/router/auth.guard";
-import { ConnectComponent } from "@src/app/connect/connect.component";
 
 
 const routes: Routes = [
-	{ path: "connect", component: ConnectComponent },
-	{ path: "", redirectTo: "connect", pathMatch: "full" },
+	// tslint:disable-next-line:newline-per-chained-call
+	{ path: "settings", loadChildren: () => import("@src/app/settings/settings.module").then((m) => m.SettingsModule) },
+	// tslint:disable-next-line:newline-per-chained-call
 	{ path: "library", canLoad: [AuthGuard], loadChildren: () => import("@src/app/content/content.module").then((m) => m.ContentModule) },
+	{ path: "", redirectTo: "library/queue", pathMatch: "full" },
 ];
 
 @NgModule({

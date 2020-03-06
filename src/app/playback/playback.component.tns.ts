@@ -40,7 +40,7 @@ export class PlaybackComponent extends Playback {
 
 	protected redirect() {
 		(<RouterExtensions> this.router).navigate(
-			["/connect"],
+			["/settings/connect"],
 			{
 				queryParams: { redirect: true },
 				skipLocationChange: true,
