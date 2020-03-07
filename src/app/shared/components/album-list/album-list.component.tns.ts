@@ -5,8 +5,7 @@ import { DockLayout } from "tns-core-modules/ui/layouts/dock-layout";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
 import { Button } from "tns-core-modules/ui/button";
 import { prompt, inputType, capitalizationType } from "tns-core-modules/ui/dialogs";
-import { android } from "tns-core-modules/application";
-import { device } from "tns-core-modules/platform";
+import { isAndroid, device } from "tns-core-modules/platform";
 import { Menu } from "nativescript-menu";
 import { PlaylistItem, Song } from "mpc-js-web";
 
@@ -24,7 +23,6 @@ export class AlbumListComponent extends AlbumList implements AfterViewInit {
 	@ViewChild("toolbarWrapper", { static: true }) private toolbarWrapper: ElementRef<DockLayout>;
 	@ViewChild("toolbar", { static: true }) private toolbar: ElementRef<StackLayout>;
 	@ViewChild("sortButton", { static: true }) private sortButton: ElementRef<Button>;
-	@ViewChild("playlistButton", { static: true }) private playlistButton: ElementRef<Button>;
 
 	constructor(
 		router: RouterExtensions,
@@ -34,7 +32,7 @@ export class AlbumListComponent extends AlbumList implements AfterViewInit {
 	}
 
 	public ngAfterViewInit() {
-		if (android && device.sdkVersion >= "21") {
+		if (isAndroid && device.sdkVersion >= "21") {
 			setTimeout(() => {
 				this.layout.nativeElement.android.setClipChildren(false);
 				this.toolbarWrapper.nativeElement.android.setClipChildren(false);
