@@ -1,43 +1,15 @@
-<StackLayout>
-  <Label text="ArtistsComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
-
-<!--
-Original Web template:
-
-<virtual-scroller #scroll [items]="artists" class="virtual-scroller">
-	<mat-card *ngFor="let artist of scroll.viewPortItems">
-		<mat-card-header  [routerLink]="['./', artist]">
-			<mat-card-title class="is-truncated">{{ artist }}</mat-card-title>
-		</mat-card-header>
-		<app-album-art mat-card-lg-image [artist]="artist" [size]="[152, 152]" [large]="true" [margin]="false" [routerLink]="['./', artist]"></app-album-art>
-		<mat-card-actions>
-			<a mat-mini-fab color="accent" class="play-button" (click)="playArtist(artist)"><mat-icon fontIcon="mdi-play"></mat-icon></a>
-			<a mat-icon-button [matMenuTriggerFor]="artistMenu" class="menu-button"><mat-icon fontIcon="mdi-dots-vertical"></mat-icon></a>
-		</mat-card-actions>
-		<mat-menu #artistMenu="matMenu" class="artist-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-			<a mat-menu-item (click)="addQueue(artist)">
-				<mat-icon fontIcon="mdi-plus"></mat-icon>
-				<span class="artist-menu-label">Add to Queue</span>
-			</a>
-			<a mat-menu-item [matMenuTriggerFor]="playlistsMenu">
-				<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-				<span class="artist-menu-label">Add to Playlist</span>
-			</a>
-		</mat-menu>
-		<mat-menu #playlistsMenu="matMenu" class="artist-menu">
-			<a mat-menu-item (click)="addNewPlaylist(artist)">
-				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-				<span class="artist-menu-label">New Playlist</span>
-			</a>
-			<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(artist, playlist.name)">
-				<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-				<span class="artist-menu-label">{{ playlist.name }}</span>
-			</a>
-		</mat-menu>
-	</mat-card>
-</virtual-scroller>
-
--->
+<RadListView [items]="artists" class="nt-list-view layout">
+	<ListViewGridLayout tkListViewLayout scrollDirection="Vertical" [spanCount]="columns"></ListViewGridLayout>
+	<ng-template tkListItemTemplate let-artist="item">
+		<CardView class="card">
+]			<GridLayout rows="30, *, 34" columns="*">
+				<Label class="artist-title" row="0" col="0" [text]="artist" textWrap="false" [nsRouterLink]="['/library/artists', artist]"></Label>
+				<StackLayout class="art" row="1" col="0" [nsRouterLink]="['/library/artists', artist]">
+					<app-album-art [artist]="artist" [size]="[152, 152]" [large]="true" [margin]="false"></app-album-art>
+				</StackLayout>
+				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="playArtist(artist)"></FAB>
+				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(artist, menu)"></Button>
+			</GridLayout>
+		</CardView>
+	</ng-template>
+</RadListView>
