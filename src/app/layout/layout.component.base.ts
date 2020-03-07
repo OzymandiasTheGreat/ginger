@@ -2,7 +2,7 @@ export interface ISideLink {
 	title: string;
 	icon: string;
 	iconClass: string;
-	path: string | null;
+	path: string;
 }
 
 

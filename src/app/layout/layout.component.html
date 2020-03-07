@@ -1,1 +1,43 @@
-<p>layout works!</p>
+<header>
+	<app-navbar (toggleSidebar)="sidebar.toggle()"></app-navbar>
+</header>
+<main class="container">
+	<mat-drawer-container
+		class="sidebar-container"
+	>
+		<mat-drawer
+			#sidebar
+			[opened]="!mobileQuery.matches"
+			[mode]="mobileQuery.matches ? 'over' : 'side'"
+		>
+			<mat-accordion displayMode="flat">
+				<mat-expansion-panel *ngFor="let header of links" [expanded]="isExpanded(header.items)">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							<mat-icon [fontIcon]="header.iconClass"></mat-icon>
+							{{ header.title }}
+						</mat-panel-title>
+					</mat-expansion-panel-header>
+
+					<mat-nav-list>
+						<a mat-list-item
+							*ngFor="let link of header.items"
+							[routerLink]="[link.path]"
+							routerLinkActive="active"
+						>
+							<mat-icon matListIcon [fontIcon]="link.iconClass"></mat-icon>
+							{{ link.title }}
+						</a>
+					</mat-nav-list>
+				</mat-expansion-panel>
+			</mat-accordion>
+		</mat-drawer>
+
+		<mat-drawer-content>
+			<router-outlet></router-outlet>
+		</mat-drawer-content>
+	</mat-drawer-container>
+</main>
+<footer>
+	<app-playback></app-playback>
+</footer>
