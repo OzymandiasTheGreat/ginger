@@ -4,21 +4,21 @@
 </ActionBar>
 <RadSideDrawer #sidebar>
 	<StackLayout tkDrawerContent>
-		<ListView [items]="sideLinks" class="nt-list-view sidelinks" [itemTemplateSelector]="templateSelector">
-			<ng-template nsTemplateKey="header" let-item="item" let-i="index">
+		<Accordion class="links" [items]="links" allowMultiple="false" [selectedIndexes]="openHeader">
+			<ng-template let-header="item" acTemplateKey="title">
 				<DockLayout stretchLastChild="true">
-					<Label class="mdi h2" [text]="item.icon" dock="left" textWrap="false"></Label>
-					<Label class="h2" [text]="item.title" textWrap="false"></Label>
+					<Label dock="left" class="mdi header-icon" [text]="header.icon" textWrap="false"></Label>
+					<Label class="header-title" [text]="header.title" textWrap="false"></Label>
 				</DockLayout>
 			</ng-template>
 
-			<ng-template nsTemplateKey="link" let-item="item" let-i="index">
-				<DockLayout class="p-l-25" [nsRouterLink]="[item.path]" nsRouterLinkActive="active" stretchLastChild="true">
-					<Label class="mdi h3" [text]="item.icon" dock="left" textWrap="false"></Label>
-					<Label class="h3" [text]="item.title" textWrap="false"></Label>
+			<ng-template let-link="item" acTemplateKey="content">
+				<DockLayout stretchLastChild="true" [nsRouterLink]="[link.path]" nsRouterLinkActive="active" (tap)="sidebar.nativeElement.closeDrawer()">
+					<Label dock="left" class="mdi link-icon" [text]="link.icon" textWrap="false"></Label>
+					<Label class="link-title" [text]="link.title" textWrap="false"></Label>
 				</DockLayout>
 			</ng-template>
-		</ListView>
+		</Accordion>
 	</StackLayout>
 	<DockLayout tkMainContent stretchLastChild="true">
 		<app-playback dock="bottom"></app-playback>
