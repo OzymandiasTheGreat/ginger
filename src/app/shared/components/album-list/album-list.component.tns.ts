@@ -1,11 +1,7 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, AfterViewInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
-import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout";
-import { DockLayout } from "tns-core-modules/ui/layouts/dock-layout";
-import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
 import { Button } from "tns-core-modules/ui/button";
 import { prompt, inputType, capitalizationType } from "tns-core-modules/ui/dialogs";
-import { isAndroid, device } from "tns-core-modules/platform";
 import { Menu } from "nativescript-menu";
 import { PlaylistItem, Song } from "mpc-js-web";
 
@@ -19,11 +15,6 @@ import { MpdService } from "@src/app/shared/services/mpd.service";
 	styleUrls: ["./album-list.component.scss"],
 })
 export class AlbumListComponent extends AlbumList implements AfterViewInit {
-	@ViewChild("layout", { static: true }) private layout: ElementRef<GridLayout>;
-	@ViewChild("toolbarWrapper", { static: true }) private toolbarWrapper: ElementRef<DockLayout>;
-	@ViewChild("toolbar", { static: true }) private toolbar: ElementRef<StackLayout>;
-	@ViewChild("sortButton", { static: true }) private sortButton: ElementRef<Button>;
-
 	constructor(
 		router: RouterExtensions,
 		mpc: MpdService,
@@ -31,19 +22,11 @@ export class AlbumListComponent extends AlbumList implements AfterViewInit {
 		super(router, mpc);
 	}
 
-	public ngAfterViewInit() {
-		if (isAndroid && device.sdkVersion >= "21") {
-			setTimeout(() => {
-				this.layout.nativeElement.android.setClipChildren(false);
-				this.toolbarWrapper.nativeElement.android.setClipChildren(false);
-				this.toolbar.nativeElement.android.setClipChildren(false);
-			}, 100);
-		}
-	}
+	public ngAfterViewInit() {}
 
-	public openSortMenu() {
+	public openSortMenu(button: Button) {
 		Menu.popup({
-			view: this.sortButton.nativeElement,
+			view: button,
 			actions: [
 				{ id: "initial", title: "Initial" },
 				{ id: "artist-asc", title: "Artist Asc." },

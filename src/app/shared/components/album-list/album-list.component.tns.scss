@@ -4,13 +4,6 @@
 	background-color: mat-color($default-primary, darker);
 	height: 48;
 
-	.play-fab {
-		background-color: mat-color($default-accent, darker);
-		margin-right: 5;
-		transform: translate(0, 24);
-		android-elevation: 10;
-	}
-
 	Button {
 		background-color: transparent;
 		font-size: 32;
@@ -67,4 +60,14 @@
 		font-size: 20;
 		vertical-align: center;
 	}
+}
+
+.play-fab {
+	background-color: mat-color($default-accent, darker);
+	width: 70;
+	height: 70;
+	margin: 25;
+	vertical-align: bottom;
+	horizontal-align: right;
+	android-elevation: 10;
 }

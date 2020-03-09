@@ -1,5 +1,5 @@
-<GridLayout #layout rows="48, *", cols="*">
-	<Accordion class="albums" row="1" col="0" [items]="songs" allowMultiple="true">
+<GridLayout rows="48, *", cols="*">
+	<Accordion #accordion class="albums" row="1" col="0" [items]="songs" allowMultiple="true">
 		<ng-template let-i="index" let-album="item" acTemplateKey="title">
 			<DockLayout stretchLastChild="true">
 				<app-album-art dock="left" class="album-art" [artist]="album.artist" [album]="album.title"></app-album-art>
@@ -28,13 +28,13 @@
 		</ng-template>
 	</Accordion>
 
-	<DockLayout #toolbarWrapper class="toolbar" row="0" col="0" stretchLastChild="true">
-		<StackLayout #toolbar dock="right" orientation="horizontal">
-			<FAB *ngIf="!queue" class="mdi play-fab" text="&#xF40A;" (tap)="playAll()"></FAB>
-			<Button #sortButton class="mdi" text="&#xF4BA;" (tap)="openSortMenu()"></Button>
+	<DockLayout class="toolbar" row="0" col="0" stretchLastChild="true">
+		<StackLayout dock="right" orientation="horizontal">
+			<Button #sortButton class="mdi" text="&#xF4BA;" (tap)="openSortMenu(sortButton)"></Button>
 			<Button *ngIf="queue || playlist" class="mdi" text="&#xF0E2;" (tap)="clearPlaylist()"></Button>
 			<Button #playlistButton class="mdi" [text]="playlist ? '&#xF5C7;' : '&#xF412;'" (tap)="openPlaylistMenu(true, playlistButton)"></Button>
 		</StackLayout>
 		<StackLayout></StackLayout>
 	</DockLayout>
+	<FAB *ngIf="!queue" row="1" col="0" class="mdi play-fab" text="&#xF40A;" hideOnSwipeOfView="accordion" (tap)="playAll()"></FAB>
 </GridLayout>

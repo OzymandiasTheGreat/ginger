@@ -1,3 +1,4 @@
+@import "../../theme.base";
 @import "~bulma/sass/utilities/all";
 @import "~bulma/sass/base/all";
 
@@ -39,7 +40,8 @@ main.container {
 			}
 
 			.active {
-				background-color: #6666660A;
+				// background-color: #6666660A;
+				background-color: mat-color($default-accent);
 			}
 		}
 	}
