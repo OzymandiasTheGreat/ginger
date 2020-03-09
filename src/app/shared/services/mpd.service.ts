@@ -295,7 +295,7 @@ export class MpdService {
 			const id = setTimeout(() => {
 				clearTimeout(id);
 				reject();
-			}, 1000);
+			}, 5000);
 		});
 		Promise.race([
 			this.MPD.connection.ping(),

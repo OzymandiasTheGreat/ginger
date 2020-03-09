@@ -14,9 +14,21 @@ import { filterView } from "@src/app/shared/functions/filter";
 	styleUrls: ["./albums.component.scss"]
 })
 export class AlbumsComponent implements OnInit {
-	public songs: Array<[string, Song[]]> = [];
-	public unsorted: Array<[string, Song[]]>;
-	public sorted: Array<[string, Song[]]>;
+	public songs: Array<{
+		title: string,
+		artist: string,
+		items: Song[],
+	}> = [];
+	public unsorted: Array<{
+		title: string,
+		artist: string,
+		items: Song[],
+	}>;
+	public sorted: Array<{
+		title: string,
+		artist: string,
+		items: Song[],
+	}>;
 
 	constructor(
 		private mpd: MpdService,
@@ -39,7 +51,11 @@ export class AlbumsComponent implements OnInit {
 				albums.forEach(([album, artist]) => {
 					obsvrs.push(this.mpd.db.search([["AlbumArtist", artist], ["Album", album]])
 						.pipe(
-							map((songs) => sorted.push([album, songs]))
+							map((songs) => sorted.push({
+								title: album,
+								artist,
+								items: songs,
+							})),
 						)
 					);
 				});

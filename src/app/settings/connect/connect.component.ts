@@ -29,7 +29,7 @@ export class ConnectComponent implements OnInit {
 		}
 	}
 
-	public openConnection(): void {
+	public openConnection() {
 		const dialogRef = this.connection.open(ConnectionComponent, {
 			width: "25%",
 			height: "35vh",
@@ -44,6 +44,7 @@ export class ConnectComponent implements OnInit {
 			window.clearTimeout(timeout);
 			dialogRef.close();
 		}, 3000);
+		return false;
 	}
 
 	public connect(): void {
