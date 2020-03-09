@@ -73,6 +73,7 @@
     "protractor": "~5.4.0",
     "rxjs-tslint-rules": "^4.29.0",
     "sass-loader": "^7.3.1",
+    "tns-platform-declarations": "^6.4.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",

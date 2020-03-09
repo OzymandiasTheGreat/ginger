@@ -20,7 +20,8 @@ module.exports = env => {
     // Add your custom Activities, Services and other Android app components here.
     const appComponents = [
         "tns-core-modules/ui/frame",
-        "tns-core-modules/ui/frame/activity",
+		"tns-core-modules/ui/frame/activity",
+		resolve(__dirname, "src/app/background.service"),
     ];
 
     const platform = env && (env.android && "android" || env.ios && "ios");
