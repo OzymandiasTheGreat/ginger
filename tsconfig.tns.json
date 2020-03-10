@@ -3,6 +3,11 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "node",
+    "target": "es5",
+    "importHelpers": false,
+    "emitDecoratorMetadata": true,
+    "noEmitHelpers": true,
+    "noEmitOnError": true,
     "skipLibCheck": true,
     "paths": {
       "@src/*": [
