@@ -18,4 +18,9 @@ export class NavbarComponent extends Navbar {
 	) {
 		super(router, route, searchService);
 	}
+
+	public onCrumbSelected(crumb: string) {
+		const url = this.breadcrumbLinks[this.breadcrumbs.indexOf(crumb)];
+		this.router.navigateByUrl(url);
+	}
 }

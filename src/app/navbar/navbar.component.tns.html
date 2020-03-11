@@ -1,7 +1,7 @@
 <ActionBar class="navbar" title="">
 	<StackLayout class="layout" orientation="horizontal">
 		<Image class="logo" src="res://ginger_mono" (tap)="toggleSidebar.emit()"></Image>
-		<Label class="breadcrumbs" [text]="breadcrumbs.join('/')" textWrap="false"></Label>
+		<DropDown class="breadcrumbs" [items]="crumbsDisplay" [selectedIndex]="crumbsDisplay.length - 1" (selectedIndexChanged)="onBreadcrumbSelected($event)"></DropDown>
 	</StackLayout>
 	<ActionItem android.position="actionBar" ios.position="right" [visibility]="searchShown ? 'visible' : 'collapsed'">
 		<SearchBar #search class="search" hint="Search..." (textChange)="onQuery($event.value)" (submit)="onSearch(search.text)"></SearchBar>

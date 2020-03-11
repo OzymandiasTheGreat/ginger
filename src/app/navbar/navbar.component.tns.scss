@@ -5,23 +5,29 @@
 	horizontal-align: left;
 
 	.logo {
-		width: 56;
-		height: 56;
+		width: 48;
+		height: 48;
+		margin: 5 0;
 	}
 
 	.breadcrumbs {
+		font-size: 22;
 		color: mat-color($default-accent, default-contrast);
-		margin: 0 15;
+		margin-left: 15;
+		items-padding: 0 25;
+		vertical-align: center;
 	}
 }
 
 .search {
 	width: 192;
+	vertical-align: center;
 	background-color: mat-color($default-accent);
 	text-field-background-color: mat-color($default-accent);
 }
 
 .search-toggle {
-	font-size: 48;
+	font-size: 12;
 	color: mat-color($default-accent, default-contrast);
+	vertical-align: center;
 }

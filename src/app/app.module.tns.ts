@@ -19,6 +19,7 @@ import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular";
 import { TNSImageCacheItModule } from "nativescript-image-cache-it/angular";
 import { AccordionModule } from "nativescript-accordion/angular";
+import { DropDownModule } from "nativescript-drop-down/angular";
 
 import { SharedModule } from "@src/app/shared/shared.module";
 import { LayoutComponent } from "@src/app/layout/layout.component";
@@ -44,6 +45,7 @@ import { NavbarComponent } from "@src/app/navbar/navbar.component";
 		NativeScriptUISideDrawerModule,
 		TNSImageCacheItModule,
 		AccordionModule,
+		DropDownModule,
 		SharedModule,
 	],
 	providers: [ModalDialogService],

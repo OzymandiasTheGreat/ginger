@@ -14,12 +14,12 @@ export class Navbar implements OnInit, OnDestroy {
 	public breadcrumbLinks: string[] = [];
 	public query: string;
 
-	private ngUnsubscribe: Subject<void>;
+	protected ngUnsubscribe: Subject<void>;
 
 	constructor(
-		private router: Router | RouterExtensions,
-		private route: ActivatedRoute,
-		private searchService: SearchService,
+		protected router: Router | RouterExtensions,
+		protected route: ActivatedRoute,
+		protected searchService: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();
 	}
@@ -45,11 +45,6 @@ export class Navbar implements OnInit, OnDestroy {
 				this.breadcrumbLinks.reverse();
 			}
 		});
-	}
-
-	public onCrumbSelected(crumb: string) {
-		const url = this.breadcrumbLinks[this.breadcrumbs.indexOf(crumb)];
-		this.router.navigateByUrl(url);
 	}
 
 	public onQuery(query: string) {
