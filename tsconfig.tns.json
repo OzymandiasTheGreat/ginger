@@ -19,6 +19,5 @@
   "files": [
     "src/main.tns.ts",
     "reference.d.ts",
-    "src/app/background.service.android.ts"
   ]
 }

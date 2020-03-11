@@ -39,5 +39,17 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.tns.ErrorReportActivity"/>
+
+		<service android:enabled="true" android:name="tk.ozymandias.ginger.PlatformService" />
+		<receiver
+			android:name="tk.ozymandias.ginger.RestartReceiver"
+			android:enabled="true"
+			android:exported="true"
+			android:label="PlatformServiceRestarter" />
+		<receiver
+			android:name="tk.ozymandias.ginger.PlaybackReceiver"
+			android:enabled="true"
+			android:exported="true"
+			android:label="PlaybackControlReceiver" />
 	</application>
 </manifest>

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Observable, BehaviorSubject, from, defer, fromEvent } from "rxjs";
-import { mergeAll, retry, tap } from "rxjs/operators";
+import { Observable, BehaviorSubject, from, defer, fromEvent, of } from "rxjs";
+import { mergeAll, retry } from "rxjs/operators";
 
 import { MPC, PlaylistItem, Status, StoredPlaylist, Song, Playlist, Directory } from "mpc-js-web";
 
@@ -256,28 +256,41 @@ export class MpdService {
 	}
 
 	public connect(url: string, password?: string): Observable<boolean> {
-		return from(this.MPD.connectWebSocket(url)
-			.then(() => this.MPD.connection.password(password)
-				.then(() => {
-					this.connectedSource.next(true);
-					this.pingTimer = setInterval(() => this.ping(), 1000);
-					return true;
-				})
+		try {
+			return from(this.MPD.connectWebSocket(url)
+				.then(() => this.MPD.connection.password(password)
+					.then(() => {
+						this.connectedSource.next(true);
+						this.pingTimer = setInterval(() => this.ping(), 1000);
+						return true;
+					})
+					.catch((err) => {
+						console.error("Wrong password?", err);
+						this.connectedSource.next(false);
+						return false;
+					}))
 				.catch((err) => {
-					console.error("Wrong password?", err);
+					console.error("Wrong address?", err);
 					this.connectedSource.next(false);
 					return false;
-				}))
-			.catch((err) => {
-				console.error("Wrong address?", err);
-				this.connectedSource.next(false);
-				return false;
-			})
-		);
+				})
+			);
+		} catch (err) {
+			if (err.message === "Client is already connected") {
+				this.connectedSource.next(true);
+				return of(true);
+			}
+			this.connectedSource.next(false);
+			return of(false);
+		}
 	}
 
 	public on(event: string, context?: {}): Observable<void> {
 		return fromEvent(this.MPD, event, context);
+	}
+
+	public removeAllListeners(event?: string) {
+		return this.MPD.removeAllListeners(event);
 	}
 
 	public get status(): Observable<Status> {

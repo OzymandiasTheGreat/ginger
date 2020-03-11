@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, Subject, of, forkJoin } from "rxjs";
+import { Observable, Subject, of, forkJoin, from } from "rxjs";
 
 import { base64Encode } from "@src/app/shared/functions/base64";
+import { buildQuery } from "@src/app/shared/functions/url";
 
 
 const SPOTIFY_CLIENT_ID = "3f974573800a4ff5b325de9795b8e603";
@@ -28,7 +28,6 @@ export class ArtBaseService {
 	private lastFMAPIEndPoint = "https://ws.audioscrobbler.com/2.0/";
 
 	constructor(
-		private http: HttpClient,
 		private getter: (key: string) => string,
 		private setter: (key: string, value: string) => void,
 	) {
@@ -58,19 +57,17 @@ export class ArtBaseService {
 
 	public getSpotifyArt(artist: string, large: boolean, album?: string): Observable<string> {
 		const subject = new Subject<string>();
-		let params = new HttpParams();
-		params = params.append("q", `${artist}${album ? " " + album : ""}`);
-		params = params.append("type", album ? "album" : "artist");
-		params = params.append("limit", "1");
-		this.http.get(this.spotifyAPIEndPoint, {
+		from(fetch(buildQuery(this.spotifyAPIEndPoint, {
+			q: `${artist}${album ? " " + album : ""}`,
+			type: album ? "album" : "artist",
+			limit: 1,
+		}), {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 				Authorization: `Bearer ${this.spotifyAuthToken}`,
-			},
-			params,
-			observe: "body",
-			responseType: "json",
+			}
 		})
+		.then((response) => response.json()))
 		.subscribe((response: any) => {
 			if (
 				!(<any> response).error
@@ -104,22 +101,20 @@ export class ArtBaseService {
 
 	public getLastFMArt(artist: string, large: boolean, album?: string): Observable<string> {
 		const subject = new Subject<string>();
-		let params = new HttpParams();
-		params = params.append("api_key", LASTFM_API_KEY);
-		params = params.append("artist", artist);
-		params = params.append("format", "json");
-		params = params.append("autoCorrect", "true");
+		const params: any = {
+			api_key: LASTFM_API_KEY,
+			artist,
+			format: "json",
+			autoCorrect: "true",
+		};
 		if (album) {
-			params = params.append("method", "album.getinfo");
-			params = params.append("album", album);
+			params.method = "album.getinfo";
+			params.album = album;
 		} else {
-			params = params.append("method", "artist.getinfo");
+			params.method = "artist.getinfo";
 		}
-		this.http.get(this.lastFMAPIEndPoint, {
-			params,
-			observe: "body",
-			responseType: "json",
-		})
+		from(fetch(buildQuery(this.lastFMAPIEndPoint, params))
+		.then((response) => response.json()))
 		.subscribe((response: any) => {
 			if ((response.album && response.album.image) || (response.artist && response.artist.image)) {
 				const images = album ? response.album.image : response.artist.image;
@@ -135,7 +130,7 @@ export class ArtBaseService {
 				subject.next(large ? largest : smallest);
 			}
 			subject.complete();
-		})
+		});
 		return subject.asObservable();
 	}
 

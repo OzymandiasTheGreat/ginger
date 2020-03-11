@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 
 import { ArtBaseService } from "@src/app/shared/services/art.service.base";
 
@@ -8,9 +7,8 @@ import { ArtBaseService } from "@src/app/shared/services/art.service.base";
 	providedIn: "root"
 })
 export class ArtService extends ArtBaseService {
-	constructor(http: HttpClient) {
+	constructor() {
 		super(
-			http,
 			window.localStorage.getItem.bind(window.localStorage),
 			window.localStorage.setItem.bind(window.localStorage),
 			);

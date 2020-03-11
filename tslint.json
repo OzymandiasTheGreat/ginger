@@ -190,7 +190,9 @@
     "rxjs-no-ignored-subscribe": { "severity": "error" },
     "rxjs-no-operator": { "severity": "error" },
     "rxjs-no-unsafe-takeuntil": { "severity": "warning" },
-    "rxjs-prefer-angular-takeuntil": { "severity": "warning" }
+    "rxjs-prefer-angular-takeuntil": { "severity": "warning" },
+    "no-android-resources": false,
+    "no-bitwise": false
   },
   "rulesDirectory": [
     "codelyzer"
