@@ -1,0 +1,10 @@
+<ActionBar class="navbar" title="">
+	<StackLayout class="layout" orientation="horizontal">
+		<Image class="logo" src="res://ginger_mono" (tap)="toggleSidebar.emit()"></Image>
+		<Label class="breadcrumbs" [text]="breadcrumbs.join('/')" textWrap="false"></Label>
+	</StackLayout>
+	<ActionItem android.position="actionBar" ios.position="right" [visibility]="searchShown ? 'visible' : 'collapsed'">
+		<SearchBar #search class="search" hint="Search..." (textChange)="onQuery($event.value)" (submit)="onSearch(search.text)"></SearchBar>
+	</ActionItem>
+	<ActionItem class="mdi search-toggle" icon="font://&#xF349;" (tap)="toggleSearch()" android.position="actionBar" ios.position="right"></ActionItem>
+</ActionBar>

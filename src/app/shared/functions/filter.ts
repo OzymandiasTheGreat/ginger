@@ -7,9 +7,9 @@ export function filterView(
 	const filtered = [...component.sorted];
 	if (query.length > 0) {
 		query = query.toLowerCase();
-		component.songs = filtered.filter(([album, songs], index, array) => {
-			return album && album.toLowerCase()
-				.includes(query) || array[index][1].some((song) => {
+		component.songs = filtered.filter(({ artist, title, items }, index, array) => {
+			return title && title.toLowerCase()
+				.includes(query) || array[index].items.some((song) => {
 					return (song.title && song.title.toLowerCase()
 						.includes(query))
 					|| (song.name && song.name.toLowerCase()
@@ -24,12 +24,12 @@ export function filterView(
 						.includes(query));
 				});
 		})
-		.map(([album, songs]) => {
+		.map(({ artist, title, items }) => {
 			// tslint:disable-next-line:newline-per-chained-call
-			if (album && album.toLowerCase().includes(query)) {
-				return [album, songs];
+			if (title && title.toLowerCase().includes(query)) {
+				return { artist, title, items };
 			}
-			return [album, songs.filter((song) => {
+			return { artist, title, items: items.filter((song) => {
 				return (song.title && song.title.toLowerCase()
 					.includes(query))
 				|| (song.name && song.name.toLowerCase()
@@ -43,7 +43,7 @@ export function filterView(
 				|| (song.genre && song.genre.toLowerCase()
 					.includes(query));
 				}),
-			];
+			};
 		});
 	} else {
 		component.songs = [...component.sorted];

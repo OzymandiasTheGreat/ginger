@@ -1,7 +1,4 @@
-<ActionBar title="GINGER">
-	<NavigationButton icon="font://&#xf013;" class="mdi"></NavigationButton>
-	<ActionItem icon="font://&#xf013;" class="mdi"></ActionItem>
-</ActionBar>
+<app-navbar (toggleSidebar)="sidebar.sideDrawer.toggleDrawerState()"></app-navbar>
 <RadSideDrawer #sidebar>
 	<StackLayout tkDrawerContent>
 		<Accordion class="links" [items]="links" allowMultiple="false" [selectedIndexes]="openHeader">

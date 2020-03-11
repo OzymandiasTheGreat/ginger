@@ -1,0 +1,27 @@
+@import "../../theme.base";
+
+
+.layout {
+	horizontal-align: left;
+
+	.logo {
+		width: 56;
+		height: 56;
+	}
+
+	.breadcrumbs {
+		color: mat-color($default-accent, default-contrast);
+		margin: 0 15;
+	}
+}
+
+.search {
+	width: 192;
+	background-color: mat-color($default-accent);
+	text-field-background-color: mat-color($default-accent);
+}
+
+.search-toggle {
+	font-size: 48;
+	color: mat-color($default-accent, default-contrast);
+}
