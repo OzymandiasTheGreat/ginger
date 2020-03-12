@@ -1,10 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
+import { Playlists } from "@src/app/content/playlists/playlists.component.base";
 import { MpdService } from "@src/app/shared/services/mpd.service";
 import { SearchService } from "@src/app/shared/services/search.service";
-import { extractArtists } from "@src/app/shared/functions/album-extract";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
@@ -13,119 +12,20 @@ import { PlaylistInputComponent } from "@src/app/shared/components/playlist-inpu
 	templateUrl: "./playlists.component.html",
 	styleUrls: ["./playlists.component.scss"]
 })
-export class PlaylistsComponent implements OnInit {
-	public playlists: Array<[string, Array<[string, PlaylistItem[]]>]> = [];
-	public sorted: Array<[string, Array<[string, PlaylistItem[]]>]>;
-	public ramdomAlbums = {};
-
+export class PlaylistsComponent extends Playlists {
 	constructor(
-		private mpd: MpdService,
-		private search: SearchService,
+		mpc: MpdService,
+		search: SearchService,
 		private renameDialog: MatDialog,
-	) { }
-
-	public ngOnInit() {
-		this.mpd.stored.list()
-			.subscribe({
-				next: (playlists: StoredPlaylist[]) => {
-					for (const playlist of playlists) {
-						this.mpd.stored.list(playlist.name)
-							.subscribe({
-								next: (songs: PlaylistItem[]) => {
-									const albums = {};
-									for (const song of songs) {
-										if (song.album in albums) {
-											albums[song.album].push(song);
-										} else {
-											albums[song.album] = [song];
-										}
-									}
-									this.playlists.push([playlist.name, Object.entries(albums)]);
-								},
-								complete: () => {
-									for (const [pls, albums] of this.playlists) {
-										this.ramdomAlbums[pls] = this.getRandomAlbums(albums);
-									}
-									this.sorted = [...this.playlists];
-
-									this.search.query.subscribe((query) => {
-										query = query.toLowerCase();
-										this.playlists = query.length > 0
-											// tslint:disable-next-line:newline-per-chained-call
-											? this.sorted.filter(([pls, albums]) => pls && pls.toLowerCase().includes(query))
-											: [...this.sorted];
-									});
-								},
-							});
-					}
-				}
-			});
-		this.mpd.on("changed-stored_playlist")
-			.subscribe(() => {
-				const newPlaylists: Array<[string, Array<[string, PlaylistItem[]]>]> = [];
-				this.mpd.stored.list()
-					.subscribe((playlists: StoredPlaylist[]) => {
-						for (const playlist of playlists) {
-							this.mpd.stored.list(playlist.name)
-								.subscribe({
-									next: (songs: PlaylistItem[]) => {
-										const albums = {};
-										for (const song of songs) {
-											if (song.album in albums) {
-												albums[song.album].push(song);
-											} else {
-												albums[song.album] = [song];
-											}
-										}
-										newPlaylists.push([playlist.name, Object.entries(albums)]);
-									},
-									complete: () => {
-										this.playlists = newPlaylists;
-										this.ramdomAlbums = {};
-										for (const pls of this.playlists) {
-											this.ramdomAlbums[pls[0]] = this.getRandomAlbums(pls[1]);
-										}
-									},
-								});
-						}
-					});
-			});
+	) {
+		super(mpc, search);
 	}
 
-	public getRandomAlbums(playlist: Array<[string, PlaylistItem[]]>): Array<{artist: string, album: string}> {
-		const randomAlbums: Array<{artist: string, album: string}> = [];
-		for (let i = 0; randomAlbums.length < 4 && i < 12; i++) {
-			const randomAlbum = playlist[Math.floor(Math.random() * playlist.length)];
-			const albumObject = {artist: extractArtists(randomAlbum[1]), album: randomAlbum[0]};
-			if (!randomAlbums.find((album) => album.album === albumObject.album)) {
-				randomAlbums.push(albumObject);
-			}
-		}
-		while (randomAlbums.length < 4) {
-			randomAlbums.push({artist: "", album: ""});
-		}
-		return randomAlbums;
-	}
-
-	public play(playlist: string) {
-		this.mpd.current.clear();
-		this.mpd.stored.load(playlist);
-		this.mpd.playback.play();
-	}
-
-	public add(playlist: string) {
-		this.mpd.stored.load(playlist);
-	}
-
-	public delete(playlist: string) {
-		this.mpd.stored.delete(playlist);
-	}
-
-	public rename(playlist: string) {
+	public rename(name: string) {
 		const dialogRef = this.renameDialog.open(PlaylistInputComponent, {
 			width: "25%",
 			data: {
-				name: playlist,
+				name,
 				title: "Rename Playlist",
 				label: "Enter New Name...",
 				action: "Rename",
@@ -133,9 +33,9 @@ export class PlaylistsComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed()
-			.subscribe((name) => {
-				if (name) {
-					this.mpd.stored.rename(playlist, name);
+			.subscribe((newName) => {
+				if (newName) {
+					super.rename(name, newName);
 				}
 			});
 	}

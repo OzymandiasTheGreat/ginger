@@ -16,6 +16,7 @@ import { filterView } from "@src/app/shared/functions/filter";
 })
 export class ArtistComponent implements OnInit, OnDestroy {
 	private ngUnsubscribe: Subject<void>;
+
 	public artist: string;
 	public songs: Array<{
 		title: string,

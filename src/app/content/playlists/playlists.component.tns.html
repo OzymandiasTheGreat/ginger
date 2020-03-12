@@ -1,45 +1,15 @@
-<StackLayout>
-  <Label text="PlaylistsComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
-
-<!--
-Original Web template:
-
-<virtual-scroller #scroll [items]="playlists" class="virtual-scroller">
-	<mat-card *ngFor="let playlist of scroll.viewPortItems">
-		<mat-card-header [routerLink]="['./', playlist[0]]">
-			<mat-card-title class="is-truncated">{{ playlist[0] }}</mat-card-title>
-		</mat-card-header>
-		<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['./', playlist[0]]">
-			<mat-grid-tile *ngFor="let album of ramdomAlbums[playlist[0]]">
-				<app-album-art [artist]="album.artist" [album]="album.album" [size]="[76, 76]" large="true" margin="false"></app-album-art>
-			</mat-grid-tile>
-		</mat-grid-list>
-		<mat-card-actions>
-			<a mat-mini-fab color="accent" class="play-button" (click)="play(playlist[0])">
-				<mat-icon fontIcon="mdi-play"></mat-icon>
-			</a>
-			<a mat-icon-button class="menu-button" [matMenuTriggerFor]="playlistMenu">
-				<mat-icon fontIcon="mdi-dots-vertical"></mat-icon>
-			</a>
-		</mat-card-actions>
-		<mat-menu #playlistMenu="matMenu" class="playlist-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-			<a mat-menu-item (click)="add(playlist[0])">
-				<mat-icon fontIcon="mdi-plus"></mat-icon>
-				<span class="playlist-menu-label">Add to Queue</span>
-			</a>
-			<a mat-menu-item (click)="rename(playlist[0])">
-				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-				<span class="playlist-menu-label">Rename Playlist</span>
-			</a>
-			<a mat-menu-item (click)="delete(playlist[0])">
-				<mat-icon fontIcon="mdi-playlist-remove"></mat-icon>
-				<span class="playlist-menu-label">Delete Playlist</span>
-			</a>
-		</mat-menu>
-	</mat-card>
-</virtual-scroller>
-
--->
+<RadListView [items]="playlists" class="nt-list-view layout">
+	<ListViewGridLayout tkListViewLayout scrollDirection="Vertical" [spanCount]="columns"></ListViewGridLayout>
+	<ng-template tkListItemTemplate let-playlist="item">
+		<CardView class="card">
+]			<GridLayout rows="30, *, 34" columns="*">
+				<Label class="playlist-name" row="0" col="0" [text]="playlist.name" textWrap="false" [nsRouterLink]="['/library/playlists', playlist.name]"></Label>
+				<GridLayout rows="76, 76" columns="76, 76" class="art" row="1" col="0" [nsRouterLink]="['/library/playlists', playlist.name]">
+					<app-album-art *ngFor="let album of randomAlbums[playlist.name]; let i = index; let o = odd" [row]="i < 2 ? 0 : 1" [col]="o ? 0 : 1" [artist]="album.artist" [album]="album.title" [size]="[76, 76]" [large]="true" [margin]="false"></app-album-art>
+				</GridLayout>
+				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(playlist.name)"></FAB>
+				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(playlist.name, menu)"></Button>
+			</GridLayout>
+		</CardView>
+	</ng-template>
+</RadListView>

@@ -1,15 +1,15 @@
 <virtual-scroller #scroll [items]="playlists" class="virtual-scroller">
 	<mat-card *ngFor="let playlist of scroll.viewPortItems">
-		<mat-card-header [routerLink]="['./', playlist[0]]">
-			<mat-card-title class="is-truncated">{{ playlist[0] }}</mat-card-title>
+		<mat-card-header [routerLink]="['./', playlist.name]">
+			<mat-card-title class="is-truncated">{{ playlist.name }}</mat-card-title>
 		</mat-card-header>
-		<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['./', playlist[0]]">
-			<mat-grid-tile *ngFor="let album of ramdomAlbums[playlist[0]]">
-				<app-album-art [artist]="album.artist" [album]="album.album" [size]="[76, 76]" large="true" margin="false"></app-album-art>
+		<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['./', playlist.name]">
+			<mat-grid-tile *ngFor="let album of randomAlbums[playlist.name]">
+				<app-album-art [artist]="album.artist" [album]="album.title" [size]="[76, 76]" large="true" margin="false"></app-album-art>
 			</mat-grid-tile>
 		</mat-grid-list>
 		<mat-card-actions>
-			<a mat-mini-fab color="accent" class="play-button" (click)="play(playlist[0])">
+			<a mat-mini-fab color="accent" class="play-button" (click)="play(playlist.name)">
 				<mat-icon fontIcon="mdi-play"></mat-icon>
 			</a>
 			<a mat-icon-button class="menu-button" [matMenuTriggerFor]="playlistMenu">
@@ -17,15 +17,15 @@
 			</a>
 		</mat-card-actions>
 		<mat-menu #playlistMenu="matMenu" class="playlist-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-			<a mat-menu-item (click)="add(playlist[0])">
+			<a mat-menu-item (click)="add(playlist.name)">
 				<mat-icon fontIcon="mdi-plus"></mat-icon>
 				<span class="playlist-menu-label">Add to Queue</span>
 			</a>
-			<a mat-menu-item (click)="rename(playlist[0])">
+			<a mat-menu-item (click)="rename(playlist.name)">
 				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
 				<span class="playlist-menu-label">Rename Playlist</span>
 			</a>
-			<a mat-menu-item (click)="delete(playlist[0])">
+			<a mat-menu-item (click)="delete(playlist.name)">
 				<mat-icon fontIcon="mdi-playlist-remove"></mat-icon>
 				<span class="playlist-menu-label">Delete Playlist</span>
 			</a>
