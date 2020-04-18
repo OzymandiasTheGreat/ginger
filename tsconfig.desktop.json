@@ -1,18 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": [],
+    "outDir": "./out-tsc/desktop",
     "paths": {
       "@src/*": [
-        "src/*.web",
+        "src/*.desktop",
         "src/*"
       ]
     }
   },
   "files": [
-    "src/main.ts",
-    "src/polyfills.ts",
     "src/main.ts",
     "src/polyfills.ts"
   ],

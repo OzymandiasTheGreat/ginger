@@ -1,19 +1,35 @@
 {
   "name": "ginger",
-  "version": "1.0.0",
-  "scripts": {
-    "android": "tns run android",
-    "ios": "tns run ios",
-    "mobile": "tns run",
-    "preview": "tns preview",
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+  "version": "1.0.0-a0",
+  "author": {
+    "name": "Ozymandias (Tomas Ravinskas)",
+    "email": "tomas.rav@gmail.com"
   },
+  "description": "An easy to use, sleek and modern client for mpd/mopidy",
+  "homepage": "https://github.com/OzymandiasTheGreat/ginger",
+  "repository": {
+    "url": "https://github.com/OzymandiasTheGreat/ginger"
+  },
+  "license": "MIT",
+  "main": "dist/main.electron.js",
   "private": true,
+  "scripts": {
+    "electron": "wait-on http://localhost:4257/ && npm run electron:tsc && electron . --serve",
+    "electron:tsc": "tsc -p tsconfig.electron.json",
+    "tns": "tns",
+    "ng": "ng",
+    "web": "ng serve web",
+    "desktop": "ng serve desktop",
+    "start": "npm run web",
+    "start:desktop": "npm-run-all -p -r --silent desktop electron",
+    "start:android": "tns run android",
+    "start:ios": "tns run ios",
+    "build": "ng build web -c production",
+    "build:desktop": "ng build desktop -c production",
+    "build:electron": "npm-run-all -s --silent electron:tsc build:desktop",
+    "dist:linux": "npm run build:electron && electron-builder build --linux",
+    "dist:win": "npm run build:electron && electron-builder build --windows"
+  },
   "dependencies": {
     "@angular/animations": "~8.2.14",
     "@angular/cdk": "~8.2.3",
@@ -62,6 +78,8 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
+    "electron": "^8.1.1",
+    "electron-builder": "^22.4.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.1.0",
@@ -71,6 +89,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "nativescript-dev-webpack": "~1.4.0",
     "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
     "protractor": "~5.4.0",
     "rxjs-tslint-rules": "^4.29.0",
     "sass-loader": "^7.3.1",
@@ -78,7 +97,26 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
+    "wait-on": "^4.0.1",
     "webpack": "^4.41.6"
+  },
+  "build": {
+    "appId": "tk.ozymandias.ginger",
+    "productName": "Ginger",
+    "win": {
+      "icon": "build_resources/icons/windows.ico"
+    },
+    "linux": {
+      "icon": "build_resources/icons/linux",
+      "category": "Audio"
+    },
+    "files": [
+      "dist/main.electron.js",
+      {
+        "from": "dist/desktop",
+        "to": "dist"
+      }
+    ]
   },
   "nativescript": {
     "id": "tk.ozymandias.ginger",
