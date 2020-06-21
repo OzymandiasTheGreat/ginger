@@ -2,7 +2,7 @@
 	<ListViewGridLayout tkListViewLayout scrollDirection="Vertical" [spanCount]="columns"></ListViewGridLayout>
 	<ng-template tkListItemTemplate let-artist="item">
 		<CardView class="card">
-]			<GridLayout rows="30, *, 34" columns="*">
+			<GridLayout rows="30, *, 34" columns="*">
 				<Label class="artist-title" row="0" col="0" [text]="artist" textWrap="false" [nsRouterLink]="['/library/artists', artist]"></Label>
 				<StackLayout class="art" row="1" col="0" [nsRouterLink]="['/library/artists', artist]">
 					<app-album-art [artist]="artist" [size]="[152, 152]" [large]="true" [margin]="false"></app-album-art>

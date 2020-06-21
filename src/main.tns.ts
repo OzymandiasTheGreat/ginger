@@ -20,6 +20,10 @@ registerElement("FAB", () => Fab);
 import { CardView } from "@nstudio/nativescript-cardview";
 registerElement("CardView", () => CardView);
 
+// NestedScrollView
+import { NestedScrollView } from "nativescript-nested-scrollview";
+registerElement("NestedScrollView", () => NestedScrollView);
+
 // A traditional NativeScript application starts by initializing global objects,
 // setting up global CSS rules, creating, and navigating to the main page.
 // Angular applications need to take care of their own initialization: modules, components, directives, routes, DI providers.

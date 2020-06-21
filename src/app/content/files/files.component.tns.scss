@@ -1,5 +1,40 @@
-/*
-Add your NativeScript specific styles here.
-To learn more about styling in NativeScript see:
-https://docs.nativescript.org/angular/ui/styling
-*/
+@import "../../../theme.base";
+
+
+.layout {
+	.card {
+		background-color: mat-color($default-primary);
+		width: 114;
+		padding: 0;
+		margin: 3 7 7 7;
+		android-elevation: 5;
+
+		.entry-title {
+			font-size: 20;
+			font-weight: bold;
+			padding: 0 5;
+			margin: 0;
+		}
+
+		.play-button {
+			background-color: mat-color($default-accent, darker);
+			width: 48;
+			height: 48;
+			margin: 5;
+			vertical-align: bottom;
+			horizontal-align: left;
+			android-elevation: 5;
+			transform: translate(5, 29);
+		}
+
+		.menu-button {
+			font-size: 24;
+			width: 34;
+			height: 34;
+			padding: 5;
+			margin: 5;
+			horizontal-align: right;
+			android-elevation: 0;
+		}
+	}
+}

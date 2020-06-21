@@ -1,145 +1,63 @@
-<StackLayout>
-  <Label text="SearchComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
+<NestedScrollView orientation="vertical" class="scroll">
+	<FlexboxLayout flexDirection="column" class="flex">
+		<ng-container *ngIf="stored.length > 0">
+			<Label class="category-label" text="Playlists" textWrap="false"></Label>
+			<RadListView height="250" [items]="stored" class="nt-list-view layout">
+				<ListViewGridLayout tkListViewLayout scrollDirection="Horizontal" spanCount="1"></ListViewGridLayout>
+				<ng-template tkListItemTemplate let-playlist="item">
+					<CardView class="card">
+						<GridLayout rows="35, *, 34" columns="*">
+							<Label class="item-name" row="0" col="0" [text]="playlist.name" textWrap="false" [nsRouterLink]="['/library/playlists', playlist.name]"></Label>
+							<GridLayout rows="76, 76" columns="76, 76" class="art" row="1" col="0" [nsRouterLink]="['/library/playlists', playlist.name]">
+								<app-album-art *ngFor="let album of playlist.items; let i = index; let o = odd" [row]="i < 2 ? 0 : 1" [col]="o ? 0 : 1" [artist]="album.artist" [album]="album.title" [size]="[76, 76]" [large]="true" [margin]="false"></app-album-art>
+							</GridLayout>
+							<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="playlistPlay(playlist.name)"></FAB>
+							<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;"></Button>
+						</GridLayout>
+					</CardView>
+				</ng-template>
+			</RadListView>
+		</ng-container>
 
-<!--
-Original Web template:
+		<ng-container *ngIf="artists.length > 0">
+			<Label class="category-label" text="Artists" textWrap="false"></Label>
+			<RadListView height="250" [items]="artists" class="nt-list-view layout">
+				<ListViewGridLayout tkListViewLayout scrollDirection="Horizontal" spanCount="1"></ListViewGridLayout>
+				<ng-template tkListItemTemplate let-artist="item">
+					<CardView class="card">
+						<GridLayout rows="35, *, 34" columns="*">
+							<Label class="item-name" row="0" col="0" [text]="artist" textWrap="false" [nsRouterLink]="['/library/artists', artist]"></Label>
+							<app-album-art row="1" col="0" [artist]="artist" [size]="[152, 152]" [large]="true" [margin]="true"></app-album-art>
+							<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play('Artist', artist)"></FAB>
+							<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu('Artist', artist, menu)"></Button>
+						</GridLayout>
+					</CardView>
+				</ng-template>
+			</RadListView>
+		</ng-container>
 
-<ng-container *ngIf="this.stored.length > 0">
-	<h2>Playlists</h2>
-	<mat-divider></mat-divider>
-	<virtual-scroller #playlistScroll [items]="stored" class="playlist-scroll">
-		<mat-card *ngFor="let playlist of playlistScroll.viewPortItems">
-			<mat-card-header [routerLink]="['/library/playlists', playlist[0]]">
-				<mat-card-title class="is-truncated">{{ playlist[0] }}</mat-card-title>
-			</mat-card-header>
-			<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['/library/playlists', playlist[0]]">
-				<mat-grid-tile *ngFor="let album of playlist[1]">
-					<app-album-art
-						[artist]="album[0]"
-						[album]="album[1]"
-						[size]="[76, 76]"
-						[large]="true"
-						[margin]="false"
-					></app-album-art>
-				</mat-grid-tile>
-			</mat-grid-list>
-			<mat-card-actions>
-				<a mat-mini-fab color="accent" class="play-button" (click)="playlistPlay(playlist[0])">
-					<mat-icon fontIcon="mdi-play"></mat-icon>
-				</a>
-				<a mat-icon-button class="menu-button" (click)="playlistAdd(playlist[0])">
-					<mat-icon fontIcon="mdi-plus"></mat-icon>
-				</a>
-			</mat-card-actions>
-		</mat-card>
-	</virtual-scroller>
-</ng-container>
+		<ng-container *ngIf="genres.length > 0">
+			<Label class="category-label" text="Genres" textWrap="false"></Label>
+			<RadListView height="250" [items]="genres" class="nt-list-view layout">
+				<ListViewGridLayout tkListViewLayout scrollDirection="Horizontal" spanCount="1"></ListViewGridLayout>
+				<ng-template tkListItemTemplate let-genre="item">
+					<CardView class="card">
+						<GridLayout rows="35, *, 34" columns="*">
+							<Label class="item-name" row="0" col="0" [text]="genre.name" textWrap="false" [nsRouterLink]="['/library/genres', genre.name]"></Label>
+							<GridLayout rows="76, 76" columns="76, 76" class="art" row="1" col="0" [nsRouterLink]="['/library/genres', genre.name]">
+								<app-album-art *ngFor="let album of genre.items; let i = index; let o = odd" [row]="i < 2 ? 0 : 1" [col]="o ? 0 : 1" [artist]="album.artist" [album]="album.title" [size]="[76, 76]" [large]="true" [margin]="false"></app-album-art>
+							</GridLayout>
+							<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play('Genre', genre.name)"></FAB>
+							<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu('Genre', genre.name, menu)"></Button>
+						</GridLayout>
+					</CardView>
+				</ng-template>
+			</RadListView>
+		</ng-container>
 
-<ng-container *ngIf="artists.length > 0">
-	<h2>Artists</h2>
-	<mat-divider></mat-divider>
-	<virtual-scroller #artistScroll [items]="artists" class="artist-scroll">
-		<mat-card *ngFor="let artist of artistScroll.viewPortItems">
-			<mat-card-header [routerLink]="['/library/artists', artist]">
-				<mat-card-title class="is-truncated">{{ artist }}</mat-card-title>
-			</mat-card-header>
-			<app-album-art mat-card-lg-image
-				[artist]="artist"
-				[size]="[152, 152]"
-				[large]="true"
-				[margin]="false"
-				[routerLink]="['/library/artists', artist]"
-			></app-album-art>
-			<mat-card-actions>
-				<a mat-mini-fab color="accent" class="play-button" (click)="play('Artist', artist)">
-					<mat-icon fontIcon="mdi-play"></mat-icon>
-				</a>
-				<a mat-icon-button [matMenuTriggerFor]="artistMenu" class="menu-button">
-					<mat-icon fontIcon="mdi-dots-vertical"></mat-icon>
-				</a>
-			</mat-card-actions>
-			<mat-menu #artistMenu="matMenu" class="item-menu">
-				<a mat-menu-item (click)="add('Artist', artist)">
-					<mat-icon fontIcon="mdi-plus"></mat-icon>
-					<span class="item-menu-label">Add to Queue</span>
-				</a>
-				<a mat-menu-item [matMenuTriggerFor]="artistPlaylistsMenu">
-					<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-					<span class="item-menu-label">Add to Playlist</span>
-				</a>
-			</mat-menu>
-			<mat-menu #artistPlaylistsMenu class="item-menu">
-				<a mat-menu-item (click)="openNewPlaylistDialog('Artist', artist)">
-					<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-					<span class="item-menu-label">New Playlist</span>
-				</a>
-				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist('Artist', artist, playlist.name)">
-					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-					<span class="item-menu-label">{{ playlist.name }}</span>
-				</a>
-			</mat-menu>
-		</mat-card>
-	</virtual-scroller>
-</ng-container>
-
-<ng-container *ngIf="genres.length > 0">
-	<h2>Genres</h2>
-	<mat-divider></mat-divider>
-	<virtual-scroller #genreScroll [items]="genres" class="genre-scroll">
-		<mat-card *ngFor="let genre of genreScroll.viewPortItems">
-			<mat-card-header [routerLink]="['/library/genres', genre]">
-				<mat-card-title class="is-truncated">{{ genre[0] }}</mat-card-title>
-			</mat-card-header>
-			<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['/library/genres', genre]">
-				<mat-grid-tile *ngFor="let album of genre[1]">
-					<app-album-art
-						[artist]="album[1]"
-						[album]="album[0]"
-						[size]="[76, 76]"
-						[large]="true"
-						[margin]="false"
-					></app-album-art>
-				</mat-grid-tile>
-			</mat-grid-list>
-			<mat-card-actions>
-				<a mat-mini-fab color="accent" class="play-button" (click)="play('Genre', genre)">
-					<mat-icon fontIcon="mdi-play"></mat-icon>
-				</a>
-				<a mat-icon-button [matMenuTriggerFor]="genreMenu" class="menu-button">
-					<mat-icon fontIcon="mdi-dots-vertical"></mat-icon>
-				</a>
-			</mat-card-actions>
-			<mat-menu #genreMenu="matMenu" class="item-menu">
-				<a mat-menu-item (click)="add('Genre', genre)">
-					<mat-icon fontIcon="mdi-plus"></mat-icon>
-					<span class="item-menu-label">Add to Queue</span>
-				</a>
-				<a mat-menu-item [matMenuTriggerFor]="genrePlaylistsMenu">
-					<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-					<span class="item-menu-label">Add to Playlist</span>
-				</a>
-			</mat-menu>
-			<mat-menu #genrePlaylistsMenu class="item-menu">
-				<a mat-menu-item (click)="openNewPlaylistDialog('Genre', genre)">
-					<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-					<span class="item-menu-label">New Playlist</span>
-				</a>
-				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist('Genre', genre, playlist.name)">
-					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-					<span class="item-menu-label">{{ playlist.name }}</span>
-				</a>
-			</mat-menu>
-		</mat-card>
-	</virtual-scroller>
-</ng-container>
-
-<ng-container *ngIf="albums.length > 0">
-	<h2>Albums &amp; Songs</h2>
-	<mat-divider></mat-divider>
-	<app-album-list [search]="true" [songs]="albums" class="album-scroll"></app-album-list>
-</ng-container>
-
--->
+		<StackLayout class="album-container" *ngIf="albums.length > 0">
+			<Label class="category-label" text="Albums" textWrap="false"></Label>
+			<app-album-list [search]="true" [songs]="albums" class="album-scroll"></app-album-list>
+		</StackLayout>
+	</FlexboxLayout>
+</NestedScrollView>

@@ -1,51 +1,15 @@
-<StackLayout>
-  <Label text="GenresComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
-
-<!--
-Original Web template:
-
-<virtual-scroller #scroll [items]="genres" class="virtual-scroller">
-	<mat-card *ngFor="let genre of scroll.viewPortItems">
-		<mat-card-header [routerLink]="['./', genre[0]]">
-			<mat-card-title class="is-truncated">{{ genre[0] }}</mat-card-title>
-		</mat-card-header>
-		<mat-grid-list cols="2" rowHeight="1:1" [routerLink]="['./', genre[0]]">
-			<mat-grid-tile *ngFor="let album of randomAlbums[genre[0]]">
-				<app-album-art [artist]="album[0]" [album]="album[1]" [size]="[76, 76]" [large]="true" [margin]="false"></app-album-art>
-			</mat-grid-tile>
-		</mat-grid-list>
-		<mat-card-actions>
-			<a mat-mini-fab color="accent" class="play-button" (click)="play(genre[0])">
-				<mat-icon fontIcon="mdi-play"></mat-icon>
-			</a>
-			<a mat-icon-button class="menu-button" [matMenuTriggerFor]="genreMenu">
-				<mat-icon fontIcon="mdi-dots-vertical"></mat-icon>
-			</a>
-		</mat-card-actions>
-		<mat-menu #genreMenu="matMenu" class="genre-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-			<a mat-menu-item (click)="add(genre[0])">
-				<mat-icon fontIcon="mdi-plus"></mat-icon>
-				<span class="genre-menu-label">Add to Queue</span>
-			</a>
-			<a mat-menu-item [matMenuTriggerFor]="playlistsMenu">
-				<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-				<span class="genre-menu-label">Add to Playlist</span>
-			</a>
-		</mat-menu>
-		<mat-menu #playlistsMenu class="genre-menu">
-			<a mat-menu-item (click)="openPlaylistInputDialog(genre[0])">
-				<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-				<span class="genre-menu-label">New Playlist</span>
-			</a>
-			<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(playlist.name, genre[0])">
-				<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-				<span class="genre-menu-label">{{ playlist.name }}</span>
-			</a>
-		</mat-menu>
-	</mat-card>
-</virtual-scroller>
-
--->
+<RadListView [items]="genres" class="nt-list-view layout">
+	<ListViewGridLayout tkListViewLayout scrollDirection="Vertical" [spanCount]="columns"></ListViewGridLayout>
+	<ng-template tkListItemTemplate let-genre="item">
+		<CardView class="card">
+			<GridLayout rows="30, *, 34", columns="*">
+				<Label class="genre-name" row="0" col="0" [text]="genre.name" textWrap="false" [nsRouterLink]="['/library/genres', genre.name]"></Label>
+				<GridLayout rows="76, 76" columns="76, 76" class="art" row="1" col="0" [nsRouterLink]="['/library/genres', genre.name]">
+					<app-album-art *ngFor="let album of randomAlbums[genre.name]; let i = index; let o = odd" [row]="i < 2 ? 0 : 1" [col]="o ? 0 : 1" [artist]="album.artist" [album]="album.title" [size]="[76, 76]" [large]="true" [margin]="false"></app-album-art>
+				</GridLayout>
+				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(genre.name)"></FAB>
+				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(genre.name, menu)"></Button>
+			</GridLayout>
+		</CardView>
+	</ng-template>
+</RadListView>

@@ -1,77 +1,25 @@
-<StackLayout>
-  <Label text="FilesComponent works" textWrap="true"></Label>
-  <Label text="This is a migrated component" textWrap="true"></Label>
-  <Label text="Update it to provide the UI elements required in your mobile app" textWrap="true"></Label>
-</StackLayout>
+<RadListView [items]="entries" [itemTemplateSelector]="templateSelector" class="nt-list-view layout">
+	<ListViewGridLayout tkListViewLayout scrollDirection="Vertical" [spanCount]="columns"></ListViewGridLayout>
 
-<!--
-Original Web template:
+	<ng-template tkTemplateKey="directory" let-entry="item">
+		<CardView class="card">
+			<GridLayout rows="30, *, 34" columns="*">
+				<Label class="entry-title" row="0" col="0" [text]="basename(entry.path)" textWrap="false" [nsRouterLink]="['./', entry.path]"></Label>
+				<Image src="font://&#xF24B;" class="mdi img-directory" row="1" col="0" [nsRouterLink]="['./', entry.path]" stretch="aspectFit"></Image>
+				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(entry.path, false)"></FAB>
+				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(entry.path, menu)"></Button>
+			</GridLayout>
+		</CardView>
+	</ng-template>
 
-<virtual-scroller #scroll [items]="entries" class="virtual-scroller">
-	<ng-container *ngFor="let entry of scroll.viewPortItems">
-		<mat-card *ngIf="entry.isDirectory()">
-			<mat-card-header [routerLink]="['./', entry.path]">
-				<mat-card-title class="is-truncated">{{ basename(entry.path) }}</mat-card-title>
-			</mat-card-header>
-			<div [routerLink]="['./', entry.path]" class="entry-image directory"></div>
-			<mat-card-actions>
-				<a mat-mini-fab color="accent" class="play-button" (click)="play(entry.path, false)"><mat-icon fontIcon="mdi-play"></mat-icon></a>
-				<a mat-icon-button class="menu-button" [matMenuTriggerFor]="directoryMenu"><mat-icon fontIcon="mdi-dots-vertical"></mat-icon></a>
-			</mat-card-actions>
-			<mat-menu #directoryMenu="matMenu" class="item-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-				<a mat-menu-item (click)="add(entry.path)">
-					<mat-icon fontIcon="mdi-plus"></mat-icon>
-					<span class="item-menu-label">Add to Queue</span>
-				</a>
-				<a mat-menu-item [matMenuTriggerFor]="dirPlaylistsMenu">
-					<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-					<span class="item-menu-label">Add to Playlist</span>
-				</a>
-			</mat-menu>
-			<mat-menu #dirPlaylistsMenu="matMenu" class="item-menu">
-				<a mat-menu-item (click)="openNewPlaylistDialog(entry.path)">
-					<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-					<span class="item-menu-label">New Playlist</span>
-				</a>
-				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(entry.path, playlist.name)">
-					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-					<span class="item-menu-label">{{ playlist.name }}</span>
-				</a>
-			</mat-menu>
-		</mat-card>
-	</ng-container>
-	<ng-container *ngFor="let entry of scroll.viewPortItems">
-		<mat-card *ngIf="entry.isSong()">
-			<mat-card-header (click)="play(entry.path, true)">
-				<mat-card-title class="is-truncated">{{ basename(entry.path) }}</mat-card-title>
-			</mat-card-header>
-			<div class="entry-image song" (click)="play(entry.path, true)"></div>
-			<mat-card-actions>
-				<a mat-mini-fab color="accent" class="play-button" (click)="play(entry.path, true)"><mat-icon fontIcon="mdi-play"></mat-icon></a>
-				<a mat-icon-button class="menu-button" [matMenuTriggerFor]="songMenu"><mat-icon fontIcon="mdi-dots-vertical"></mat-icon></a>
-			</mat-card-actions>
-			<mat-menu #songMenu="matMenu" class="item-menu" xPosition="before" yPosition="above" overlapTrigger="true">
-				<a mat-menu-item (click)="add(entry.path)">
-					<mat-icon fontIcon="mdi-plus"></mat-icon>
-					<span class="item-menu-label">Add to Queue</span>
-				</a>
-				<a mat-menu-item [matMenuTriggerFor]="songPlaylistsMenu">
-					<mat-icon fontIcon="mdi-playlist-plus"></mat-icon>
-					<span class="item-menu-label">Add to Playlist</span>
-				</a>
-			</mat-menu>
-			<mat-menu #songPlaylistsMenu="matMenu" class="item-menu">
-				<a mat-menu-item (click)="openNewPlaylistDialog(entry.path)">
-					<mat-icon fontIcon="mdi-playlist-edit"></mat-icon>
-					<span class="item-menu-label">New Playlist</span>
-				</a>
-				<a mat-menu-item *ngFor="let playlist of playlists" (click)="addPlaylist(entry.path, playlist.name)">
-					<mat-icon fontIcon="mdi-playlist-music"></mat-icon>
-					<span class="item-menu-label">{{ playlist.name }}</span>
-				</a>
-			</mat-menu>
-		</mat-card>
-	</ng-container>
-</virtual-scroller>
-
--->
+	<ng-template tkTemplateKey="file" let-entry="item">
+		<CardView class="card">
+			<GridLayout rows="30, *, 34" columns="*">
+				<Label class="entry-title" row="0" col="0" [text]="basename(entry.path)" textWrap="false"></Label>
+				<Image src="font://&#xF223;" class="mdi img-file" row="1" col="0" stretch="aspectFit"></Image>
+				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(entry.path, true)"></FAB>
+				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(entry.path, menu)"></Button>
+			</GridLayout>
+		</CardView>
+	</ng-template>
+</RadListView>
