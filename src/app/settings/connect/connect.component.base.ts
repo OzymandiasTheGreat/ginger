@@ -2,11 +2,12 @@ import { OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
 
 
 export class Connect implements OnDestroy {
+	public mopidy = false;
 	public address = "";
 	public password = "";
 	public redirect: boolean;
@@ -15,7 +16,7 @@ export class Connect implements OnDestroy {
 
 	constructor(
 		protected route: ActivatedRoute,
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 		protected auth: AuthService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();
@@ -23,7 +24,7 @@ export class Connect implements OnDestroy {
 	}
 
 	public connect(): Observable<boolean> {
-		this.mpc.connect(this.address.trim(), this.password);
+		this.mpc.connect(this.address.trim(), this.password, this.mopidy);
 		return this.auth.authorized;
 	}
 

@@ -4,7 +4,7 @@ import { MediaMatcher } from "@angular/cdk/layout";
 
 import { Playback } from "@src/app/playback/playback.component.base";
 import { AuthService } from "@src/app/shared/services/auth.service";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 
 
 @Component({
@@ -22,7 +22,7 @@ export class PlaybackComponent extends Playback implements OnInit {
 		private cd: ChangeDetectorRef,
 		route: ActivatedRoute,
 		router: Router,
-		mpc: MpdService,
+		mpc: MPClientService,
 		auth: AuthService,
 	) {
 		super(route, router, mpc, auth)

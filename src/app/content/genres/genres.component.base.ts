@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { takeUntil, map } from "rxjs/operators";
 import { StoredPlaylist } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -15,7 +15,7 @@ export class Genres implements OnInit, OnDestroy {
 	public playlists: StoredPlaylist[];
 
 	constructor(
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 		protected search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();

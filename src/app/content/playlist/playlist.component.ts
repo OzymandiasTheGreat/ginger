@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { first, takeUntil } from "rxjs/operators";
 import { PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { filterView } from "@src/app/shared/functions/filter";
 
@@ -36,7 +36,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private route: ActivatedRoute,
-		private mpd: MpdService,
+		private mpc: MPClientService,
 		private search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();
@@ -49,7 +49,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit() {
-		this.mpd.stored.list(this.playlist)
+		this.mpc.stored.list(this.playlist)
 			.pipe(first())
 			.subscribe({
 				next: (songs: PlaylistItem[]) => {
@@ -62,10 +62,10 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 						.subscribe((query) => filterView(query, this));
 				},
 			});
-		this.mpd.on("changed-stored_playlist")
+		this.mpc.on("changed-stored_playlist")
 			.pipe(takeUntil(this.ngUnsubscribe))
 			.subscribe(() => {
-				this.mpd.stored.list(this.playlist)
+				this.mpc.stored.list(this.playlist)
 					.pipe(first())
 					.subscribe({
 						next: (songs: PlaylistItem[]) => {

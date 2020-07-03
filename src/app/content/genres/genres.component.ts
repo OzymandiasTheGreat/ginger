@@ -3,7 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { StoredPlaylist } from "mpc-js-web";
 
 import { Genres } from "@src/app/content/genres/genres.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
@@ -15,7 +15,7 @@ import { PlaylistInputComponent } from "@src/app/shared/components/playlist-inpu
 })
 export class GenresComponent extends Genres {
 	constructor(
-		mpc: MpdService,
+		mpc: MPClientService,
 		search: SearchService,
 		private dialog: MatDialog,
 	) {

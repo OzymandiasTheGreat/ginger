@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { concatAll, takeUntil } from "rxjs/operators";
 import { Song } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { filterView } from "@src/app/shared/functions/filter";
 
@@ -36,7 +36,7 @@ export class GenreComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private route: ActivatedRoute,
-		private mpc: MpdService,
+		private mpc: MPClientService,
 		private search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 
 
 @Injectable({
@@ -13,9 +13,9 @@ export class AuthService {
 	public redirectUrl: string;
 	public authorized: Observable<boolean>;
 
-	constructor(private mpd: MpdService) {
+	constructor(private mpc: MPClientService) {
 		this.authSource = new BehaviorSubject(false);
 		this.authorized = this.authSource.asObservable();
-		this.mpd.connected.subscribe(this.authSource);
+		this.mpc.connected.subscribe(this.authSource);
 	}
 }

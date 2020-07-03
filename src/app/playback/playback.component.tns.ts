@@ -5,7 +5,7 @@ import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/mod
 import { SwipeGestureEventData, SwipeDirection } from "tns-core-modules/ui/gestures";
 
 import { AuthService } from "@src/app/shared/services/auth.service";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { Playback } from "@src/app/playback/playback.component.base";
 import { PlaybackModalComponent } from "@src/app/shared/components/playback-modal/playback-modal.component";
 
@@ -19,7 +19,7 @@ export class PlaybackComponent extends Playback {
 	constructor(
 		route: ActivatedRoute,
 		router: RouterExtensions,
-		mpc: MpdService,
+		mpc: MPClientService,
 		auth: AuthService,
 		private vcRef: ViewContainerRef,
 		private modalService: ModalDialogService,

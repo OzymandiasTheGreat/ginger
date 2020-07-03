@@ -8,7 +8,7 @@ import { takeUntil } from "rxjs/operators";
 import { Menu } from "nativescript-menu";
 
 import { Playlists } from "@src/app/content/playlists/playlists.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -21,7 +21,7 @@ export class PlaylistsComponent extends Playlists implements OnInit {
 	public columns: number;
 
 	constructor(
-		mpc: MpdService,
+		mpc: MPClientService,
 		search: SearchService,
 	) {
 		super(mpc, search);

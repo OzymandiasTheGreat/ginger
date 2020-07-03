@@ -4,7 +4,7 @@ import { Subject, forkJoin } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Song, StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { extractArtists } from "@src/app/shared/functions/album-extract";
 
 
@@ -31,7 +31,7 @@ export class Search implements OnInit, OnDestroy {
 
 	constructor(
 		protected route: ActivatedRoute,
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();
 	}

@@ -9,7 +9,7 @@ import { takeUntil } from "rxjs/operators";
 import { Menu } from "nativescript-menu";
 
 import { Search } from "@src/app/content/search/search.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 
 
 @Component({
@@ -22,7 +22,7 @@ export class SearchComponent extends Search implements OnInit {
 
 	constructor(
 		route: ActivatedRoute,
-		mpc: MpdService,
+		mpc: MPClientService,
 	) {
 		super(route, mpc);
 	}

@@ -7,7 +7,7 @@ import { Menu } from "nativescript-menu";
 import * as Toast from "nativescript-toast";
 
 import { Playback } from "@src/app/playback/playback.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
 
 
@@ -23,7 +23,7 @@ export class PlaybackModalComponent extends Playback {
 
 	constructor(
 		route: ActivatedRoute,
-		mpc: MpdService,
+		mpc: MPClientService,
 		auth: AuthService,
 		private params: ModalDialogParams,
 	) {

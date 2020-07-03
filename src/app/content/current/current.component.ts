@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { takeUntil, first } from "rxjs/operators";
 import { PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { extractArtists } from "@src/app/shared/functions/album-extract";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { filterView } from "@src/app/shared/functions/filter";
@@ -35,7 +35,7 @@ export class CurrentComponent implements OnInit, OnDestroy {
 	public currentSong: PlaylistItem;
 
 	constructor(
-		private mpc: MpdService,
+		private mpc: MPClientService,
 		private search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject();

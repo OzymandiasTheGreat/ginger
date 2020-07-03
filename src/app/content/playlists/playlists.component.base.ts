@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { takeUntil, first } from "rxjs/operators";
 import { StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -15,7 +15,7 @@ export class Playlists implements OnInit, OnDestroy {
 	protected ngUnsubscribe: Subject<void>;
 
 	constructor(
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 		protected search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();

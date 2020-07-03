@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
+
 
 @Component({
 	selector: "app-connect",
@@ -11,16 +12,18 @@ import { ConnectionComponent } from "@src/app/shared/components/connection/conne
 	styleUrls: ["./connect.component.scss"],
 })
 export class ConnectComponent implements OnInit {
+	public mopidy = false;
 	public address = "";
 	public password = "";
 
 	constructor(
 		private route: ActivatedRoute,
-		private mpd: MpdService,
+		private mpc: MPClientService,
 		public connection: MatDialog,
 	) {
 		this.address = window.localStorage.getItem("MPD_ADDRESS") || "";
 		this.password = window.localStorage.getItem("MPD_PASSWORD") || "";
+		this.mopidy = window.localStorage.getItem("MOPIDY") === "true" || false;
 	}
 
 	public ngOnInit() {
@@ -38,6 +41,7 @@ export class ConnectComponent implements OnInit {
 
 		window.localStorage.setItem("MPD_ADDRESS", this.address);
 		window.localStorage.setItem("MPD_PASSWORD", this.password);
+		window.localStorage.setItem("MOPIDY", String(this.mopidy));
 		this.connect();
 
 		const timeout = window.setTimeout(() => {
@@ -48,6 +52,7 @@ export class ConnectComponent implements OnInit {
 	}
 
 	public connect(): void {
-		this.mpd.connect(this.address, this.password);
+		this.mpc.connect(this.address, this.password, this.mopidy)
+			.subscribe((success) => null);
 	}
 }

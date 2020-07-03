@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 
 import { Artists } from "@src/app/content/artists/artists.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
@@ -15,7 +15,7 @@ import { PlaylistInputComponent } from "@src/app/shared/components/playlist-inpu
 export class ArtistsComponent extends Artists {
 	constructor(
 		private newPlaylistDialog: MatDialog,
-		mpc: MpdService,
+		mpc: MPClientService,
 		search: SearchService,
 	) {
 		super(mpc, search);

@@ -7,7 +7,7 @@ import { takeUntil, skip } from "rxjs/operators";
 import { Status, PlaylistItem } from "mpc-js-web";
 
 import { AuthService } from "@src/app/shared/services/auth.service";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { flattenUrl } from "@src/app/shared/functions/route";
 
 
@@ -43,7 +43,7 @@ export class Playback implements OnInit, OnDestroy {
 	constructor(
 		protected route: ActivatedRoute,
 		protected router: any,
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 		protected auth: AuthService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();

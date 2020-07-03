@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { Playback } from "@src/app/playback/playback.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
 
 
@@ -14,7 +14,7 @@ import { AuthService } from "@src/app/shared/services/auth.service";
 export class PlaybackModalComponent extends Playback {
 	constructor(
 		route: ActivatedRoute,
-		mpc: MpdService,
+		mpc: MPClientService,
 		auth: AuthService,
 	) {
 		super(route, null, mpc, auth);

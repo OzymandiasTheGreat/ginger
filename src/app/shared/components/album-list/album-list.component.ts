@@ -6,7 +6,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { PlaylistItem, Song } from "mpc-js-web";
 
 import { AlbumList } from "@src/app/shared/components/album-list/album-list.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
 
@@ -21,7 +21,7 @@ export class AlbumListComponent extends AlbumList {
 
 	constructor(
 		router: Router,
-		mpc: MpdService,
+		mpc: MPClientService,
 		public playlistInputDialog: MatDialog,
 	) {
 		super(router, mpc);

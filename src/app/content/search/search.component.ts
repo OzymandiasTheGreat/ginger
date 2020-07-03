@@ -4,7 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { forkJoin } from "rxjs";
 import { Song, StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { extractArtists } from "@src/app/shared/functions/album-extract";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
@@ -25,23 +25,23 @@ export class SearchComponent implements OnInit {
 
 	constructor(
 		private route: ActivatedRoute,
-		private mpd: MpdService,
+		private mpc: MPClientService,
 		private playlistInputDialog: MatDialog,
 	) {}
 
 	public ngOnInit(): void {
 		this.route.queryParamMap.subscribe((queryParams) => {
 			this.query = (queryParams.get("q") && queryParams.get("q").toLowerCase()) || "";
-			this.mpd.db.search([["any", this.query]])
+			this.mpc.db.search([["any", this.query]])
 				.subscribe((songs) => this.sortResults(songs));
-			this.mpd.stored.list()
+			this.mpc.stored.list()
 				.subscribe((playlists: StoredPlaylist[]) => {
 					this.playlists = playlists;
 					this.stored = playlists.filter((playlist) => playlist.name.toLowerCase().includes(this.query))
 						.map((playlist) => [playlist.name, []]);
 
 					const obsrvs = playlists.filter((playlist) => playlist.name.toLowerCase().includes(this.query))
-						.map((playlist) => this.mpd.stored.list(playlist.name));
+						.map((playlist) => this.mpc.stored.list(playlist.name));
 					forkJoin(obsrvs).subscribe({
 						next: (results) => {
 							results.forEach((items: PlaylistItem[], index: number) => {
@@ -59,10 +59,10 @@ export class SearchComponent implements OnInit {
 					});
 				});
 		});
-		this.mpd.stored.list()
+		this.mpc.stored.list()
 			.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
-		this.mpd.on("changed-stored_playlist")
-			.subscribe(() => this.mpd.stored.list()
+		this.mpc.on("changed-stored_playlist")
+			.subscribe(() => this.mpc.stored.list()
 				.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists));
 	}
 
@@ -120,17 +120,17 @@ export class SearchComponent implements OnInit {
 	}
 
 	public play(tag: string, query: string) {
-		this.mpd.current.clear();
-		this.mpd.db.searchAdd([[tag, query]])
-			.subscribe(() => this.mpd.playback.play());
+		this.mpc.current.clear();
+		this.mpc.db.searchAdd([[tag, query]])
+			.subscribe(() => this.mpc.playback.play());
 	}
 
 	public add(tag: string, query: string) {
-		this.mpd.db.searchAdd([[tag, query]]);
+		this.mpc.db.searchAdd([[tag, query]]);
 	}
 
 	public addPlaylist(tag: string, query: string, playlist: string) {
-		this.mpd.db.searchAddPlaylist([[tag, query]], playlist);
+		this.mpc.db.searchAddPlaylist([[tag, query]], playlist);
 	}
 
 	public openNewPlaylistDialog(tag: string, query: string) {
@@ -147,18 +147,18 @@ export class SearchComponent implements OnInit {
 		dialogRef.afterClosed()
 			.subscribe((name) => {
 				if (name) {
-					this.mpd.db.searchAddPlaylist([[tag, query]], name);
+					this.mpc.db.searchAddPlaylist([[tag, query]], name);
 				}
 			});
 	}
 
 	public playlistPlay(playlist: string) {
-		this.mpd.current.clear();
-		this.mpd.stored.load(playlist)
-			.subscribe(() => this.mpd.playback.play());
+		this.mpc.current.clear();
+		this.mpc.stored.load(playlist)
+			.subscribe(() => this.mpc.playback.play());
 	}
 
 	public playlistAdd(playlist: string) {
-		this.mpd.stored.load(playlist);
+		this.mpc.stored.load(playlist);
 	}
 }

@@ -6,7 +6,7 @@ import { Menu } from "nativescript-menu";
 import { PlaylistItem, Song } from "mpc-js-web";
 
 import { AlbumList } from "@src/app/shared/components/album-list/album-list.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 
 
 @Component({
@@ -17,7 +17,7 @@ import { MpdService } from "@src/app/shared/services/mpd.service";
 export class AlbumListComponent extends AlbumList implements AfterViewInit {
 	constructor(
 		router: RouterExtensions,
-		mpc: MpdService,
+		mpc: MPClientService,
 	) {
 		super(router, mpc);
 	}

@@ -1,9 +1,10 @@
 <form (submit)="openConnection()">
+	<mat-slide-toggle [checked]="mopidy" (change)="mopidy = $event.checked">Mopidy</mat-slide-toggle>
 	<mat-form-field>
 		<mat-label>Address</mat-label>
 		<input matInput type="text" name="address" [(ngModel)]="address">
 	</mat-form-field>
-	<mat-form-field>
+	<mat-form-field *ngIf="!mopidy">
 		<mat-label>Password</mat-label>
 		<input matInput type="password" name="password" [(ngModel)]="password">
 	</mat-form-field>

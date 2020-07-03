@@ -5,7 +5,7 @@ import * as path from "path";
 import { Song, Playlist, Directory, StoredPlaylist } from "mpc-js-web";
 
 import { flattenUrl } from "@src/app/shared/functions/route";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
 
@@ -25,28 +25,28 @@ export class FilesComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private playlistInputDialiog: MatDialog,
-		private mpd: MpdService,
+		private mpc: MPClientService,
 		private search: SearchService,
 	) {}
 
 	public ngOnInit() {
 		this.loadDir();
-		this.mpd.stored.list()
+		this.mpc.stored.list()
 			.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
 		this.router.events.subscribe((event: Event) => {
 			if (event instanceof NavigationEnd) {
 				this.loadDir();
 			}
 		});
-		this.mpd.on("changed-stored_playlist")
-			.subscribe(() => this.mpd.stored.list()
+		this.mpc.on("changed-stored_playlist")
+			.subscribe(() => this.mpc.stored.list()
 				.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists));
 	}
 
 	public loadDir() {
 		const segments = flattenUrl(this.route.snapshot.children);
 		const uri = segments.join("/") || "/";
-		this.mpd.db.listInfo(uri)
+		this.mpc.db.listInfo(uri)
 			.subscribe((entries) => {
 				this.entries = entries;
 				this.sorted = [...this.entries];
@@ -62,14 +62,14 @@ export class FilesComponent implements OnInit {
 
 	public play(uri: string, single: boolean) {
 		if (!single) {
-			this.mpd.current.clear();
+			this.mpc.current.clear();
 		}
-		this.mpd.current.add(uri, single)
-			.subscribe((id: number) => this.mpd.playback.play(id));
+		this.mpc.current.add(uri, single)
+			.subscribe((id: number) => this.mpc.playback.play(id));
 	}
 
 	public add(uri: string) {
-		this.mpd.current.add(uri, false);
+		this.mpc.current.add(uri, false);
 	}
 
 	public openNewPlaylistDialog(uri: string) {
@@ -86,12 +86,12 @@ export class FilesComponent implements OnInit {
 		dialogRef.afterClosed()
 			.subscribe((name) => {
 				if (name) {
-					this.mpd.db.searchAddPlaylist([["file", uri]], name);
+					this.mpc.db.searchAddPlaylist([["file", uri]], name);
 				}
 			});
 	}
 
 	public addPlaylist(uri: string, playlist: string) {
-		this.mpd.db.searchAddPlaylist([["file", uri]], playlist);
+		this.mpc.db.searchAddPlaylist([["file", uri]], playlist);
 	}
 }

@@ -201,11 +201,11 @@ export class Database {
 		return from(this.MPD.MPD.database.list(tag, filter, groupBy));
 	}
 
-	public search(tags: Array<[string, string]>, start?: number, end?: number): Observable<Song[]> {
+	public search(tags: Array<[string, string]>, start?: number, end?: number, exact?: boolean): Observable<Song[]> {
 		return from(this.MPD.MPD.database.search(tags, start, end));
 	}
 
-	public searchAdd(tags: Array<[string, string]>): Observable<void> {
+	public searchAdd(tags: Array<[string, string]>, exact?: boolean): Observable<void> {
 		return from(this.MPD.MPD.database.searchAdd(tags));
 	}
 
@@ -258,17 +258,24 @@ export class MpdService {
 	public connect(url: string, password?: string): Observable<boolean> {
 		try {
 			return from(this.MPD.connectWebSocket(url)
-				.then(() => this.MPD.connection.password(password)
-					.then(() => {
-						this.connectedSource.next(true);
-						this.pingTimer = setInterval(() => this.ping(), 1000);
-						return true;
-					})
-					.catch((err) => {
-						console.error("Wrong password?", err);
-						this.connectedSource.next(false);
-						return false;
-					}))
+				.then(() => {
+					if (password) {
+						return this.MPD.connection.password(password)
+							.then(() => {
+								this.connectedSource.next(true);
+								this.pingTimer = setInterval(() => this.ping(), 1000);
+								return true;
+							})
+							.catch((err) => {
+								console.error("Wrong password?", err);
+								this.connectedSource.next(false);
+								return false;
+							});
+					}
+					this.connectedSource.next(true);
+					this.pingTimer = setInterval(() => this.ping(), 1000);
+					return true;
+				})
 				.catch((err) => {
 					console.error("Wrong address?", err);
 					this.connectedSource.next(false);

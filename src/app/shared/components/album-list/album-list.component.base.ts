@@ -2,7 +2,7 @@ import { OnInit, Input } from "@angular/core";
 import { first } from "rxjs/operators";
 import { PlaylistItem, Song, StoredPlaylist } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { extractYear } from "@src/app/shared/functions/album-extract";
 
 
@@ -61,7 +61,7 @@ export class AlbumList implements OnInit {
 
 	constructor(
 		private router: any,
-		private mpc: MpdService,
+		private mpc: MPClientService,
 	) {
 		this.playlistSort = {
 			none: (

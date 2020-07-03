@@ -20,6 +20,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 import { SharedModule } from "@src/app/shared/shared.module";
 import { SettingsRoutingModule } from "@src/app/settings/settings-routing.module";
@@ -51,7 +52,7 @@ import { ConnectComponent } from "@src/app/settings/connect/connect.component";
 		MatTooltipModule,
 		MatCardModule,
 		MatGridListModule,
-
+		MatSlideToggleModule,
 	],
 })
 export class SettingsModule { }

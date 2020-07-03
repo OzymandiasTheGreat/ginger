@@ -8,7 +8,7 @@ import { takeUntil } from "rxjs/operators";
 import { Menu } from "nativescript-menu";
 
 import { Genres } from "@src/app/content/genres/genres.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -20,7 +20,7 @@ import { SearchService } from "@src/app/shared/services/search.service";
 export class GenresComponent extends Genres implements OnInit {
 	public columns: number;
 
-	constructor(mpc: MpdService, search: SearchService) {
+	constructor(mpc: MPClientService, search: SearchService) {
 		super(mpc, search);
 	}
 

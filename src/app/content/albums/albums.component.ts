@@ -3,7 +3,7 @@ import { concat } from "rxjs";
 import { map } from "rxjs/operators";
 import { Song } from "mpc-js-web";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 import { filterView } from "@src/app/shared/functions/filter";
 
@@ -31,12 +31,12 @@ export class AlbumsComponent implements OnInit {
 	}>;
 
 	constructor(
-		private mpd: MpdService,
+		private mpc: MPClientService,
 		private search: SearchService,
 	) {}
 
 	public ngOnInit() {
-		this.mpd.db.list("AlbumArtist", [], ["Album"])
+		this.mpc.db.list("AlbumArtist", [], ["Album"])
 			.pipe(
 				map((entries) => {
 					const albums = [...entries.keys()];
@@ -49,7 +49,7 @@ export class AlbumsComponent implements OnInit {
 				const sorted = [];
 				const obsvrs = [];
 				albums.forEach(([album, artist]) => {
-					obsvrs.push(this.mpd.db.search([["AlbumArtist", artist], ["Album", album]])
+					obsvrs.push(this.mpc.db.search([["AlbumArtist", artist], ["Album", album]])
 						.pipe(
 							map((songs) => sorted.push({
 								title: album,

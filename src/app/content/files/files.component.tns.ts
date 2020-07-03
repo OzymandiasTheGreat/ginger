@@ -11,7 +11,7 @@ import { Menu } from "nativescript-menu";
 import { Song, Playlist, Directory } from "mpc-js-web";
 
 import { Files } from "@src/app/content/files/files.component.base";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -26,7 +26,7 @@ export class FilesComponent extends Files implements OnInit {
 	constructor(
 		router: RouterExtensions,
 		route: ActivatedRoute,
-		mpc: MpdService,
+		mpc: MPClientService,
 		search: SearchService,
 	) {
 		super(router, route, mpc, search);

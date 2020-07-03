@@ -6,7 +6,7 @@ import * as path from "path";
 import { Song, Playlist, Directory, StoredPlaylist } from "mpc-js-web";
 
 import { flattenUrl } from "@src/app/shared/functions/route";
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { SearchService } from "@src/app/shared/services/search.service";
 
 
@@ -21,7 +21,7 @@ export class Files implements OnInit, OnDestroy {
 	constructor(
 		private router: any,
 		private route: ActivatedRoute,
-		protected mpc: MpdService,
+		protected mpc: MPClientService,
 		private search: SearchService,
 	) {
 		this.ngUnsubscribe = new Subject<void>();
