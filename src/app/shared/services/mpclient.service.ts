@@ -18,7 +18,7 @@ import {
 	providedIn: "root",
 })
 export class MPClientService {
-	private mopidy: boolean;
+	public mopidy: boolean;
 	private connectedSource: BehaviorSubject<boolean>;
 	private ngUnsubscribe: Subject<void>;
 	public connected: Observable<boolean>;

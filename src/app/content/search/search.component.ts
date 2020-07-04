@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { forkJoin } from "rxjs";
 import { Song, StoredPlaylist, PlaylistItem } from "mpc-js-web";
 
+import { Search } from "@src/app/content/search/search.component.base";
 import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { extractArtists } from "@src/app/shared/functions/album-extract";
 import { PlaylistInputComponent } from "@src/app/shared/components/playlist-input/playlist-input.component";
@@ -15,118 +16,14 @@ import { PlaylistInputComponent } from "@src/app/shared/components/playlist-inpu
 	templateUrl: "./search.component.html",
 	styleUrls: ["./search.component.scss"]
 })
-export class SearchComponent implements OnInit {
-	public query: string;
-	public artists: string[] = [];
-	public albums: Array<[string, Song[]]> = [];
-	public genres: Array<[string, Array<[string, string]>]> = [];
-	public stored: Array<[string, Array<[string, string]>]> = [];
-	public playlists: StoredPlaylist[];
+export class SearchComponent extends Search implements OnInit {
 
 	constructor(
-		private route: ActivatedRoute,
-		private mpc: MPClientService,
+		route: ActivatedRoute,
+		mpc: MPClientService,
 		private playlistInputDialog: MatDialog,
-	) {}
-
-	public ngOnInit(): void {
-		this.route.queryParamMap.subscribe((queryParams) => {
-			this.query = (queryParams.get("q") && queryParams.get("q").toLowerCase()) || "";
-			this.mpc.db.search([["any", this.query]])
-				.subscribe((songs) => this.sortResults(songs));
-			this.mpc.stored.list()
-				.subscribe((playlists: StoredPlaylist[]) => {
-					this.playlists = playlists;
-					this.stored = playlists.filter((playlist) => playlist.name.toLowerCase().includes(this.query))
-						.map((playlist) => [playlist.name, []]);
-
-					const obsrvs = playlists.filter((playlist) => playlist.name.toLowerCase().includes(this.query))
-						.map((playlist) => this.mpc.stored.list(playlist.name));
-					forkJoin(obsrvs).subscribe({
-						next: (results) => {
-							results.forEach((items: PlaylistItem[], index: number) => {
-								items.forEach((item) => this.stored[index][1].push([item.albumArtist, item.album]));
-							});
-						},
-						complete: () => {
-							for (const playlist of this.stored) {
-								while (playlist[1].length < 4) {
-									playlist[1].push(["", ""]);
-								}
-								playlist[1] = playlist[1].slice(0, 4);
-							}
-						},
-					});
-				});
-		});
-		this.mpc.stored.list()
-			.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
-		this.mpc.on("changed-stored_playlist")
-			.subscribe(() => this.mpc.stored.list()
-				.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists));
-	}
-
-	public sortResults(songs: Song[]) {
-		const artists: string[] = [];
-		const albums = {};
-		const genres = {};
-		songs.forEach((song) => {
-			if (song.albumArtist && song.albumArtist.toLowerCase().includes(this.query)) {
-				if (!artists.includes(song.albumArtist)) {
-					artists.push(song.albumArtist);
-				}
-			} else if (song.artist && song.artist.toLowerCase().includes(this.query)) {
-				if (!artists.includes(song.artist)) {
-					artists.push(song.artist);
-				}
-			} else if (song.album && song.album.toLowerCase().includes(this.query)) {
-				if (song.album in albums) {
-					albums[song.album].push(song);
-				} else {
-					albums[song.album] = [song];
-				}
-			} else if (
-				(song.title && song.title.toLowerCase().includes(this.query))
-				|| (song.name && song.name.toLowerCase().includes(this.query))
-			) {
-				if (song.album in albums) {
-					albums[song.album].push(song);
-				} else {
-					albums[song.album] = [song];
-				}
-			} else if (song.genre && song.genre.toLowerCase().includes(this.query)) {
-				if (song.genre in genres) {
-					if (song.album in genres[song.genre]) {
-						genres[song.genre][song.album].push(song);
-					} else {
-						genres[song.genre][song.album] = [song];
-					}
-				} else {
-					genres[song.genre] = {};
-					genres[song.genre][song.album] = [song];
-				}
-			}
-		});
-		this.artists = artists;
-		this.albums = Object.entries(albums);
-		this.genres = Object.entries(genres)
-			.map(([genre, entries]) => [genre, Object.entries(entries)
-				.slice(0, 4).map(([album, items]) => [album, extractArtists(items)])]);
-		for (const [genre, entries] of this.genres) {
-			while (entries.length < 4) {
-				entries.push(["", ""]);
-			}
-		}
-	}
-
-	public play(tag: string, query: string) {
-		this.mpc.current.clear();
-		this.mpc.db.searchAdd([[tag, query]])
-			.subscribe(() => this.mpc.playback.play());
-	}
-
-	public add(tag: string, query: string) {
-		this.mpc.db.searchAdd([[tag, query]]);
+	) {
+		super(route, mpc);
 	}
 
 	public addPlaylist(tag: string, query: string, playlist: string) {
@@ -150,15 +47,5 @@ export class SearchComponent implements OnInit {
 					this.mpc.db.searchAddPlaylist([[tag, query]], name);
 				}
 			});
-	}
-
-	public playlistPlay(playlist: string) {
-		this.mpc.current.clear();
-		this.mpc.stored.load(playlist)
-			.subscribe(() => this.mpc.playback.play());
-	}
-
-	public playlistAdd(playlist: string) {
-		this.mpc.stored.load(playlist);
 	}
 }

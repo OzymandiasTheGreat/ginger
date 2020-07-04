@@ -1,10 +1,10 @@
 <virtual-scroller #scroll [items]="entries" class="virtual-scroller">
 	<ng-container *ngFor="let entry of scroll.viewPortItems">
 		<mat-card *ngIf="entry.isDirectory()">
-			<mat-card-header [routerLink]="['./', entry.path]">
+			<mat-card-header (click)="navigate(entry.path)">
 				<mat-card-title class="is-truncated">{{ basename(entry.path) }}</mat-card-title>
 			</mat-card-header>
-			<div [routerLink]="['./', entry.path]" class="entry-image directory"></div>
+			<div (click)="navigate(entry.path)" class="entry-image directory"></div>
 			<mat-card-actions>
 				<a mat-mini-fab color="accent" class="play-button" (click)="play(entry.path, false)"><mat-icon fontIcon="mdi-play"></mat-icon></a>
 				<a mat-icon-button class="menu-button" [matMenuTriggerFor]="directoryMenu"><mat-icon fontIcon="mdi-dots-vertical"></mat-icon></a>

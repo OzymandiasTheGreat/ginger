@@ -16,7 +16,6 @@ import { PlaylistInputComponent } from "@src/app/shared/components/playlist-inpu
 	styleUrls: ["./files.component.scss"]
 })
 export class FilesComponent implements OnInit {
-	public basename = path.basename;
 	public entries: Array<Song | Playlist | Directory>;
 	public sorted: Array<Song | Playlist | Directory>;
 	public playlists: StoredPlaylist[];
@@ -30,12 +29,15 @@ export class FilesComponent implements OnInit {
 	) {}
 
 	public ngOnInit() {
-		this.loadDir();
+		this.loadDir(this.mpc.mopidy ? null : "/");
 		this.mpc.stored.list()
 			.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
 		this.router.events.subscribe((event: Event) => {
 			if (event instanceof NavigationEnd) {
-				this.loadDir();
+				this.route.queryParamMap.subscribe((query) => {
+					const uri = query.get("path") && decodeURIComponent(query.get("path"));
+					this.loadDir(uri);
+				});
 			}
 		});
 		this.mpc.on("changed-stored_playlist")
@@ -43,9 +45,7 @@ export class FilesComponent implements OnInit {
 				.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists));
 	}
 
-	public loadDir() {
-		const segments = flattenUrl(this.route.snapshot.children);
-		const uri = segments.join("/") || "/";
+	public loadDir(uri: string) {
 		this.mpc.db.listInfo(uri)
 			.subscribe((entries) => {
 				this.entries = entries;
@@ -58,6 +58,18 @@ export class FilesComponent implements OnInit {
 						: [...this.sorted];
 				});
 			});
+	}
+
+	public navigate(uri: string) {
+		this.router.navigate([], {
+			relativeTo: this.route,
+			queryParams: { path: encodeURIComponent(uri) },
+			queryParamsHandling: "merge",
+		});
+	}
+
+	public basename(uri: string): string {
+		return path.basename(decodeURIComponent(uri));
 	}
 
 	public play(uri: string, single: boolean) {

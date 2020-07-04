@@ -191,7 +191,7 @@ const LIST_NAME_MAPPING = {
 const SEARCH_MAPPING = {
 	Album: "album",
 	AlbumArtist: "albumartist",
-	Any: "any",
+	any: "any",
 	Artist: "artist",
 	Comment: "comment",
 	Composer: "composer",
@@ -534,6 +534,15 @@ export class Library {
 		return from((<Promise<string[]>> this.mopidy.library.getDistinct([field, query]))
 			.then((res) => {
 				return new Map<string[], string[]>([[[], res]] as Array<[string[], string[]]>);
+			}));
+	}
+
+	public findAlbums(tag: Array<[string, string]>, limit = 4): Observable<string[]> {
+		const query = buildQuery(tag.flat(), SEARCH_MAPPING);
+		return from((<Promise<string[]>> this.mopidy.library.getDistinct(["album", query]))
+			.then((albums) => {
+				albums = albums.slice(0, limit);
+				return albums;
 			}));
 	}
 
