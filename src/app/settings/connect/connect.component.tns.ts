@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, ViewContainerRef, NgZone } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { Page } from "tns-core-modules/ui/page";
 import * as appSettings from "tns-core-modules/application-settings";
-import { takeUntil, skip } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 
 import * as Toast from "nativescript-toast";
 
-import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { AuthService } from "@src/app/shared/services/auth.service";
 import { Connect } from "@src/app/settings/connect/connect.component.base";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
@@ -25,13 +25,15 @@ export class ConnectComponent extends Connect implements OnInit {
 		private page: Page,
 		private modalService: ModalDialogService,
 		private vcRef: ViewContainerRef,
+		private zone: NgZone,
 		route: ActivatedRoute,
-		mpc: MpdService,
+		mpc: MPClientService,
 		auth: AuthService,
 	) {
 		super(route, mpc, auth);
 		this.address = appSettings.getString("MPD_ADDRESS", "");
 		this.password = appSettings.getString("MPD_PASSWORD", "");
+		this.mopidy = appSettings.getBoolean("MOPIDY", false);
 	}
 
 	public ngOnInit() {
@@ -43,6 +45,7 @@ export class ConnectComponent extends Connect implements OnInit {
 	public openConnection(): void {
 		appSettings.setString("MPD_ADDRESS", this.address);
 		appSettings.setString("MPD_PASSWORD", this.password);
+		appSettings.setBoolean("MOPIDY", this.mopidy);
 
 		setTimeout(() => {
 			const options: ModalDialogOptions = {
@@ -55,7 +58,6 @@ export class ConnectComponent extends Connect implements OnInit {
 
 			this.connect()
 				.pipe(
-					skip(1),
 					takeUntil(this.ngUnsubscribe),
 				)
 				.subscribe((authorized) => {
@@ -68,10 +70,10 @@ export class ConnectComponent extends Connect implements OnInit {
 						Toast.makeText("Connected")
 							.show();
 						if (this.redirect) {
-							this.router.navigateByUrl(
+							this.zone.run(() => this.router.navigateByUrl(
 								this.auth.redirectUrl ? this.auth.redirectUrl : "/library/queue",
 								{ clearHistory: true },
-							);
+							));
 						}
 					} else {
 						Toast.makeText("Failed to connect", "long")

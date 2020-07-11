@@ -114,10 +114,12 @@ export class File implements Song, Directory, MPDPlaylist {
 			case "directory":
 				this.entryType = "directory";
 				this.path = (<Ref> file).uri;
+				this.name = (<Ref> file).name;
 				break;
 			case "playlist":
 				this.entryType = "playlist";
 				this.path = (<Playlist> file).uri;
+				this.name = (<Playlist> file).name;
 				break;
 			case "track":
 				this.entryType = "song";
@@ -233,18 +235,18 @@ export class TrackList {
 		return defer(() => <Promise<TlTrack[]>> this.mopidy.tracklist.getTlTracks())
 			.pipe(
 				mergeAll(),
-				map((track) => {
+				map(({tlid, track}) => {
 					return <PlaylistItem> {
-						album: track.track.album.name,
-						artist: track.track.artists[0].name,
-						date: track.track.date,
-						duration: track.track.length,
-						genre: track.track.genre,
-						id: track.tlid,
-						lastModified: new Date(track.track.lastModified),
-						name: track.track.name,
-						path: track.track.uri,
-						title: track.track.name,
+						album: track.album && track.album.name,
+						artist: track.artists && track.artists[0] && track.artists[0].name,
+						date: track.date,
+						duration: track.length,
+						genre: track.genre,
+						id: tlid,
+						lastModified: new Date(track.lastModified),
+						name: track.name,
+						path: track.uri,
+						title: track.name,
 					};
 				}),
 			);
@@ -628,8 +630,10 @@ export class Library {
 				}
 				return refs.map((ref) => {
 					switch (ref.type) {
+						case "album":
+						case "artist":
 						case "directory":
-							return <Directory> new File(ref, ref.type);
+							return <Directory> new File(ref, "directory");
 							break;
 						case "playlist":
 							return <MPDPlaylist> new File(ref, ref.type);
@@ -684,8 +688,9 @@ export class MopidyService {
 		return merge(...events.map((e) => fromEvent<void>(this.mopidy, e, context)));
 	}
 
-	public removeAllListeners(event?: string) {
-		return this.mopidy.removeAllListeners(event);
+	public removeAllListeners(event?: string): MopidyService {
+		this.mopidy.removeAllListeners(event);
+		return this;
 	}
 
 	public get status(): Observable<Status> {

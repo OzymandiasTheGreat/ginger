@@ -13,7 +13,6 @@ import { SearchService } from "@src/app/shared/services/search.service";
 export class Files implements OnInit, OnDestroy {
 	protected ngUnsubscribe: Subject<void>;
 
-	public basename = path.basename;
 	public entries: Array<Song | Playlist | Directory>;
 	public sorted: Array<Song | Playlist | Directory>;
 	public playlists: StoredPlaylist[];
@@ -33,15 +32,18 @@ export class Files implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit() {
-		this.loadDir();
+		this.loadDir(this.mpc.mopidy ? null : "/");
 		this.mpc.stored.list()
 			.pipe(takeUntil(this.ngUnsubscribe))
 			.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists);
-		this.router.router.events
+		(this.router.router || this.router).events
 			.pipe(takeUntil(this.ngUnsubscribe))
 			.subscribe((event: Event) => {
 				if (event instanceof NavigationEnd) {
-					this.loadDir();
+					this.route.queryParamMap.subscribe((query) => {
+						const uri = query.get("path") && decodeURIComponent(query.get("path"));
+						this.loadDir(uri);
+					});
 				}
 			});
 		this.mpc.on("changed-stored_playlist")
@@ -51,9 +53,7 @@ export class Files implements OnInit, OnDestroy {
 				.subscribe((playlists: StoredPlaylist[]) => this.playlists = playlists));
 	}
 
-	public loadDir() {
-		const segments = flattenUrl(this.route.snapshot.children);
-		const uri = segments.join("/") || "/";
+	public loadDir(uri: string) {
 		this.mpc.db.listInfo(uri)
 			.pipe(takeUntil(this.ngUnsubscribe))
 			.subscribe((entries) => {
@@ -69,6 +69,18 @@ export class Files implements OnInit, OnDestroy {
 							: [...this.sorted];
 					});
 			});
+	}
+
+	public navigate(uri: string) {
+		(this.router.router || this.router).navigate([], {
+			relativeTo: this.route,
+			queryParams: { path: encodeURIComponent(uri) },
+			queryParamsHandling: "merge",
+		});
+	}
+
+	public basename(uri: string): string {
+		return path.basename(decodeURIComponent(uri));
 	}
 
 	public play(uri: string, single: boolean) {

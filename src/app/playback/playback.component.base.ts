@@ -2,7 +2,7 @@ import { OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { Subject } from "rxjs";
-import { takeUntil, skip } from "rxjs/operators";
+import { takeUntil, skip, skipWhile } from "rxjs/operators";
 
 import { Status, PlaylistItem } from "mpc-js-web";
 
@@ -58,7 +58,7 @@ export class Playback implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		this.auth.authorized.pipe(takeUntil(this.ngUnsubscribe))
-			.pipe(skip(1))
+			.pipe(skipWhile((success) => !success))
 			.subscribe((authorized) => {
 				if (authorized) {
 					this.mpc.currentSong.pipe(takeUntil(this.ngUnsubscribe))

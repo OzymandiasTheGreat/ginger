@@ -296,7 +296,7 @@ export class MpdService {
 		return fromEvent(this.MPD, event, context);
 	}
 
-	public removeAllListeners(event?: string) {
+	public removeAllListeners(event?: string): MPC {
 		return this.MPD.removeAllListeners(event);
 	}
 

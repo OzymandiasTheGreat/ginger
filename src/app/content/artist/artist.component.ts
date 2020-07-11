@@ -45,7 +45,7 @@ export class ArtistComponent implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		const albums = {};
-		this.mpc.db.search([["AlbumArtist", this.artist]])
+		this.mpc.db.search([["AlbumArtist", this.artist]], null, null, true)
 			.pipe(
 				concatAll(),
 				takeUntil(this.ngUnsubscribe),

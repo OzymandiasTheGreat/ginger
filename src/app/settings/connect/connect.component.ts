@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
+import { skip } from "rxjs/operators";
 
+import { Connect } from "@src/app/settings/connect/connect.component.base";
 import { MPClientService } from "@src/app/shared/services/mpclient.service";
+import { AuthService } from "@src/app/shared/services/auth.service";
 import { ConnectionComponent } from "@src/app/shared/components/connection/connection.component";
 
 
@@ -11,16 +14,18 @@ import { ConnectionComponent } from "@src/app/shared/components/connection/conne
 	templateUrl: "./connect.component.html",
 	styleUrls: ["./connect.component.scss"],
 })
-export class ConnectComponent implements OnInit {
+export class ConnectComponent extends Connect implements OnInit {
 	public mopidy = false;
 	public address = "";
 	public password = "";
 
 	constructor(
-		private route: ActivatedRoute,
-		private mpc: MPClientService,
+		route: ActivatedRoute,
+		mpc: MPClientService,
+		auth: AuthService,
 		public connection: MatDialog,
 	) {
+		super(route, mpc, auth);
 		this.address = window.localStorage.getItem("MPD_ADDRESS") || "";
 		this.password = window.localStorage.getItem("MPD_PASSWORD") || "";
 		this.mopidy = window.localStorage.getItem("MOPIDY") === "true" || false;
@@ -42,17 +47,12 @@ export class ConnectComponent implements OnInit {
 		window.localStorage.setItem("MPD_ADDRESS", this.address);
 		window.localStorage.setItem("MPD_PASSWORD", this.password);
 		window.localStorage.setItem("MOPIDY", String(this.mopidy));
-		this.connect();
-
-		const timeout = window.setTimeout(() => {
-			window.clearTimeout(timeout);
-			dialogRef.close();
-		}, 3000);
+		this.connect()
+			.subscribe((success) => {
+				if (success) {
+					dialogRef.close();
+				}
+			});
 		return false;
-	}
-
-	public connect(): void {
-		this.mpc.connect(this.address, this.password, this.mopidy)
-			.subscribe((success) => null);
 	}
 }

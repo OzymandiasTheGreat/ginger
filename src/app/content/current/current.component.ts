@@ -90,7 +90,7 @@ export class CurrentComponent implements OnInit, OnDestroy {
 		} else {
 			albums[song.album] = {
 				title: song.album,
-				artist: song.albumArtist,
+				artist: song.albumArtist || song.artist,
 				items: [song],
 			};
 		}

@@ -4,8 +4,8 @@
 	<ng-template tkTemplateKey="directory" let-entry="item">
 		<CardView class="card">
 			<GridLayout rows="30, *, 34" columns="*">
-				<Label class="entry-title" row="0" col="0" [text]="basename(entry.path)" textWrap="false" [nsRouterLink]="['./', entry.path]"></Label>
-				<Image src="font://&#xF24B;" class="mdi img-directory" row="1" col="0" [nsRouterLink]="['./', entry.path]" stretch="aspectFit"></Image>
+				<Label class="entry-title" row="0" col="0" [text]="entry.name || basename(entry.path)" textWrap="false" (tap)="navigate(entry.path)"></Label>
+				<Image src="font://&#xF24B;" class="mdi img-directory" row="1" col="0" (tap)="navigate(entry.path)" stretch="aspectFit"></Image>
 				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(entry.path, false)"></FAB>
 				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(entry.path, menu)"></Button>
 			</GridLayout>
@@ -15,7 +15,7 @@
 	<ng-template tkTemplateKey="file" let-entry="item">
 		<CardView class="card">
 			<GridLayout rows="30, *, 34" columns="*">
-				<Label class="entry-title" row="0" col="0" [text]="basename(entry.path)" textWrap="false"></Label>
+				<Label class="entry-title" row="0" col="0" [text]="entry.name || basename(entry.path)" textWrap="false"></Label>
 				<Image src="font://&#xF223;" class="mdi img-file" row="1" col="0" stretch="aspectFit"></Image>
 				<FAB class="mdi play-button" row="1" col="0" text="&#xF40A;" (tap)="play(entry.path, true)"></FAB>
 				<Button #menu class="mdi menu-button" row="2" col="0" text="&#xF1D9;" (tap)="openPlaylistMenu(entry.path, menu)"></Button>

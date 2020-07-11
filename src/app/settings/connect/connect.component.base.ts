@@ -24,8 +24,7 @@ export class Connect implements OnDestroy {
 	}
 
 	public connect(): Observable<boolean> {
-		this.mpc.connect(this.address.trim(), this.password, this.mopidy);
-		return this.auth.authorized;
+		return this.mpc.connect(this.address.trim(), this.password, this.mopidy);
 	}
 
 	public ngOnDestroy() {

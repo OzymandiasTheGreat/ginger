@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { first, skip, take, takeUntil, timeout } from "rxjs/operators";
+import { first } from "rxjs/operators";
 import * as app from "tns-core-modules/application";
-import * as settings from "tns-core-modules/application-settings";
 import * as platform from "tns-core-modules/platform";
-import * as fs from "tns-core-modules/file-system";
 import * as util from "tns-core-modules/utils/utils";
+import * as settings from "tns-core-modules/application-settings";
+import * as fs from "tns-core-modules/file-system";
 import { ImageCacheIt } from "nativescript-image-cache-it";
 
 import { MpdService } from "@src/app/shared/services/mpd.service";
+import { MopidyService } from "@src/app/shared/services/mopidy.service";
+import { MPClientService } from "@src/app/shared/services/mpclient.service";
 import { ArtService } from "@src/app/shared/services/art.service";
 
 
@@ -18,15 +19,13 @@ export const PLAYBACK_RECEIVER_CLASSNAME = "tk.ozymandias.ginger.PlaybackReceive
 
 
 @JavaProxy("tk.ozymandias.ginger.PlatformService")
-export class NativeService extends android.app.Service {
-	public mpc: MpdService;
-	private artService: ArtService;
+export class NativePlatformService extends android.app.Service {
+	public mpc: MPClientService;
+	public art: ArtService;
 	private session: android.support.v4.media.session.MediaSessionCompat;
 	private address: string;
 	private password: string;
 	private mopidy: boolean;
-	// Not really angular but I prefer consistency
-	private ngUnsubscribe: Subject<void>;
 
 	public onBind(): android.os.IBinder {
 		return null;
@@ -34,9 +33,10 @@ export class NativeService extends android.app.Service {
 
 	public onCreate(): void {
 		super.onCreate();
-		this.ngUnsubscribe = new Subject<void>();
-		this.mpc = new MpdService();
-		this.artService = new ArtService();
+		const mpd = new MpdService();
+		const mopidy = new MopidyService();
+		this.mpc = new MPClientService(mpd, mopidy);
+		this.art = new ArtService();
 		this.session = new android.support.v4.media.session.MediaSessionCompat(this, "PlaybackSession");
 
 		const CHANNEL_ID = "persistence";
@@ -67,18 +67,16 @@ export class NativeService extends android.app.Service {
 	public onStartCommand(intent: android.content.Intent, flags: number, startId: number): number {
 		this.address = intent.getStringExtra("ADDRESS") || settings.getString("MPD_ADDRESS", null);
 		this.password = intent.getStringExtra("PASSWORD") || settings.getString("MPD_PASSWORD", null);
-		this.mopidy = intent.getBooleanExtra("MOPIDY", false);
+		this.mopidy = intent.getBooleanExtra("MOPIDY", false) || settings.getBoolean("MOPIDY", false);
 
 		if (this.address !== null) {
-			this.mpc.connected
-				.pipe(
-					skip(1),
-					takeUntil(this.ngUnsubscribe),
-				)
-				.subscribe((connected) => {
-					if (connected) {
-						const mpc = this.mpc.removeAllListeners();
-						mpc.on("changed-player", () => {
+			this.mpc.connect(this.address, this.password, this.mopidy)
+				// .pipe(timeout(750))
+				.subscribe((success) => {
+					if (success) {
+						this.mpc.removeAllListeners();
+						this.mpc.on("changed-player")
+							.subscribe(() => {
 							this.mpc.currentSong
 								.pipe(first())
 								.subscribe((song) => {
@@ -90,25 +88,15 @@ export class NativeService extends android.app.Service {
 									);
 								});
 						});
-
 						this.session.setActive(true);
-					} else {
-						setTimeout(() => {
-							this.stopSelf();
-						}, 3000);
 					}
 				});
-			this.mpc.connect(this.address, this.password);
 		}
-
 		return android.app.Service.START_REDELIVER_INTENT;
 	}
 
 	public onDestroy(): void {
 		super.onDestroy();
-		this.ngUnsubscribe.next();
-		this.ngUnsubscribe.complete();
-		this.mpc.removeAllListeners();
 		if (this.session) {
 			this.session.setActive(false);
 			this.session.release();
@@ -147,10 +135,7 @@ export class NativeService extends android.app.Service {
 		const pendingIntent = android.app.PendingIntent.getActivity(this, 0, intent, 0);
 
 		this.mpc.status
-			.pipe(
-				timeout(750),
-				first(),
-			)
+			.pipe(first())
 			.subscribe({
 				next: (status) => {
 					builder
@@ -160,63 +145,61 @@ export class NativeService extends android.app.Service {
 						.setContentIntent(pendingIntent)
 						.setVisibility(androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC)
 						.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-								.setMediaSession(this.session.getSessionToken())
-								.setShowActionsInCompactView([0, 1, 2])
+							.setMediaSession(this.session.getSessionToken())
+							.setShowActionsInCompactView([0, 1, 2])
 						);
 					this.addActions(builder, status.state === "play");
 
-					this.getArt(albumArtist, album)
-					.then((art) => {
-						const metadata = new android.support.v4.media.MediaMetadataCompat.Builder();
-						metadata.putBitmap(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ART, art);
-						metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, albumArtist);
-						metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST, artist);
-						metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM, album);
-						metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_TITLE, title);
-						this.session.setMetadata(metadata.build());
+					this.getArt(albumArtist || artist, album)
+						.then((art) => {
+							const metadata = new android.support.v4.media.MediaMetadataCompat.Builder();
+							metadata.putBitmap(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ART, art);
+							metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, albumArtist);
+							metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST, artist);
+							metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ALBUM, album);
+							metadata.putString(android.support.v4.media.MediaMetadataCompat.METADATA_KEY_TITLE, title);
+							this.session.setMetadata(metadata.build());
 
-						const playbackState = new android.support.v4.media.session.PlaybackStateCompat.Builder();
-						playbackState.setActions(
-							android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY
-							| android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE
-							| android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
-						);
-						switch (status.state) {
-							case "play":
-								playbackState.setState(
-									android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING,
-									android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
-									1,
-								);
-								break;
-							case "pause":
-								playbackState.setState(
-									android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED,
-									android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
-									0,
-								);
-								break;
-							case "stop":
-								playbackState.setState(
-									android.support.v4.media.session.PlaybackStateCompat.STATE_STOPPED,
-									android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
-									0,
-								);
-						}
-						this.session.setPlaybackState(playbackState.build());
+							const playbackState = new android.support.v4.media.session.PlaybackStateCompat.Builder();
+							playbackState.setActions(
+								android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY
+								| android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE
+								| android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
+							);
+							switch (status.state) {
+								case "play":
+									playbackState.setState(
+										android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING,
+										android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
+										1,
+									);
+									break;
+								case "pause":
+									playbackState.setState(
+										android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED,
+										android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
+										0,
+									);
+									break;
+								case "stop":
+									playbackState.setState(
+										android.support.v4.media.session.PlaybackStateCompat.STATE_STOPPED,
+										android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
+										0,
+									);
+							}
+							this.session.setPlaybackState(playbackState.build());
 
-						builder.setLargeIcon(art);
-						const notification = builder.build();
-						notificationManager.notify(NOTIFICATION_ID, notification);
-					});
+							builder.setLargeIcon(art);
+							notificationManager.notify(NOTIFICATION_ID, builder.build());
+						});
 				},
-				error: () => this.stopSelf(),
 			});
 	}
 
-	private async getArt(albumArtist: string, album: string): Promise<android.graphics.Bitmap> {
+	private async getArt(artist: string, album: string): Promise<android.graphics.Bitmap> {
 		return new Promise((resolve) => {
-			this.artService.getArt(albumArtist, album, true)
+			this.art.getArt(artist, album, true)
 				.pipe(first())
 				.subscribe((urls) => {
 					Promise.all([
@@ -299,7 +282,7 @@ export class NativeService extends android.app.Service {
 
 
 @JavaProxy("tk.ozymandias.ginger.RestartReceiver")
-class RestartReceiver extends android.content.BroadcastReceiver {
+export class RestartReceiver extends android.content.BroadcastReceiver {
 	public onReceive(context: android.content.Context, intent: android.content.Intent): void {
 		const serviceIntent = new android.content.Intent();
 		serviceIntent.setClassName(context, PLATFORM_SERVICE_CLASSNAME);
@@ -309,47 +292,33 @@ class RestartReceiver extends android.content.BroadcastReceiver {
 
 
 @JavaProxy("tk.ozymandias.ginger.PlaybackReceiver")
-class PlaybackReceiver extends android.content.BroadcastReceiver {
+export class PlaybackReceiver extends android.content.BroadcastReceiver {
 	public onReceive(context: android.content.Context, intent: android.content.Intent): void {
-		const mpc = new MpdService();
+		const mpd = new MpdService();
+		const mopidy = new MopidyService();
+		const mpc = new MPClientService(mpd, mopidy);
 		const address = intent.getStringExtra("ADDRESS");
 		const password = intent.getStringExtra("PASSWORD");
+		const isMopidy = intent.getBooleanExtra("MOPIDY", false);
 		const action = intent.getStringExtra("ACTION");
-		mpc.connected
-			.pipe(
-				timeout(750),
-				take(2),
-				skip(1),
-			)
-			.subscribe({
-				next: (connected) => {
-					if (connected) {
-						switch (action) {
-							case "PLAY":
-								mpc.playback.play();
-								break;
-							case "PAUSE":
-								mpc.playback.pause();
-								break;
-							case "NEXT":
-								mpc.playback.next();
-								break;
-							case "BACK":
-								mpc.playback.previous();
-						}
-					} else {
-						const serviceIntent = new android.content.Intent();
-						serviceIntent.setClassName(context, PLATFORM_SERVICE_CLASSNAME);
-						context.stopService(serviceIntent);
+		mpc.connect(address, password, isMopidy)
+			.subscribe((success) => {
+				if (success) {
+					switch (action) {
+						case "PLAY":
+							mpc.playback.play();
+							break;
+						case "PAUSE":
+							mpc.playback.pause();
+							break;
+						case "NEXT":
+							mpc.playback.next();
+							break;
+						case "BACK":
+							mpc.playback.previous();
 					}
-				},
-				error: () => {
-					const serviceIntent = new android.content.Intent();
-					serviceIntent.setClassName(context, PLATFORM_SERVICE_CLASSNAME);
-					context.stopService(serviceIntent);
-				},
+				}
 			});
-		mpc.connect(address, password);
 	}
 }
 

@@ -121,7 +121,10 @@ export class Playlists implements OnInit, OnDestroy {
 		const randomAlbums: Array<{ artist: string, title: string }> = [];
 		for (let i = 0; randomAlbums.length < 4 && i < 12; i++) {
 			const randomAlbum = playlist[Math.floor(Math.random() * playlist.length)];
-			const albumObject = { artist: randomAlbum.artist, title: randomAlbum.title };
+			const albumObject = {
+				artist: (randomAlbum && randomAlbum.artist) || "",
+				title: (randomAlbum && randomAlbum.title) || "",
+			};
 			if (!randomAlbums.find((album) => album.title === albumObject.title && album.artist === albumObject.artist)) {
 				randomAlbums.push(albumObject);
 			}

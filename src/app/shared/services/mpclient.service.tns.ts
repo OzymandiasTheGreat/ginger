@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { takeUntil, skip, tap } from "rxjs/operators";
 
 import { Status, PlaylistItem } from "mpc-js-web";
+import "nativescript-websockets";
 
 import { MpdService, CurrentPlaylist, Playback as MPDPlayback, StoredPlaylists, Database } from "@src/app/shared/services/mpd.service";
 import {
