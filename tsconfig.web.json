@@ -13,6 +13,8 @@
   "files": [
     "src/main.ts",
     "src/polyfills.ts",
+    "src/app/content/content.module.ts",
+    "src/app/settings/settings.module.ts"
   ],
   "exclude": [
     "src/test.ts",

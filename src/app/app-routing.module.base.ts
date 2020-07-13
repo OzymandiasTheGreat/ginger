@@ -12,13 +12,13 @@ export const routes: Routes = [
 			{
 				path: "settings",
 				// tslint:disable-next-line:newline-per-chained-call
-				loadChildren: () => import("@src/app/settings/settings.module").then((m) => m.SettingsModule),
+				loadChildren: "./settings/settings.module#SettingsModule",
 			},
 			{
 				path: "library",
 				canLoad: [AuthGuard],
 				// tslint:disable-next-line:newline-per-chained-call
-				loadChildren: () => import("@src/app/content/content.module").then((m) => m.ContentModule),
+				loadChildren: "./content/content.module#ContentModule",
 			},
 			{
 				path: "",

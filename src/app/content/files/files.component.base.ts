@@ -2,7 +2,7 @@ import { OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Event, NavigationEnd } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil, first } from "rxjs/operators";
-import * as path from "path";
+import * as path from "path-browserify";
 import { Song, Playlist, Directory, StoredPlaylist } from "mpc-js-web";
 
 import { flattenUrl } from "@src/app/shared/functions/route";

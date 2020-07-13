@@ -164,7 +164,7 @@ export class Playback implements OnInit, OnDestroy {
 		this.mpc.playback.seek(Math.floor(time / this.seekMultiplier));
 	}
 
-	protected formatTime(value: number) {
+	public formatTime(value: number) {
 		if (!isNaN(value)) {
 			const time = Math.floor(value / this.seekMultiplier);
 			const minutes = Math.floor(time / 60);

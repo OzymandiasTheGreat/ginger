@@ -2,6 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/desktop",
+    "types": [
+      "node"
+    ],
     "paths": {
       "@src/*": [
         "src/*.desktop",
@@ -11,7 +14,9 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "src/app/content/content.module.ts",
+    "src/app/settings/settings.module.ts"
   ],
   "exclude": [
     "src/test.ts",

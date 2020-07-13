@@ -4,7 +4,7 @@
 			<DockLayout stretchLastChild="true">
 				<app-album-art dock="left" class="album-art" [artist]="album.artist" [album]="album.title"></app-album-art>
 				<StackLayout dock="right" class="actions" orientation="horizontal">
-					<Label *ngIf="!queue" class="mdi label-button action" text="&#xF40A;" (tap)="playAlbum(album.title, album.artist, null)"></Label>
+					<Label *ngIf="!queue" class="mdi label-button action" text="&#xF40A;" (tap)="playAlbum(album.title, album.artist)"></Label>
 					<Label #albumMenu *ngIf="!playlist" class="mdi label-button action" text="&#xF415;" (tap)="openPlaylistMenu(false, albumMenu, null, album)"></Label>
 					<Label *ngIf="playlist" class="mdi label-button action" text="&#xF415;" (tap)="addAlbum(album.title, album.artistm)"></Label>
 					<Label *ngIf="queue || playlist" class="mdi label-button action" text="&#xF374;" (tap)="removeAlbum(album.title)"></Label>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Event, NavigationEnd } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
-import * as path from "path";
+import * as path from "path-browserify";
 import { Song, Playlist, Directory, StoredPlaylist } from "mpc-js-web";
 
 import { flattenUrl } from "@src/app/shared/functions/route";

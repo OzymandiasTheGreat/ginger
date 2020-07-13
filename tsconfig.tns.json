@@ -19,5 +19,7 @@
   "files": [
     "src/main.tns.ts",
     "reference.d.ts",
+    "src/app/content/content.module.ts",
+    "src/app/settings/settings.module.ts"
   ]
 }
