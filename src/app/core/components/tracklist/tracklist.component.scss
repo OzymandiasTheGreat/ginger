@@ -1,0 +1,64 @@
+.container {
+	height: calc(100% - 72px);
+	max-width: 100%;
+
+	.toolbar {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	.menu {
+		order: 3;
+	}
+
+	.tracklist-wrapper {
+		height: calc(100% - 64px);
+		width: 100%;
+
+		.track {
+			height: 56px;
+
+			.info {
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: center;
+
+				.title, .sep, .artist {
+					flex: 0 1 auto;
+					display: block;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				.sep {
+					flex: 0 0 auto;
+				}
+			}
+
+			.indicator {
+				opacity: 0.35;
+			}
+
+			.title {
+				font-size: 18px;
+			}
+
+			.artist {
+				font-size: 16px;
+			}
+
+			&.active {
+				.indicator {
+					opacity: 1;
+				}
+
+				.title, .artist {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+}

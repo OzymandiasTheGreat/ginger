@@ -1,0 +1,32 @@
+<div class="container">
+	<mat-toolbar class="toolbar">
+		<button mat-icon-button (click)="scrollTo()" ><mat-icon svgIcon="debug-step-into" ></mat-icon></button>
+		<button mat-icon-button [matMenuTriggerFor]="playlistMenu" ><mat-icon svgIcon="content-save-all" ></mat-icon></button>
+		<button mat-icon-button (click)="clear()" ><mat-icon svgIcon="notification-clear-all" ></mat-icon></button>
+		<mat-menu #playlistMenu >
+			<button mat-menu-item (click)="newPlaylist(tracks)" >New playlist</button>
+			<button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="addPlaylist(playlist.uri, tracks)" >{{ playlist.name }}</button>
+		</mat-menu>
+	</mat-toolbar>
+	<cdk-virtual-scroll-viewport #scroller itemSize="56" class="tracklist-wrapper" >
+		<mat-action-list cdkDropList (cdkDropListDropped)="move($event)" class="tracklist" >
+			<button mat-list-item cdkDrag *cdkVirtualFor="let track of tracks" class="track" [ngClass]="{ active: currentTrack.id === track.id }" >
+				<mat-icon matListAvatar svgIcon="play" class="indicator" ></mat-icon>
+				<div mat-line (click)="play(track)" class="info" >
+					<span class="title" >{{ track?.title }}</span>
+					<span class="sep" >&nbsp;&mdash;&nbsp;</span>
+					<span class="artist" >{{ track?.artist.title }}</span>
+				</div>
+				<mat-icon matListIcon [matMenuTriggerFor]="trackMenu" class="menu" svgIcon="dots-vertical" ></mat-icon>
+				<mat-menu #trackMenu >
+					<button mat-menu-item (click)="remove([track])" >Remove</button>
+					<button mat-menu-item [matMenuTriggerFor]="trackPlaylistMenu" >Add to playlist</button>
+				</mat-menu>
+				<mat-menu #trackPlaylistMenu >
+					<button mat-menu-item (click)="newPlaylist([track])" >New playlist</button>
+					<button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="addPlaylist(playlist.uri, [track])" >{{ playlist.name }}</button>
+				</mat-menu>
+			</button>
+		</mat-action-list>
+	</cdk-virtual-scroll-viewport>
+</div>

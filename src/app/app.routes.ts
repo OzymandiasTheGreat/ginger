@@ -1,15 +1,27 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
-import { HomeComponent } from '@src/app/home/home.component';
+import { LayoutComponent } from "@src/app/layout/layout.component";
+import { ConnectionComponent } from "@src/app/connection/connection.component";
+import { QueueComponent } from "@src/app/queue/queue.component";
 
 export const routes: Routes = [
-  {
-      path: '',
-      redirectTo: '/players',
-      pathMatch: 'full',
-  },
-  {
-      path: 'home',
-      component: HomeComponent,
-  },
+	{
+		path: "",
+		component: LayoutComponent,
+		children: [
+			{
+				path: "",
+				pathMatch: "full",
+				redirectTo: "connect",
+			},
+			{
+				path: "connect",
+				component: ConnectionComponent,
+			},
+			{
+				path: "queue",
+				component: QueueComponent,
+			},
+		],
+	},
 ];

@@ -1,0 +1,55 @@
+mat-sidenav-container {
+	height: 100%;
+}
+
+mat-sidenav-content {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+	height: 100%;
+	overflow: hidden;
+}
+
+.top {
+	flex: 1 0 auto;
+	height: calc(100% - 64px - 72px);
+}
+
+.bottom {
+	flex: 0 1 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+app-playback {
+	flex: 0 1 auto;
+}
+
+.nav-container {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	align-items: flex-start;
+	height: 100%;
+}
+
+mat-toolbar {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.nav-logo {
+	width: 48px;
+	filter: invert(1);
+	vertical-align: middle;
+	margin-right: 20px;
+}
+
+.search {
+	width: 250px;
+}

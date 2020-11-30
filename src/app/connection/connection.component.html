@@ -1,0 +1,19 @@
+<div class="container">
+	<mat-action-list class="conn-list">
+		<button *ngFor="let entry of history" mat-list-item (click)="fill(entry.address, entry.password, entry.mopidy)" >{{ entry.address }}</button>
+	</mat-action-list>
+	<div class="form">
+		<form (submit)="connect()">
+			<mat-slide-toggle [(ngModel)]="mopidy" name="mopidy" >Mopidy</mat-slide-toggle>
+			<mat-form-field >
+				<mat-label>Address</mat-label>
+				<input matInput placeholder="ws://localhost:6680/mopidy/ws/" [(ngModel)]="address" name="address" >
+			</mat-form-field>
+			<mat-form-field >
+				<mat-label>Password</mat-label>
+				<input matInput type="password" [(ngModel)]="password" name="password" >
+			</mat-form-field>
+			<button mat-raised-button color="primary" action="submit">Connect</button>
+		</form>
+	</div>
+</div>

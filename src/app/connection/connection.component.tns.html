@@ -1,0 +1,30 @@
+<GridLayout columns="150, *" rows="*">
+	<!-- <ScrollView col="0" row="0"> -->
+		<!-- <StackLayout> -->
+			<ListView [items]="history" col="0" row="0">
+				<ng-template let-entry="item" >
+					<GridLayout (tap)="fill(entry.address, entry.password, entry.mopidy)" >
+						<Label [text]="entry.address" width="150" ></Label>
+					</GridLayout>
+				</ng-template>
+			</ListView>
+		<!-- </StackLayout> -->
+	<!-- </ScrollView> -->
+	<FlexboxLayout col="1" row="0" justifyContent="center" alignItems="center">
+		<StackLayout>
+			<StackLayout orientation="horizontal">
+				<Label text="Mopidy" ></Label>
+				<Switch [(ngModel)]="mopidy" ></Switch>
+			</StackLayout>
+			<StackLayout orientation="horizontal">
+				<Label text="Address" ></Label>
+				<TextField class="input" hint="Address" [(ngModel)]="address" ></TextField>
+			</StackLayout>
+			<StackLayout orientation="horizontal">
+				<Label text="Password" ></Label>
+				<TextField class="input" hint="Password" secure="true" [(ngModel)]="password" ></TextField>
+			</StackLayout>
+			<Button text="Connect" (tap)="connect()" ></Button>
+		</StackLayout>
+	</FlexboxLayout>
+</GridLayout>

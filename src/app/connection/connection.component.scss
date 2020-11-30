@@ -1,0 +1,29 @@
+.container {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+	height: 100%;
+
+	.conn-list {
+		width: 35%;
+		flex: 1 0 auto;
+	}
+
+	.form {
+		width: 65%;
+		height: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+
+		form {
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: flex-start;
+			height: 30%;
+		}
+	}
+}

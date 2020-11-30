@@ -85,7 +85,7 @@ module.exports = env => {
   const tsConfigTnsName = 'tsconfig.tns.json';
   const tsConfigTnsPath = resolve(projectRoot, tsConfigTnsName);
   if (fs.existsSync(tsConfigTnsPath)) {
-    // support shared angular app configurations 
+    // support shared angular app configurations
     tsConfigName = tsConfigTnsName;
     tsConfigPath = tsConfigTnsPath;
   }
@@ -117,7 +117,8 @@ module.exports = env => {
   const copyIgnore = { ignore: [`${relative(appPath, appResourcesFullPath)}/**`] };
   const copyTargets = [
     { from: 'assets/**', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } },
-    { from: 'fonts/**', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } },
+	{ from: 'fonts/**', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } },
+	{ from: '../node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf', to: 'fonts/materialdesignicons.ttf', globOptions: { dot: false, ...copyIgnore } },
     ...copyReplacements
   ];
 
@@ -387,10 +388,13 @@ module.exports = env => {
         'global.TNS_WEBPACK': 'true',
         'global.isAndroid': platform === 'android',
         'global.isIOS': platform === 'ios',
-        process: 'global.process'
+        process: 'global.process',
+        SPOTIFY_CLIENT_ID: JSON.stringify(env.SPOTIFY_CLIENT_ID),
+        SPOTIFY_CLIENT_SECRET: JSON.stringify(env.SPOTIFY_CLIENT_SECRET),
+        LASTFM_API_KEY: JSON.stringify(env.LASTFM_API_KEY)
       }),
       // Remove all files from the out dir.
-      new CleanWebpackPlugin({ 
+      new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: itemsToClean,
         verbose: !!verbose
       }),

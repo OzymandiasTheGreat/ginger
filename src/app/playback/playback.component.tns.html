@@ -1,0 +1,21 @@
+<GridLayout rows="10, *">
+	<Slider class="progress" minValue="0" [maxValue]="trackLength" [value]="trackPos" (valueChange)="seek($event)" (touch)="touch($event)" ></Slider>
+	<FlexboxLayout row="1" justifyContent="space-between" alignItems="center">
+		<DockLayout >
+			<GridLayout dock="left" rows="*" columns="*" class="art">
+				<Image row="0" col="0" class="mdi" src="font://󰀥" stretch="none" ></Image>
+				<NSImg *ngFor="let uri of artURIs" row="0" col="0" [src]="uri" ></NSImg>
+			</GridLayout>
+			<StackLayout verticalAlignment="center" class="info" >
+				<Label class="title" [text]="track?.title" ></Label>
+				<Label class="artist" [text]="track?.artist" ></Label>
+			</StackLayout>
+		</DockLayout>
+		<StackLayout orientation="horizontal">
+			<Button class="mdi -primary btn" text="󰒮" [isEnabled]="enabled" (tap)="prev()" ></Button>
+			<Button class="mdi -primary btn" [text]="playing ? '󰏤' : '󰐊'" [isEnabled]="enabled" (tap)="playing ? pause() : play()" ></Button>
+			<Button class="mdi -primary btn" text="󰒭" [isEnabled]="enabled" (tap)="next()" ></Button>
+			<Button #menu class="mdi -primary btn" text="󰇙" [isEnabled]="enabled" (tap)="overflow()" ></Button>
+		</StackLayout>
+	</FlexboxLayout>
+</GridLayout>

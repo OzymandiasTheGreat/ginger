@@ -1,0 +1,33 @@
+<mat-sidenav-container>
+	<mat-sidenav #drawer mode="side" opened>
+		<div class="nav-container">
+			<mat-nav-list>
+				<a mat-list-item [routerLink]="['queue']">Queue</a>
+			</mat-nav-list>
+			<mat-nav-list>
+				<a mat-list-item [routerLink]="['connect']">Connection</a>
+			</mat-nav-list>
+		</div>
+	</mat-sidenav>
+	<mat-sidenav-content>
+		<div class="top">
+			<mat-toolbar color="primary">
+				<div class="left">
+					<img class="nav-logo" src="/assets/icons/ginger-mono.svg" alt="Toggle Sidebar" (click)="drawer.toggle()" >
+					<span class="title" >Connect</span>
+				</div>
+				<div class="right">
+					<mat-form-field *ngIf="searchVisible" class="search" >
+						<mat-label>Enter query to filter or search...</mat-label>
+						<input matInput >
+					</mat-form-field>
+					<mat-icon svgIcon="magnify" (click)="toggleSearch()" ></mat-icon>
+				</div>
+			</mat-toolbar>
+			<router-outlet></router-outlet>
+		</div>
+		<div class="bottom">
+			<app-playback></app-playback>
+		</div>
+	</mat-sidenav-content>
+</mat-sidenav-container>

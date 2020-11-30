@@ -1,0 +1,45 @@
+/* Add mobile styles for the component here.  */
+
+.toolbar {
+	background-color: #212121;
+
+	.btn {
+		font-size: 32;
+		background-color: transparent;
+		padding: 0;
+		border-radius: 50%;
+		margin: 5;
+		android-elevation: 0;
+	}
+}
+
+.mdi {
+	vertical-align: center;
+}
+
+.indicator {
+	opacity: 0.25;
+	margin-left: 10;
+}
+
+.title {
+	font-size: 18;
+}
+
+.artist {
+	font-size: 15;
+}
+
+.sep {
+	font-size: 15;
+}
+
+.current {
+	.indicator {
+		opacity: 1;
+	}
+
+	.title, .artist, .sep {
+		font-weight: bold;
+	}
+}

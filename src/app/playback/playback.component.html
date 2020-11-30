@@ -1,0 +1,39 @@
+<div class="container">
+	<mat-slider min="0" [max]="trackLength" step="1" [value]="trackPos" (input)="seek($event.value)" ></mat-slider>
+	<div class="panel">
+		<div class="left">
+			<div class="art">
+				<img *ngFor="let uri of artURIs" [src]="uri">
+				<mat-icon svgIcon="album" ></mat-icon>
+			</div>
+			<div class="info">
+				<div class="title">{{ track?.title }}</div>
+				<div class="artist">{{ track?.artist }}</div>
+			</div>
+		</div>
+		<div class="right">
+			<button mat-raised-button color="primary" class="btn" [disabled]="!enabled" (click)="prev()" ><mat-icon svgIcon="skip-previous" ></mat-icon></button>
+			<button mat-raised-button color="primary" class="btn" [disabled]="!enabled" (click)="playing ? pause() : play()" ><mat-icon [svgIcon]="playing ? 'pause' : 'play'" ></mat-icon></button>
+			<button mat-raised-button color="primary" class="btn" [disabled]="!enabled" (click)="next()" ><mat-icon svgIcon="skip-next" ></mat-icon></button>
+			<button mat-raised-button [matMenuTriggerFor]="menu" color="primary" class="btn" [disabled]="!enabled" (menuOpened)="overflow()" ><mat-icon svgIcon="dots-vertical" ></mat-icon></button>
+			<mat-menu #menu="matMenu" >
+				<button mat-menu-item (click)="toggleRepeat()" >
+					<mat-icon svgIcon="repeat" ></mat-icon>
+					<span>Repeat: {{ repeat ? 'ON' : 'OFF' }}</span>
+				</button>
+				<button mat-menu-item (click)="toggleRandom()" >
+					<mat-icon svgIcon="shuffle" ></mat-icon>
+					<span>Random: {{ random ? 'ON' : 'OFF' }}</span>
+				</button>
+				<button mat-menu-item (click)="toggleSingle()" >
+					<mat-icon svgIcon="numeric-1" ></mat-icon>
+					<span>Single: {{ single ? 'ON' : 'OFF' }}</span>
+				</button>
+				<button mat-menu-item (click)="toggleConsume()" >
+					<mat-icon svgIcon="coffee" ></mat-icon>
+					<span>Consume: {{ consume ? 'ON' : 'OFF' }}</span>
+				</button>
+			</mat-menu>
+		</div>
+	</div>
+</div>

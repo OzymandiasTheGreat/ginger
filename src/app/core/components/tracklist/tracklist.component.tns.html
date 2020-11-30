@@ -1,0 +1,22 @@
+<GridLayout rows="50, *" >
+	<GridLayout row="0" columns="*, auto" class="toolbar" >
+		<StackLayout col="1" orientation="horizontal" >
+			<Button class="mdi btn" text="󰆹" (tap)="scrollTo()" ></Button>
+			<Button #toolbarMenu class="mdi btn" text="󰆔" (tap)="playlistMenu(toolbarMenu, tracks)" ></Button>
+			<Button class="mdi btn" text="󰎟" (tap)="clear()" ></Button>
+		</StackLayout>
+	</GridLayout>
+	<RadListView #listView row="1" [items]="tracks" itemReorder="true" (itemReordered)="move($event)" >
+		<ng-template tkListItemTemplate let-track="item" >
+			<GridLayout [ngClass]="{ current: track.id === currentTrack?.id }" columns="24, *, 24" >
+				<Image col="0" class="mdi indicator" src="font://󰐊" stretch="none" ></Image>
+				<StackLayout col="1" orientation="horizontal" (tap)="play(track)" >
+					<Label class="title" [text]="track?.title" ></Label>
+					<Label class="sep" text=" &mdash; " ></Label>
+					<Label class="artist" [text]="track?.artist.title" ></Label>
+				</StackLayout>
+				<Image #menu col="2" class="mdi" src="font://󰇙" stretch="none" (tap)="overflow(menu, [track])" ></Image>
+			</GridLayout>
+		</ng-template>
+	</RadListView>
+</GridLayout>

@@ -1,0 +1,82 @@
+.container {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: stretch;
+	height: 100%;
+
+	mat-slider {
+		padding: 0;
+		margin: -20px 0;
+	}
+
+	.panel {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 10px 0;
+
+		.left {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: flex-start;
+			align-items: center;
+			flex: 0 1 auto;
+			max-width: 50%;
+		}
+
+		.art {
+			position: relative;
+			width: 64px;
+			height: 64px;
+			flex: 0 0 auto;
+			margin: 0 15px;
+
+			mat-icon {
+				position: absolute;
+				width: 64px;
+				height: 64px;
+			}
+
+			img {
+				position: absolute;
+				width: 64px;
+				height: 64px;
+			}
+		}
+
+		.title {
+			font-size: 20px;
+			display: inline-block;
+			white-space: nowrap;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.info {
+			max-width: 100%;
+			flex: 0 1 auto;
+		}
+
+		.artist {
+			font-size: 18px;
+			display: inline-block;
+			white-space: nowrap;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.right {
+			padding: 0 25px;
+		}
+
+		.btn {
+			padding: 0;
+			width: 32px;
+		}
+	}
+}
