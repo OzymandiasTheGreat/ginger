@@ -3,6 +3,8 @@ import { Routes } from "@angular/router";
 import { LayoutComponent } from "@src/app/layout/layout.component";
 import { ConnectionComponent } from "@src/app/connection/connection.component";
 import { QueueComponent } from "@src/app/queue/queue.component";
+import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
+
 
 export const routes: Routes = [
 	{
@@ -21,6 +23,10 @@ export const routes: Routes = [
 			{
 				path: "queue",
 				component: QueueComponent,
+			},
+			{
+				path: "playlists",
+				component: PlaylistsComponent,
 			},
 		],
 	},

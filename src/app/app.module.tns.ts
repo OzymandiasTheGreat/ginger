@@ -22,8 +22,8 @@ import { NativeScriptFormsModule, NativeScriptHttpClientModule } from "@nativesc
 import { PlaybackComponent } from "@src/app/playback/playback.component";
 import { TracklistComponent } from "@src/app/core/components/tracklist/tracklist.component";
 import { QueueComponent } from "@src/app/queue/queue.component";
-import { PlaylistsComponent } from '@src/app/playlists/playlists.component';
-import { BrowserGridComponent } from '@src/app/core/components/browser-grid/browser-grid.component';
+import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
+import { BrowserGridComponent } from "@src/app/core/components/browser-grid/browser-grid.component";
 
 
 if (Application.android) {

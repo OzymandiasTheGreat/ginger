@@ -1,1 +1,41 @@
 /* Add mobile styles for the component here.  */
+
+.card {
+	margin: 5 15;
+	border-radius: 5;
+
+	.name {
+		font-size: 18;
+		padding: 10 15;
+	}
+
+	.icon {
+		font-size: 48;
+		width: 112;
+		height: 112;
+		text-align: center;
+		vertical-align: center;
+		horizontal-align: center;
+	}
+
+	.play {
+		font-size: 18;
+		text-align: center;
+		width: 56;
+		height: 56;
+		margin: 0 0 -25 15;
+		vertical-align: bottom;
+		horizontal-align: left;
+	}
+
+	.menu {
+		font-size: 18;
+		width: 32;
+		height: 32;
+		padding: 0;
+		border-radius: 50%;
+		margin: 0 5 5 0;
+		horizontal-align: right;
+		android-elevation: 0;
+	}
+}

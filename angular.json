@@ -36,7 +36,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "mopidy",
-              "mpc-js-web"
+              "mpc-js-web",
+              "@tweenjs/tween.js"
             ],
             "customWebpackConfig": {
               "path": "./angular-webpack.config.ts"

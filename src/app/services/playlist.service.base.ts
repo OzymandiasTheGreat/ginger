@@ -1,4 +1,5 @@
 import { NgZone } from "@angular/core";
+import { Subject, Observable } from "rxjs";
 import { PlaylistItem, StoredPlaylist } from "mpc-js-web";
 
 import { Ref } from "@src/app/types/ref";
@@ -10,11 +11,16 @@ import { MpcService } from "@src/app/services/mpc.service";
 export class PlaylistBaseService {
 	public mopidy: boolean;
 	public playlists: Playlist[];
+	public updated: Observable<void>;
+	private _updated: Subject<void>;
 
 	constructor(
 		protected zone: NgZone,
 		protected mpc: MpcService,
-	) { }
+	) {
+		this._updated = new Subject<void>();
+		this.updated = this._updated.asObservable();
+	}
 
 	protected load(): void {
 		if (this.mopidy) {
@@ -36,28 +42,32 @@ export class PlaylistBaseService {
 	}
 
 	protected loadMopidy(): void {
-		this.playlists = [];
+		const items = [];
 		this.mpc.socket.playlists.asList().then((playlists: Ref[]) => {
 			playlists.forEach((pls) => {
 				if (pls.type === "playlist") {
-					this.playlists.push({
+					items.push({
 						name: pls.name,
 						uri: pls.uri,
 					});
 				}
 			});
+			this.playlists = items;
+			this._updated.next();
 		});
 	}
 
 	protected loadMPD(): void {
-		this.playlists = [];
+		const items = [];
 		this.mpc.socket.storedPlaylists.listPlaylists().then((playlists: StoredPlaylist[]) => {
 			playlists.forEach((pls) => {
-				this.playlists.push({
+				items.push({
 					name: pls.name,
 					uri: pls.name,
 				});
 			});
+			this.playlists = items;
+			this._updated.next();
 		});
 	}
 
