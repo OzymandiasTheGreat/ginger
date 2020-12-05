@@ -7,6 +7,15 @@
 		flex-flow: row nowrap;
 		justify-content: flex-end;
 		align-items: center;
+
+		.btn {
+			margin: 0 15px;
+		}
+
+		.fab {
+			margin-bottom: -48px;
+			opacity: 0.75;
+		}
 	}
 
 	.menu {
@@ -56,6 +65,85 @@
 				}
 
 				.title, .artist {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+
+	.vscroll {
+		width: 100%;
+		height: calc(100% - 64px);
+
+		.node {
+			height: 56px;
+		}
+
+		.tree-header {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: flex-start;
+			align-items: center;
+
+			.art {
+				position: relative;
+				width: 56px;
+				height: 56px;
+
+				* {
+					position: absolute;
+					top: 4px;
+					left: 4px;
+					width: 48px;
+					height: 48px;
+				}
+			}
+
+			.tree-header-info {
+				font-size: 16px;
+				padding-left: 15px;
+			}
+		}
+
+		.tree-row {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: flex-start;
+			align-items: center;
+			width: 100%;
+			cursor: pointer;
+
+			.indicator {
+				width: 40px;
+				height: 40px;
+				opacity: 0.35;
+			}
+
+			.title {
+				font-size: 18px;
+			}
+
+			.artist, .sep {
+				font-size: 16px;
+			}
+
+			.info {
+				flex: 1 0 auto;
+				max-width: calc(100% - 80px);
+			}
+
+			.menu {
+				width: 24px;
+				height: 24px;
+				align-self: flex-end;
+			}
+
+			&.active {
+				.indicator {
+					opacity: 1;
+				}
+
+				.info {
 					font-weight: bold;
 				}
 			}

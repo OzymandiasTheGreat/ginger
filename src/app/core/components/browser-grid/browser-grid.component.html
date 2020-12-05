@@ -4,7 +4,7 @@
 			<mat-card-header class="header">
 				<mat-card-title class="title" (click)="navigate(item.uri)" >{{ item.name }}</mat-card-title>
 			</mat-card-header>
-			<mat-icon mat-card-image class="icon" svgIcon="book-music" ></mat-icon>
+			<mat-icon mat-card-image class="icon" svgIcon="book-music" (click)="navigate(item.uri)" ></mat-icon>
 			<mat-card-actions class="actions" >
 				<button mat-fab color="primary" class="play" (click)="play(item.uri)" ><mat-icon svgIcon="play" ></mat-icon></button>
 				<button mat-icon-button class="menu" [matMenuTriggerFor]="itemMenu" ><mat-icon svgIcon="dots-vertical" ></mat-icon></button>

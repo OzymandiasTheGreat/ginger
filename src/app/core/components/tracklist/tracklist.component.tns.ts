@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from "@angular/core";
-import { ApplicationSettings, Image, prompt } from "@nativescript/core";
+import { ApplicationSettings, Button, Image, prompt } from "@nativescript/core";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 import { Menu } from "nativescript-menu";
 
@@ -7,7 +7,9 @@ import { TracklistBaseComponent } from "@src/app/core/components/tracklist/track
 import { CURRENT_MOPIDY } from "@src/app/types/constants";
 import { MpcService } from "@src/app/services/mpc.service";
 import { PlaylistService } from "@src/app/services/playlist.service";
+import { ArtService } from "@src/app/services/art.service";
 import { Track } from "@src/app/types/track";
+import { MopidyPlaylist } from "@src/app/types/playlist";
 
 
 @Component({
@@ -17,13 +19,16 @@ import { Track } from "@src/app/types/track";
 })
 export class TracklistComponent extends TracklistBaseComponent implements OnInit {
 	@ViewChild("listView") public listView: ElementRef<RadListView>;
+	public grouping: "none" | "album" | "artist" = "none";
+	public groupingFunc: (item: Track) => string;
 
 	constructor(
 		protected zone: NgZone,
 		public mpc: MpcService,
+		public art: ArtService,
 		public pls: PlaylistService,
 	) {
-		super(zone, mpc);
+		super(zone, mpc, art);
 		this.mopidy = ApplicationSettings.getBoolean(CURRENT_MOPIDY);
 	}
 
@@ -33,7 +38,10 @@ export class TracklistComponent extends TracklistBaseComponent implements OnInit
 
 	overflow(menu: Image, tracks: Track[]): void {
 		const actions: Array<{ id: string, title: string }> = [];
-		if (this.type === "queue") {
+		if (this.type !== "queue") {
+			actions.push({ id: "queue", title: "Add to queue" });
+		}
+		if (this.type === "queue" || this.type === "playlist") {
 			actions.push({ id: "remove", title: "Remove" });
 		}
 		actions.push({ id: "addPls", title: "Add to playlist" });
@@ -42,6 +50,9 @@ export class TracklistComponent extends TracklistBaseComponent implements OnInit
 			actions,
 		}).then((action) => {
 			switch (action.id) {
+				case "queue":
+					this.queue(tracks);
+					break;
 				case "remove":
 					this.remove(tracks);
 					break;
@@ -84,11 +95,59 @@ export class TracklistComponent extends TracklistBaseComponent implements OnInit
 			} else {
 				this.mpc.socket.currentPlaylist.move(args.index, args.data.targetIndex);
 			}
+		} else if (this.type === "playlist") {
+			if (this.mopidy) {
+				(<MopidyPlaylist> this.currentPlaylist).tracks.splice(
+					args.data.targetIndex,
+					0,
+					(<MopidyPlaylist> this.currentPlaylist).tracks.splice(args.index, 1)[0],
+				);
+				this.mpc.socket.playlists.save([this.currentPlaylist]);
+			} else {
+				this.mpc.socket.storedPlaylists.playlistMove(this.currentPlaylist.name, args.index, args.data.targetIndex);
+			}
 		}
 	}
 
 	scrollTo(): void {
 		const index = this.tracks.findIndex((track) => track.id === this.currentTrack.id);
 		this.listView.nativeElement.scrollToIndex(index);
+	}
+
+	groupBy(key: "none" | "album" | "artist"): void {
+		this.grouping = key;
+		switch (key) {
+			case "album":
+				this.groupingFunc = this.groupByAlbum;
+				this.listView.nativeElement.groupingFunction = this.groupByAlbum;
+				break;
+			case "none":
+				this.groupingFunc = undefined;
+				this.listView.nativeElement.groupingFunction = undefined;
+				break;
+			case "artist":
+				this.groupingFunc = this.groupByArtist;
+				this.listView.nativeElement.groupingFunction = this.groupByArtist;
+		}
+	}
+
+	groupByMenu(view: Button): void {
+		const actions: Array<{ id: string, title: string }> = [
+			{ id: "none", title: "Ungroup" },
+			{ id: "album", title: "By album" },
+			{ id: "artist", title: "By artist" },
+		];
+		Menu.popup({
+			view,
+			actions,
+		}).then((action) => this.groupBy(action.id));
+	}
+
+	groupByAlbum(track: Track): string {
+		return track.album.title;
+	}
+
+	groupByArtist(track: Track): string {
+		return track.albumArtist.title;
 	}
 }

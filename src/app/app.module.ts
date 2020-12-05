@@ -15,6 +15,7 @@ import { MatSliderModule } from "@angular/material/slider";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatCardModule } from "@angular/material/card";
+import { MatTreeModule } from "@angular/material/tree";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 
@@ -33,6 +34,7 @@ import { QueueComponent } from "@src/app/queue/queue.component";
 import { NewPlaylistComponent } from "@src/app/core/components/new-playlist/new-playlist.component";
 import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
 import { BrowserGridComponent } from "@src/app/core/components/browser-grid/browser-grid.component";
+import { PlaylistComponent } from "@src/app/playlist/playlist.component";
 
 
 @NgModule({
@@ -47,6 +49,7 @@ import { BrowserGridComponent } from "@src/app/core/components/browser-grid/brow
 		NewPlaylistComponent,
 		PlaylistsComponent,
 		BrowserGridComponent,
+		PlaylistComponent,
 	],
 	entryComponents: [
 		NewPlaylistComponent,
@@ -67,6 +70,7 @@ import { BrowserGridComponent } from "@src/app/core/components/browser-grid/brow
 		MatMenuModule,
 		MatDialogModule,
 		MatCardModule,
+		MatTreeModule,
 		DragDropModule,
 		ScrollingModule,
 		VirtualScrollerModule,

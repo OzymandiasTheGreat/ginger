@@ -1,14 +1,16 @@
 <GridLayout rows="50, *" >
 	<GridLayout row="0" columns="*, auto" class="toolbar" >
 		<StackLayout col="1" orientation="horizontal" >
-			<Button class="mdi btn" text="󰆹" (tap)="scrollTo()" ></Button>
+			<Button *ngIf="type === 'queue'" class="mdi btn" text="󰆹" (tap)="scrollTo()" ></Button>
+			<Button #groupMenu class="mdi btn" text="󰋃" (tap)="groupByMenu(groupMenu)" ></Button>
+			<Button *ngIf="type !== 'queue'" class="mdi btn" text="󰐕" (tap)="queue(tracks)" ></Button>
 			<Button #toolbarMenu class="mdi btn" text="󰆔" (tap)="playlistMenu(toolbarMenu, tracks)" ></Button>
-			<Button class="mdi btn" text="󰎟" (tap)="clear()" ></Button>
+			<Button *ngIf="type === 'queue' || type === 'playlist'" class="mdi btn" text="󰎟" (tap)="clear()" ></Button>
 		</StackLayout>
 	</GridLayout>
-	<RadListView #listView row="1" [items]="tracks" itemReorder="true" (itemReordered)="move($event)" >
+	<RadListView #listView row="1" id="listView" [items]="tracks" [groupingFunction]="groupingFunc" [itemReorder]="!groupingFunc" (itemReordered)="move($event)" >
 		<ng-template tkListItemTemplate let-track="item" >
-			<GridLayout [ngClass]="{ current: track.id === currentTrack?.id }" columns="24, *, 24" >
+			<GridLayout [ngClass]="{ current: currentTrack && track.id === currentTrack?.id }" columns="24, *, 24" >
 				<Image col="0" class="mdi indicator" src="font://󰐊" stretch="none" ></Image>
 				<StackLayout col="1" orientation="horizontal" (tap)="play(track)" >
 					<Label class="title" [text]="track?.title" ></Label>
@@ -18,5 +20,27 @@
 				<Image #menu col="2" class="mdi" src="font://󰇙" stretch="none" (tap)="overflow(menu, [track])" ></Image>
 			</GridLayout>
 		</ng-template>
+
+		<ng-template tkGroupTemplate let-category="category" >
+			<GridLayout columns="auto, *" >
+				<GridLayout col="0">
+					<ng-container [ngSwitch]="grouping" >
+						<ng-container *ngSwitchCase="'album'" >
+							<Image class="mdi art" src="font://󰀥" stretch="none" ></Image>
+							<NSImg *ngFor="let uri of covers[category]" class="art" [src]="uri" ></NSImg>
+						</ng-container>
+						<ng-container *ngSwitchCase="'artist'" >
+							<Image class="mdi art" src="font://󰠃" stretch="none" ></Image>
+							<NSImg *ngFor="let uri of artists[category]" class="art" [src]="uri" ></NSImg>
+						</ng-container>
+						<ng-container *ngSwitchDefault >
+							<Image class="mdi art" src="font://󰀥" stretch="none" ></Image>
+						</ng-container>
+					</ng-container>
+				</GridLayout>
+				<Label col="1" class="header" [text]="category" ></Label>
+			</GridLayout>
+		</ng-template>
 	</RadListView>
+	<FAB row="1" *ngIf="type !== 'queue'" class="mdi fab" hideOnSwipeOfView="listView" text="󰐊" (tap)="play()" ></FAB>
 </GridLayout>

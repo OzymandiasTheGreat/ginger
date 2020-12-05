@@ -1,16 +1,24 @@
 <div class="container">
 	<mat-toolbar class="toolbar">
-		<button mat-icon-button (click)="scrollTo()" ><mat-icon svgIcon="debug-step-into" ></mat-icon></button>
-		<button mat-icon-button [matMenuTriggerFor]="playlistMenu" ><mat-icon svgIcon="content-save-all" ></mat-icon></button>
-		<button mat-icon-button (click)="clear()" ><mat-icon svgIcon="notification-clear-all" ></mat-icon></button>
+		<button mat-fab *ngIf="type !== 'queue'" class="btn fab" (click)="play()" ><mat-icon svgIcon="play" ></mat-icon></button>
+		<button mat-icon-button *ngIf="type === 'queue'" class="btn" (click)="scrollTo()" ><mat-icon svgIcon="debug-step-into" ></mat-icon></button>
+		<button mat-icon-button class="btn" [matMenuTriggerFor]="groupMenu" ><mat-icon svgIcon="group" ></mat-icon></button>
+		<button mat-icon-button *ngIf="type !== 'queue'" class="btn" (click)="queue(tracks)" ><mat-icon svgIcon="plus" ></mat-icon></button>
+		<button mat-icon-button class="btn" [matMenuTriggerFor]="playlistMenu" ><mat-icon svgIcon="content-save-all" ></mat-icon></button>
+		<button mat-icon-button *ngIf="type === 'queue' || type === 'playlist'" class="btn" (click)="clear()" ><mat-icon svgIcon="notification-clear-all" ></mat-icon></button>
+		<mat-menu #groupMenu >
+			<button mat-menu-item (click)="groupBy('none')" >Ungroup</button>
+			<button mat-menu-item (click)="groupBy('album')" >By album</button>
+			<button mat-menu-item (click)="groupBy('artist')" >By artist</button>
+		</mat-menu>
 		<mat-menu #playlistMenu >
 			<button mat-menu-item (click)="newPlaylist(tracks)" >New playlist</button>
 			<button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="addPlaylist(playlist.uri, tracks)" >{{ playlist.name }}</button>
 		</mat-menu>
 	</mat-toolbar>
-	<cdk-virtual-scroll-viewport #scroller itemSize="56" class="tracklist-wrapper" >
+	<cdk-virtual-scroll-viewport #scroller *ngIf="grouping === 'none'" itemSize="56" class="tracklist-wrapper" >
 		<mat-action-list cdkDropList (cdkDropListDropped)="move($event)" class="tracklist" >
-			<button mat-list-item cdkDrag *cdkVirtualFor="let track of tracks" class="track" [ngClass]="{ active: currentTrack.id === track.id }" >
+			<button mat-list-item cdkDrag *cdkVirtualFor="let track of tracks" class="track" [ngClass]="{ active: currentTrack && currentTrack?.id === track.id }" >
 				<mat-icon matListAvatar svgIcon="play" class="indicator" ></mat-icon>
 				<div mat-line (click)="play(track)" class="info" >
 					<span class="title" >{{ track?.title }}</span>
@@ -18,15 +26,69 @@
 					<span class="artist" >{{ track?.artist.title }}</span>
 				</div>
 				<mat-icon matListIcon [matMenuTriggerFor]="trackMenu" class="menu" svgIcon="dots-vertical" ></mat-icon>
-				<mat-menu #trackMenu >
+				<mat-menu #trackMenu="matMenu" >
 					<button mat-menu-item (click)="remove([track])" >Remove</button>
 					<button mat-menu-item [matMenuTriggerFor]="trackPlaylistMenu" >Add to playlist</button>
 				</mat-menu>
-				<mat-menu #trackPlaylistMenu >
+				<mat-menu #trackPlaylistMenu="matMenu" >
 					<button mat-menu-item (click)="newPlaylist([track])" >New playlist</button>
 					<button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="addPlaylist(playlist.uri, [track])" >{{ playlist.name }}</button>
 				</mat-menu>
 			</button>
 		</mat-action-list>
 	</cdk-virtual-scroll-viewport>
+
+	<virtual-scroller #vscroll *ngIf="grouping !== 'none'" class="vscroll" [items]="treeDataSource">
+		<mat-tree [dataSource]="vscroll.viewPortItems" [treeControl]="treeControl" >
+			<!-- This is the tree node template for leaf nodes -->
+			<mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="node" >
+				<div class="tree-row" [ngClass]="{ active: currentTrack && currentTrack?.id === node.track.id }" >
+					<mat-icon svgIcon="play" class="indicator" ></mat-icon>
+					<div (click)="play(node.track)" class="info" >
+						<span class="title" >{{ node?.title }}</span>
+						<span class="sep" >&nbsp;&mdash;&nbsp;</span>
+						<span class="artist" >{{ node?.artist }}</span>
+					</div>
+					<mat-icon [matMenuTriggerFor]="treeTrackMenu" class="menu" svgIcon="dots-vertical" ></mat-icon>
+					<mat-menu #treeTrackMenu="matMenu" >
+						<button mat-menu-item (click)="remove([node.track])" >Remove</button>
+						<button mat-menu-item [matMenuTriggerFor]="treeTrackPlaylistMenu" >Add to playlist</button>
+					</mat-menu>
+					<mat-menu #treeTrackPlaylistMenu="matMenu" >
+						<button mat-menu-item (click)="newPlaylist([node.track])" >New playlist</button>
+						<button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="addPlaylist(playlist.uri, [node.track])" >{{ playlist.name }}</button>
+					</mat-menu>
+				</div>
+			</mat-tree-node>
+			<!-- This is the tree node template for expandable nodes -->
+			<mat-tree-node *matTreeNodeDef="let node; when: nodeHasChildren" matTreeNodePadding class="node" >
+				<div class="tree-header">
+					<ng-container [ngSwitch]="grouping" >
+						<div *ngSwitchCase="'album'" class="art">
+							<mat-icon svgIcon="album" ></mat-icon>
+							<img *ngFor="let uri of covers[node.album]" [src]="uri" >
+						</div>
+						<div *ngSwitchCase="'artist'" class="art">
+							<mat-icon svgIcon="account-music" ></mat-icon>
+							<img *ngFor="let uri of artists[node.albumArtist]" [src]="uri" >
+						</div>
+						<div *ngSwitchDefault class="art" >
+							<mat-icon svgIcon="album" ></mat-icon>
+						</div>
+					</ng-container>
+					<ng-container [ngSwitch]="grouping" >
+						<div *ngSwitchCase="'album'" class="tree-header-info" >
+							{{ node.album }}
+						</div>
+						<div *ngSwitchCase="'artist'" class="tree-header-info" >
+							{{ node.albumArtist }}
+						</div>
+						<div *ngSwitchDefault class="tree-header-info" >
+							{{ node.album }}
+						</div>
+					</ng-container>
+				</div>
+			</mat-tree-node>
+		</mat-tree>
+	</virtual-scroller>
 </div>

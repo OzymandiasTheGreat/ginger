@@ -24,6 +24,7 @@ import { TracklistComponent } from "@src/app/core/components/tracklist/tracklist
 import { QueueComponent } from "@src/app/queue/queue.component";
 import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
 import { BrowserGridComponent } from "@src/app/core/components/browser-grid/browser-grid.component";
+import { PlaylistComponent } from "@src/app/playlist/playlist.component";
 
 
 if (Application.android) {
@@ -51,6 +52,7 @@ registerElement("CardView", () => CardView);
 		QueueComponent,
 		PlaylistsComponent,
 		BrowserGridComponent,
+		PlaylistComponent,
 	],
 	imports: [
 		NativeScriptModule,
