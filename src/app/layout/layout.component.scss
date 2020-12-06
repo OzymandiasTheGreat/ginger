@@ -51,5 +51,10 @@ mat-toolbar {
 }
 
 .search {
-	width: 250px;
+	display: inline-block;
+	width: 375px;
+
+	.mat-form-field {
+		width: 100%;
+	}
 }

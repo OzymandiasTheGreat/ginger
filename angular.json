@@ -37,6 +37,7 @@
             "allowedCommonJsDependencies": [
               "mopidy",
               "mpc-js-web",
+              "search-query-parser",
               "@tweenjs/tween.js"
             ],
             "customWebpackConfig": {

@@ -1,6 +1,6 @@
 <StackLayout>
-	<GridLayout *ngIf="artists.length" rows="auto, *" >
-		<Label row="0" text="Artists" />
+	<GridLayout *ngIf="artists?.length" rows="auto, *" >
+		<Label row="0" text="Artists" ></Label>
 		<RadListView row="1" [items]="artists" >
 			<ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ></ListViewLinearLayout>
 				<ng-template tkListItemTemplate let-item="item" >
@@ -16,8 +16,8 @@
 				</ng-template>
 		</RadListView>
 	</GridLayout>
-	<GridLayout *ngIf="albums.length" rows="auto, *" >
-		<Label row="0" text="Albums" />
+	<GridLayout *ngIf="albums?.length" rows="auto, *" >
+		<Label row="0" text="Albums" ></Label>
 		<RadListView row="1" [items]="albums" >
 			<ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ></ListViewLinearLayout>
 				<ng-template tkListItemTemplate let-item="item" >

@@ -19,10 +19,12 @@
 					<span class="title" >Connect</span>
 				</div>
 				<div class="right">
-					<mat-form-field *ngIf="searchVisible" class="search" >
-						<mat-label>Enter a query...</mat-label>
-						<input matInput >
-					</mat-form-field>
+					<form (ngSubmit)="search(field)" *ngIf="searchVisible" class="search" >
+						<mat-form-field >
+							<mat-label>Enter a query...</mat-label>
+							<input #field matInput >
+						</mat-form-field>
+					</form>
 					<mat-icon svgIcon="magnify" (click)="toggleSearch()" ></mat-icon>
 				</div>
 			</mat-toolbar>

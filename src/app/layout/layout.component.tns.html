@@ -2,7 +2,7 @@
 	<StackLayout orientation="horizontal" horizontalAlignment="left">
 		<Image class="nav-logo" src="res://ginger_mono" stretch="aspectFit" (tap)="drawer.sideDrawer.toggleDrawerState()" ></Image>
 		<Label *ngIf="!searchVisible" class="title" text="Connect" ></Label>
-		<TextField *ngIf="searchVisible" class="search" hint="Enter a query..." (returnPress)="search($event)" ></TextField>
+		<TextField *ngIf="searchVisible" class="search" hint="Enter a query..." (loaded)="setSearchField($event)" (returnPress)="search($event)" ></TextField>
 	</StackLayout>
 	<ActionItem class="mdi" icon="font://󰍉" (tap)="toggleSearch()" android.position="actionBar" ios.position="right" ></ActionItem>
 </ActionBar>

@@ -1,1 +1,57 @@
-<p>search-results works!</p>
+<div class="container">
+	<div *ngIf="artists?.length" class="section">
+		<h3>Artists</h3>
+		<virtual-scroller #scroll class="scroller" [horizontal]="true" [items]="artists">
+			<mat-card *ngFor="let item of scroll.viewPortItems" class="card" >
+				<mat-card-header class="header">
+					<mat-card-title class="title" >{{ item.name }}</mat-card-title>
+				</mat-card-header>
+				<div mat-card-image class="art" >
+					<mat-icon class="icon" svgIcon="account-music" ></mat-icon>
+					<img *ngFor="let uri of item.art" [src]="uri" >
+				</div>
+				<mat-card-actions class="actions" >
+					<button mat-fab color="primary" class="play" ><mat-icon svgIcon="play" ></mat-icon></button>
+					<button mat-icon-button class="menu" [matMenuTriggerFor]="itemMenu" ><mat-icon svgIcon="dots-vertical" ></mat-icon></button>
+					<mat-menu #itemMenu="matMenu" >
+						<button mat-menu-item >Add to queue</button>
+						<button mat-menu-item [matMenuTriggerFor]="playlistMenu" >Add to playlist</button>
+						<button mat-menu-item >Remove</button>
+					</mat-menu>
+					<mat-menu #playlistMenu="matMenu" >
+						<button mat-menu-item >New playlist</button>
+						<!-- <button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="add_playlist(playlist.uri, item.uri)" >{{ playlist.name }}</button> -->
+					</mat-menu>
+				</mat-card-actions>
+			</mat-card>
+		</virtual-scroller>
+	</div>
+	<div *ngIf="albums?.length" class="section">
+		<h3>Albums</h3>
+		<virtual-scroller #scroll class="scroller" [horizontal]="true" [items]="albums">
+			<mat-card *ngFor="let item of scroll.viewPortItems" class="card" >
+				<mat-card-header class="header">
+					<mat-card-title class="title" >{{ item.name }}</mat-card-title>
+				</mat-card-header>
+				<div mat-card-image class="art" >
+					<mat-icon class="icon" svgIcon="account-music" ></mat-icon>
+					<img *ngFor="let uri of item.art" [src]="uri" >
+				</div>
+				<mat-card-actions class="actions" >
+					<button mat-fab color="primary" class="play" ><mat-icon svgIcon="play" ></mat-icon></button>
+					<button mat-icon-button class="menu" [matMenuTriggerFor]="itemMenu" ><mat-icon svgIcon="dots-vertical" ></mat-icon></button>
+					<mat-menu #itemMenu="matMenu" >
+						<button mat-menu-item >Add to queue</button>
+						<button mat-menu-item [matMenuTriggerFor]="playlistMenu" >Add to playlist</button>
+						<button mat-menu-item >Remove</button>
+					</mat-menu>
+					<mat-menu #playlistMenu="matMenu" >
+						<button mat-menu-item >New playlist</button>
+						<!-- <button mat-menu-item *ngFor="let playlist of pls.playlists" (click)="add_playlist(playlist.uri, item.uri)" >{{ playlist.name }}</button> -->
+					</mat-menu>
+				</mat-card-actions>
+			</mat-card>
+		</virtual-scroller>
+	</div>
+	<app-tracklist type="browser" [tracks]="tracks" ></app-tracklist>
+</div>
