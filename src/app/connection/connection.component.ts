@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 import { CURRENT_CONNECTION_ADDRESS, CURRENT_CONNECTION_PASSWORD, CURRENT_MOPIDY, CONNECTION_HISTORY } from "@src/app/types/constants";
 import { MpcService } from "@src/app/services/mpc.service";
@@ -15,14 +16,19 @@ export class ConnectionComponent implements OnInit {
 	public address: string;
 	public password: string;
 
-	constructor(public mpc: MpcService) { }
+	constructor(
+		protected route: ActivatedRoute,
+		public mpc: MpcService,
+	) { }
 
 	ngOnInit(): void {
 		this.history = JSON.parse(window.localStorage.getItem(CONNECTION_HISTORY) || "[]");
 		this.address = window.localStorage.getItem(CURRENT_CONNECTION_ADDRESS) || "";
 		this.password = window.localStorage.getItem(CURRENT_CONNECTION_PASSWORD) || "";
 		this.mopidy = JSON.parse(window.localStorage.getItem(CURRENT_MOPIDY) || "false");
-		this.mpc.connection.subscribe((conn) => console.log(conn));
+		if (this.route.snapshot.paramMap.get("reconnect")) {
+			this.connect();
+		}
 	}
 
 	connect(): void {
@@ -37,12 +43,14 @@ export class ConnectionComponent implements OnInit {
 		if (index > -1) {
 			this.history.splice(index, 1);
 		}
-		this.history.unshift(entry);
-		window.localStorage.setItem(CONNECTION_HISTORY, JSON.stringify(this.history));
-		window.localStorage.setItem(CURRENT_CONNECTION_ADDRESS, this.address);
-		window.localStorage.setItem(CURRENT_CONNECTION_PASSWORD, this.password);
-		window.localStorage.setItem(CURRENT_MOPIDY, JSON.stringify(this.mopidy));
-		this.mpc.connect(this.address, this.password, this.mopidy);
+		if (entry.address) {
+			this.history.unshift(entry);
+			window.localStorage.setItem(CONNECTION_HISTORY, JSON.stringify(this.history));
+			window.localStorage.setItem(CURRENT_CONNECTION_ADDRESS, this.address);
+			window.localStorage.setItem(CURRENT_CONNECTION_PASSWORD, this.password);
+			window.localStorage.setItem(CURRENT_MOPIDY, JSON.stringify(this.mopidy));
+			this.mpc.connect(this.address, this.password, this.mopidy);
+		}
 	}
 
 	fill(address: string, password: string, mopidy: boolean): void {

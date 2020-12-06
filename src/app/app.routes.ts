@@ -1,5 +1,7 @@
 import { Routes } from "@angular/router";
 
+import { ConnectedGuard } from "@src/app/services/connected.guard";
+
 import { LayoutComponent } from "@src/app/layout/layout.component";
 import { ConnectionComponent } from "@src/app/connection/connection.component";
 import { QueueComponent } from "@src/app/queue/queue.component";
@@ -26,22 +28,27 @@ export const routes: Routes = [
 			{
 				path: "queue",
 				component: QueueComponent,
+				canActivate: [ConnectedGuard],
 			},
 			{
 				path: "playlists",
 				component: PlaylistsComponent,
+				canActivate: [ConnectedGuard],
 			},
 			{
 				path: "playlists/:id",
 				component: PlaylistComponent,
+				canActivate: [ConnectedGuard],
 			},
 			{
 				path: "browse",
 				component: BrowserComponent,
+				canActivate: [ConnectedGuard],
 			},
 			{
 				path: "search",
 				component: SearchResultsComponent,
+				canActivate: [ConnectedGuard],
 			},
 		],
 	},

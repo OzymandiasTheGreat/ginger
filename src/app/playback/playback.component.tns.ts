@@ -1,4 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from "@angular/core";
+import { RouterExtensions } from "@nativescript/angular";
 import { ApplicationSettings, TouchGestureEventData, TouchAction, Button } from "@nativescript/core";
 import { Menu } from "nativescript-menu";
 
@@ -25,15 +26,25 @@ export class PlaybackComponent extends PlaybackBase implements OnInit {
 
 	@ViewChild("menu") public menuBtn: ElementRef<Button>;
 
-	constructor(zone: NgZone, mpc: MpcService, art: ArtService) {
+	constructor(
+		protected zone: NgZone,
+		protected router: RouterExtensions,
+		public mpc: MpcService,
+		public art: ArtService,
+	) {
 		super(zone, mpc, art);
 	}
 
 	ngOnInit(): void {
 		this.mpc.connection.subscribe((conn) => {
-			this.mopidy = ApplicationSettings.getBoolean(CURRENT_MOPIDY);
 			this.enabled = conn;
-			this.setup();
+			if (conn) {
+				this.mopidy = ApplicationSettings.getBoolean(CURRENT_MOPIDY);
+				this.setup();
+				this.router.navigate(["/queue"]);
+			} else {
+				this.router.navigate(["/connect"], { queryParams: { reconnect: true } });
+			}
 		});
 	}
 

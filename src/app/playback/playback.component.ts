@@ -1,4 +1,5 @@
 import { Component, OnInit, NgZone } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { PlaybackBase } from "@src/app/playback/playback.component.base";
 import { CURRENT_MOPIDY } from "@src/app/types/constants";
@@ -26,15 +27,25 @@ export class PlaybackComponent extends PlaybackBase implements OnInit {
 	public single: boolean;
 	public consume: boolean;
 
-	constructor(zone: NgZone, mpc: MpcService, art: ArtService) {
+	constructor(
+		protected zone: NgZone,
+		protected router: Router,
+		protected mpc: MpcService,
+		protected art: ArtService,
+	) {
 		super(zone, mpc, art);
 	}
 
 	ngOnInit(): void {
 		this.mpc.connection.subscribe((conn) => {
-			this.mopidy = JSON.parse(window.localStorage.getItem(CURRENT_MOPIDY));
 			this.enabled = conn;
-			this.setup();
+			if (conn) {
+				this.mopidy = JSON.parse(window.localStorage.getItem(CURRENT_MOPIDY));
+				this.setup();
+				this.router.navigate(["/queue"]);
+			} else {
+				this.router.navigate(["/connect"], { queryParams: { reconnect: true } });
+			}
 		});
 	}
 
