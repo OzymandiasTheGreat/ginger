@@ -5,11 +5,11 @@ import * as path from "path-browserify";
 
 import { Ref } from "@src/app/types/ref";
 import { Track, MopidyTrack, TlTrack } from "@src/app/types/track";
+import { MopidyPlaylist } from "@src/app/types/playlist";
 import { track2track, song2track } from "@src/app/functions/track";
 import { GridItem, GridType, GridEvent } from "@src/app/core/components/browser-grid/browser-grid.component.base";
 import { MpcService } from "@src/app/services/mpc.service";
 import { ArtService } from "@src/app/services/art.service";
-import { MopidyPlaylist } from "../types/playlist";
 
 
 export class BrowserBase {

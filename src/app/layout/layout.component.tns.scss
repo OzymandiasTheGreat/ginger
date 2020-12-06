@@ -1,7 +1,13 @@
 /* Add mobile styles for the component here.  */
-RadSideDrawer .nav-label {
-	font-size: 16;
-	padding: 10 25;
+RadSideDrawer {
+	.nav-label {
+		font-size: 18;
+		padding: 20 35;
+	}
+
+	.active {
+		font-weight: bold;
+	}
 }
 
 .nav-logo {

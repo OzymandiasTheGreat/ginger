@@ -1,21 +1,21 @@
 <ActionBar>
 	<StackLayout orientation="horizontal" horizontalAlignment="left">
-		<Image class="nav-logo" src="res://ginger_mono" stretch="aspectFit" (tap)="drawer.sideDrawer.toggleDrawerState()" ></Image>
-		<Label *ngIf="!searchVisible" class="title" text="Connect" ></Label>
+		<Image class="nav-logo" src="res://ginger_mono" stretch="aspectFit" tintColor="#ffffff" (tap)="drawer.sideDrawer.toggleDrawerState()" ></Image>
+		<Label *ngIf="!searchVisible" class="title" [text]="title" ></Label>
 		<TextField *ngIf="searchVisible" class="search" hint="Enter a query..." (loaded)="setSearchField($event)" (returnPress)="search($event)" ></TextField>
 	</StackLayout>
 	<ActionItem class="mdi" icon="font://󰍉" (tap)="toggleSearch()" android.position="actionBar" ios.position="right" ></ActionItem>
 </ActionBar>
-<RadSideDrawer #drawer>
+<RadSideDrawer #drawer (tap)="drawer.sideDrawer.closeDrawer()" >
 	<GridLayout tkDrawerContent rows="auto, *, auto">
 		<StackLayout row="0">
-			<Label class="nav-label" text="Queue" [nsRouterLink]="['/queue']" ></Label>
-			<Label class="nav-label" text="Playlists" [nsRouterLink]="['/playlists']" ></Label>
-			<Label class="nav-label" text="Browse" [nsRouterLink]="['/browse']" ></Label>
+			<Label class="nav-label" text="Queue" [nsRouterLink]="['/queue']" nsRouterLinkActive="active" ></Label>
+			<Label class="nav-label" text="Playlists" [nsRouterLink]="['/playlists']" nsRouterLinkActive="active" ></Label>
+			<Label class="nav-label" text="Browse" [nsRouterLink]="['/browse']" nsRouterLinkActive="active" ></Label>
 		</StackLayout>
-		<StackLayout row="1"></StackLayout>
+		<!-- <StackLayout row="1"></StackLayout> -->
 		<StackLayout row="2">
-			<Label class="nav-label" text="Connection" [nsRouterLink]="['connect']" ></Label>
+			<Label class="nav-label" text="Connection" [nsRouterLink]="['connect']" nsRouterLinkActive="active" ></Label>
 		</StackLayout>
 	</GridLayout>
 	<GridLayout tkMainContent rows="*, 80">

@@ -34,6 +34,15 @@ app-playback {
 	justify-content: space-between;
 	align-items: flex-start;
 	height: 100%;
+	width: 200px;
+
+	.nav-list {
+		width: 100%;
+
+		.active {
+			font-weight: bold;
+		}
+	}
 }
 
 mat-toolbar {

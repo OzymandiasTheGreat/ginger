@@ -1,13 +1,13 @@
 <mat-sidenav-container>
 	<mat-sidenav #drawer mode="side" opened>
 		<div class="nav-container">
-			<mat-nav-list>
-				<a mat-list-item [routerLink]="['/queue']">Queue</a>
-				<a mat-list-item [routerLink]="['/playlists']">Playlists</a>
-				<a mat-list-item [routerLink]="['/browse']">Browse</a>
+			<mat-nav-list class="nav-list" >
+				<a mat-list-item [routerLink]="['/queue']" routerLinkActive="active" >Queue</a>
+				<a mat-list-item [routerLink]="['/playlists']" routerLinkActive="active" >Playlists</a>
+				<a mat-list-item [routerLink]="['/browse']" routerLinkActive="active" >Browse</a>
 			</mat-nav-list>
-			<mat-nav-list>
-				<a mat-list-item [routerLink]="['/connect']">Connection</a>
+			<mat-nav-list class="nav-list" >
+				<a mat-list-item [routerLink]="['/connect']" routerLinkActive="active" >Connection</a>
 			</mat-nav-list>
 		</div>
 	</mat-sidenav>
@@ -16,7 +16,7 @@
 			<mat-toolbar color="primary">
 				<div class="left">
 					<img class="nav-logo" src="/assets/icons/ginger-mono.svg" alt="Toggle Sidebar" (click)="drawer.toggle()" >
-					<span class="title" >Connect</span>
+					<span class="title" >{{ title }}</span>
 				</div>
 				<div class="right">
 					<form (ngSubmit)="search(field)" *ngIf="searchVisible" class="search" >

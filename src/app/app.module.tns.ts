@@ -11,9 +11,6 @@ import { CardView } from "@nstudio/nativescript-cardview";
 
 import { AppRoutingModule } from "@src/app/app-routing.module";
 import { AppComponent } from "@src/app/app.component";
-import { HomeComponent } from "@src/app/home/home.component";
-
-import { BarcelonaModule } from "@src/app/barcelona/barcelona.module";
 import { ConnectionComponent } from "@src/app/connection/connection.component";
 import { LayoutComponent } from "@src/app/layout/layout.component";
 
@@ -26,7 +23,7 @@ import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
 import { BrowserGridComponent } from "@src/app/core/components/browser-grid/browser-grid.component";
 import { PlaylistComponent } from "@src/app/playlist/playlist.component";
 import { BrowserComponent } from "@src/app/browser/browser.component";
-import { SearchResultsComponent } from '@src/app/search-results/search-results.component';
+import { SearchResultsComponent } from "@src/app/search-results/search-results.component";
 
 
 if (Application.android) {
@@ -46,7 +43,6 @@ registerElement("CardView", () => CardView);
 @NgModule({
 	declarations: [
 		AppComponent,
-		HomeComponent,
 		ConnectionComponent,
 		LayoutComponent,
 		PlaybackComponent,
@@ -66,7 +62,6 @@ registerElement("CardView", () => CardView);
 		NativeScriptUIListViewModule,
 		TNSImageModule,
 		AppRoutingModule,
-		BarcelonaModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
