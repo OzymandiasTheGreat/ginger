@@ -31,6 +31,8 @@ export interface GridEvent {
 export class BrowserGridBaseComponent implements OnInit {
 	@Input() public type: GridType;
 	@Input() public items: GridItem[];
+	@Input() public covers: { [album: string]: string[] };
+	@Input() public artists: { [artist: string]: string[] };
 	@Output() public input: EventEmitter<GridEvent>;
 	public types = GridType;
 

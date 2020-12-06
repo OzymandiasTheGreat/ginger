@@ -1,0 +1,11 @@
+.container {
+	height: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: stretch;
+	align-self: stretch;
+
+	* {
+		flex: 1 0 auto;
+	}
+}

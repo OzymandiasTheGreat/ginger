@@ -57,6 +57,10 @@
 		}
 
 		.info {
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: flex-start;
 			max-width: 100%;
 			flex: 0 1 auto;
 		}
@@ -76,7 +80,18 @@
 
 		.btn {
 			padding: 0;
-			width: 32px;
+			max-width: 32px;
+			border-radius: 0;
+
+			&:first-of-type {
+				border-top-left-radius: 5px;
+				border-bottom-left-radius: 5px;
+			}
+
+			&:last-of-type {
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
 		}
 	}
 }

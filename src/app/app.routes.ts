@@ -5,6 +5,8 @@ import { ConnectionComponent } from "@src/app/connection/connection.component";
 import { QueueComponent } from "@src/app/queue/queue.component";
 import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
 import { PlaylistComponent } from "@src/app/playlist/playlist.component";
+import { BrowserComponent } from "@src/app/browser/browser.component";
+import { SearchResultsComponent } from "@src/app/search-results/search-results.component";
 
 
 export const routes: Routes = [
@@ -32,6 +34,14 @@ export const routes: Routes = [
 			{
 				path: "playlists/:id",
 				component: PlaylistComponent,
+			},
+			{
+				path: "browse",
+				component: BrowserComponent,
+			},
+			{
+				path: "search",
+				component: SearchResultsComponent,
 			},
 		],
 	},

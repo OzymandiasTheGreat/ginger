@@ -21,11 +21,31 @@
 				box-sizing: border-box;
 			}
 
-			.icon {
-				width: 128px;
+			.art {
+				width: 192px;
 				height: 128px;
-				margin: auto;
-				transform: translateX(10%);
+				position: relative;
+				overflow: hidden;
+
+				* {
+					position: absolute;
+					top: 0;
+					left: 50%;
+					transform: translateX(-50%);
+				}
+
+				.icon {
+					width: 128px;
+					height: 128px;
+				}
+
+				img {
+					width: 192px;
+					height: 128px;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
 			}
 
 			.actions {

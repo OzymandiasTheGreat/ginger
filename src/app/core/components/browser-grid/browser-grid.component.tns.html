@@ -7,10 +7,16 @@
 						<Label row="0" class="name" [text]="item.name" (tap)="navigate(item.uri)" ></Label>
 						<ng-container [ngSwitch]="item.type" >
 							<Image *ngSwitchCase="types.playlist" row="1" class="mdi icon" src="font://󰁧" stretch="none" (tap)="navigate(item.uri)" ></Image>
-							<Image *ngSwitchCase="types.directory" row="1" class="mdi icon" src="font://󰠃" stretch="none" (tap)="navigate(item.uri)" ></Image>
+							<Image *ngSwitchCase="types.directory" row="1" class="mdi icon" src="font://󱍙" stretch="none" (tap)="navigate(item.uri)" ></Image>
 							<Image *ngSwitchCase="types.artist" row="1" class="mdi icon" src="font://󰠃" stretch="none" (tap)="navigate(item.uri)" ></Image>
 							<Image *ngSwitchCase="types.album" row="1" class="mdi icon" src="font://󰀥" stretch="none" (tap)="navigate(item.uri)" ></Image>
-							<Image *ngSwitchDefault row="1" class="mdi icon" src="font://󰠃" stretch="none" (tap)="navigate(item.uri)" ></Image>
+							<Image *ngSwitchDefault row="1" class="mdi icon" src="font://󰀥" stretch="none" (tap)="navigate(item.uri)" ></Image>
+						</ng-container>
+						<ng-container *ngIf="covers && item.type === types.album">
+							<NSImg *ngFor="let uri of covers[item.name]" row="1" [src]="uri" ></NSImg>
+						</ng-container>
+						<ng-container *ngIf="artists && item.type === types.artist">
+							<NSImg *ngFor="let uri of artists[item.name]" row="1" [src]="uri" ></NSImg>
 						</ng-container>
 						<FAB row="1" class="mdi play" text=" 󰐊" (tap)="play(item.uri)" ></FAB>
 						<Button #menu row="2" class="mdi menu" text="󰇙" (tap)="overflow(menu, item.uri)" ></Button>

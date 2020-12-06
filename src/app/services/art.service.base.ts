@@ -79,13 +79,21 @@ export class ArtBase {
 					}
 				}
 				if (album) {
-					this.setter(this.getStorageKey(StorageKey.SpotifyAbumSmall, artist, album), smallest.url);
-					this.setter(this.getStorageKey(StorageKey.SpotifyAbumLarge, artist, album), largest.url);
+					if (smallest) {
+						this.setter(this.getStorageKey(StorageKey.SpotifyAbumSmall, artist, album), smallest.url);
+					}
+					if (largest) {
+						this.setter(this.getStorageKey(StorageKey.SpotifyAbumLarge, artist, album), largest.url);
+					}
 				} else {
-					this.setter(this.getStorageKey(StorageKey.SpotifyArtistSmall, artist), smallest.url);
-					this.setter(this.getStorageKey(StorageKey.SpotifyArtistLarge, artist), largest.url);
+					if (smallest) {
+						this.setter(this.getStorageKey(StorageKey.SpotifyArtistSmall, artist), smallest.url);
+					}
+					if (largest) {
+						this.setter(this.getStorageKey(StorageKey.SpotifyArtistLarge, artist), largest.url);
+					}
 				}
-				return large ? largest.url : smallest.url;
+				return large ? largest?.url : smallest?.url;
 			}
 		});
 	}
@@ -139,11 +147,11 @@ export class ArtBase {
 				lastFM = this.getter(this.getStorageKey(lastFMKey, artist));
 			}
 			if (spotify || lastFM) {
-				resolve([spotify, lastFM]);
+				resolve([lastFM, spotify]);
 			} else {
 				resolve(Promise.all([
-					this.getSpotifyArt(artist, album, large),
 					this.getLastFMArt(artist, album, large),
+					this.getSpotifyArt(artist, album, large),
 				]));
 			}
 		});

@@ -13,7 +13,7 @@ import { ArtService } from "@src/app/services/art.service";
 })
 export class TracklistBaseComponent implements OnInit, OnChanges {
 	@Input() public tracks: Track[];
-	@Input() public type: "queue" | "playlist";
+	@Input() public type: "queue" | "playlist" | "browser";
 	public mopidy: boolean;
 	public currentTrack: Track;
 	@Input() public currentPlaylist: MopidyPlaylist | StoredPlaylist;

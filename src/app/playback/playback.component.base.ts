@@ -70,7 +70,7 @@ export class PlaybackBase {
 			});
 		} else {
 			this.zone.run(() => {
-				this.mpc.socket.status.currentSong().then((song) => {
+				this.mpc.socket.status?.currentSong().then((song) => {
 					if (song) {
 						this.track.title = song.title || song.name;
 						this.track.artist = song.artist;

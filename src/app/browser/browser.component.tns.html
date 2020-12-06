@@ -1,0 +1,4 @@
+<StackLayout >
+	<app-browser-grid *ngIf="items && items.length" [items]="items" [covers]="covers" [artists]="artists" (input)="onInput($event)" ></app-browser-grid>
+	<app-tracklist *ngIf="tracks && tracks.length" type="browser" [tracks]="tracks" ></app-tracklist>
+</StackLayout>

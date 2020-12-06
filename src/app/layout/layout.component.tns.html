@@ -2,15 +2,16 @@
 	<StackLayout orientation="horizontal" horizontalAlignment="left">
 		<Image class="nav-logo" src="res://ginger_mono" stretch="aspectFit" (tap)="drawer.sideDrawer.toggleDrawerState()" ></Image>
 		<Label *ngIf="!searchVisible" class="title" text="Connect" ></Label>
-		<TextField *ngIf="searchVisible" class="search" hint="Enter a query to filter or search..." ></TextField>
+		<TextField *ngIf="searchVisible" class="search" hint="Enter a query..." (returnPress)="search($event)" ></TextField>
 	</StackLayout>
 	<ActionItem class="mdi" icon="font://󰍉" (tap)="toggleSearch()" android.position="actionBar" ios.position="right" ></ActionItem>
 </ActionBar>
 <RadSideDrawer #drawer>
 	<GridLayout tkDrawerContent rows="auto, *, auto">
 		<StackLayout row="0">
-			<Label class="nav-label" text="Queue" [nsRouterLink]="['queue']" ></Label>
-			<Label class="nav-label" text="Playlists" [nsRouterLink]="['playlists']" ></Label>
+			<Label class="nav-label" text="Queue" [nsRouterLink]="['/queue']" ></Label>
+			<Label class="nav-label" text="Playlists" [nsRouterLink]="['/playlists']" ></Label>
+			<Label class="nav-label" text="Browse" [nsRouterLink]="['/browse']" ></Label>
 		</StackLayout>
 		<StackLayout row="1"></StackLayout>
 		<StackLayout row="2">
@@ -18,7 +19,7 @@
 		</StackLayout>
 	</GridLayout>
 	<GridLayout tkMainContent rows="*, 80">
-		<router-outlet row="0" ></router-outlet>
+		<page-router-outlet row="0" actionBarVisibility="never" ></page-router-outlet>
 		<app-playback row="1" ></app-playback>
 	</GridLayout>
 </RadSideDrawer>

@@ -4,7 +4,21 @@
 			<mat-card-header class="header">
 				<mat-card-title class="title" (click)="navigate(item.uri)" >{{ item.name }}</mat-card-title>
 			</mat-card-header>
-			<mat-icon mat-card-image class="icon" svgIcon="book-music" (click)="navigate(item.uri)" ></mat-icon>
+			<div mat-card-image class="art" >
+				<ng-container [ngSwitch]="item.type" >
+					<mat-icon *ngSwitchCase="types.playlist" class="icon" svgIcon="book-music" (click)="navigate(item.uri)" ></mat-icon>
+					<mat-icon *ngSwitchCase="types.directory" class="icon" svgIcon="folder-music" (click)="navigate(item.uri)" ></mat-icon>
+					<mat-icon *ngSwitchCase="types.artist" class="icon" svgIcon="account-music" (click)="navigate(item.uri)" ></mat-icon>
+					<mat-icon *ngSwitchCase="types.album" class="icon" svgIcon="album" (click)="navigate(item.uri)" ></mat-icon>
+					<mat-icon *ngSwitchDefault class="icon" svgIcon="album" (click)="navigate(item.uri)" ></mat-icon>
+				</ng-container>
+				<ng-container *ngIf="item.type === types.album && covers[item.name] && covers[item.name].length" >
+					<img *ngFor="let uri of covers[item.name]" [src]="uri" (click)="navigate(item.uri)" >
+				</ng-container>
+				<ng-container *ngIf="item.type === types.artist && artists[item.name] && artists[item.name].length" >
+					<img *ngFor="let uri of artists[item.name]" [src]="uri" (click)="navigate(item.uri)" >
+				</ng-container>
+			</div>
 			<mat-card-actions class="actions" >
 				<button mat-fab color="primary" class="play" (click)="play(item.uri)" ><mat-icon svgIcon="play" ></mat-icon></button>
 				<button mat-icon-button class="menu" [matMenuTriggerFor]="itemMenu" ><mat-icon svgIcon="dots-vertical" ></mat-icon></button>

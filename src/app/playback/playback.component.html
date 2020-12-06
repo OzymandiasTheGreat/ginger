@@ -3,8 +3,8 @@
 	<div class="panel">
 		<div class="left">
 			<div class="art">
-				<img *ngFor="let uri of artURIs" [src]="uri">
 				<mat-icon svgIcon="album" ></mat-icon>
+				<img *ngFor="let uri of artURIs" [src]="uri">
 			</div>
 			<div class="info">
 				<div class="title">{{ track?.title }}</div>

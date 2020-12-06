@@ -35,6 +35,8 @@ import { NewPlaylistComponent } from "@src/app/core/components/new-playlist/new-
 import { PlaylistsComponent } from "@src/app/playlists/playlists.component";
 import { BrowserGridComponent } from "@src/app/core/components/browser-grid/browser-grid.component";
 import { PlaylistComponent } from "@src/app/playlist/playlist.component";
+import { BrowserComponent } from "@src/app/browser/browser.component";
+import { SearchResultsComponent } from '@src/app/search-results/search-results.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { PlaylistComponent } from "@src/app/playlist/playlist.component";
 		PlaylistsComponent,
 		BrowserGridComponent,
 		PlaylistComponent,
+		BrowserComponent,
+		SearchResultsComponent,
 	],
 	entryComponents: [
 		NewPlaylistComponent,

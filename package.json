@@ -22,7 +22,8 @@
   },
   "private": true,
   "browser": {
-    "events": "./node_modules/events/events.js"
+    "events": "./node_modules/events/events.js",
+    "path": "./node_modules/path-browserify/index.js"
   },
   "dependencies": {
     "@angular/animations": "~10.1.0",
@@ -51,8 +52,11 @@
     "nativescript-ui-listview": "^9.0.4",
     "nativescript-ui-sidedrawer": "^9.0.3",
     "nativescript-websockets": "^1.5.6",
+    "ngx-virtual-scroller": "^4.0.3",
+    "path-browserify": "^1.0.1",
     "reflect-metadata": "~0.1.12",
     "rxjs": "~6.6.0",
+    "search-query-parser": "^1.5.5",
     "tslib": "1.10.0",
     "zone.js": "~0.11.1"
   },
