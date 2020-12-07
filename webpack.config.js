@@ -30,7 +30,10 @@ const hashSalt = Date.now().toString();
 module.exports = env => {
   // Add your custom Activities, Services and other Android app components here.
   const appComponents = [
-    "@nativescript/core/ui/frame", "@nativescript/core/ui/frame/activity"
+	"@nativescript/core/ui/frame",
+	"@nativescript/core/ui/frame/activity",
+	// "@src/app/services/platform.service"
+	// resolve(__dirname, "src/app/shared/services/platform.service")
   ];
 
   const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
