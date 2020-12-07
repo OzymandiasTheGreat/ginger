@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { CURRENT_CONNECTION_ADDRESS, CURRENT_CONNECTION_PASSWORD, CURRENT_MOPIDY, CONNECTION_HISTORY } from "@src/app/types/constants";
 import { MpcService } from "@src/app/services/mpc.service";
+import { PlatformService } from "@src/app/services/platform.service";
 
 
 @Component({
@@ -19,6 +20,7 @@ export class ConnectionComponent implements OnInit {
 	constructor(
 		protected route: ActivatedRoute,
 		public mpc: MpcService,
+		protected platform: PlatformService,
 	) { }
 
 	ngOnInit(): void {
@@ -51,6 +53,7 @@ export class ConnectionComponent implements OnInit {
 			window.localStorage.setItem(CURRENT_MOPIDY, JSON.stringify(this.mopidy));
 			this.mpc.connect(this.address, this.password, this.mopidy);
 		}
+		this.platform.setup();
 	}
 
 	fill(address: string, password: string, mopidy: boolean): void {

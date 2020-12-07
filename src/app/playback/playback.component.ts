@@ -30,8 +30,8 @@ export class PlaybackComponent extends PlaybackBase implements OnInit {
 	constructor(
 		protected zone: NgZone,
 		protected router: Router,
-		protected mpc: MpcService,
-		protected art: ArtService,
+		public mpc: MpcService,
+		public art: ArtService,
 	) {
 		super(zone, mpc, art);
 	}
