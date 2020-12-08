@@ -1,9 +1,33 @@
+// $font-size: 18;
+// $btn-font-size: 18;
+$background: #424242;
+$primary: #ffffff;
+$secondary: #ffffff88;
+$background-dark: #424242;
+$primary-dark: #ffffff;
+$secondary-dark: #ffffff88;
+$accent: #e65100;
+$accent-dark: #e65100;
+$complementary: #f57c00;
+$complementary-color: #ffffff;
+$complementary-dark: #f57c00;
+$complementary-color-dark: #ffffff;
+
+
 @import "~@nativescript/theme/core";
-@import "~@nativescript/theme/blue";
+// @import "~@nativescript/theme/blue";
 
 
 .mdi {
 	font-family: 'Material Design Icons', 'materialdesignicons';
 	font-weight: normal;
 	font-style: normal;
+}
+
+ActionBar {
+	background-color: $complementary;
+}
+
+.-primary {
+	background-color: $complementary;
 }

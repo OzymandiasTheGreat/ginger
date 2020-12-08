@@ -33,7 +33,7 @@ module.exports = env => {
 	"@nativescript/core/ui/frame",
 	"@nativescript/core/ui/frame/activity",
 	// "@src/app/services/platform.service"
-	// resolve(__dirname, "src/app/shared/services/platform.service")
+	resolve(__dirname, "src/app/services/platform.service")
   ];
 
   const platform = env && ((env.android && 'android') || (env.ios && 'ios'));

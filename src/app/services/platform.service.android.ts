@@ -22,6 +22,7 @@ export interface StrippedTrack {
 }
 
 
+@NativeClass()
 @JavaProxy("tk.ozymandias.ginger.PlatformService")
 export class NativePlatformService extends android.app.Service {
 	public art: ArtService;
@@ -46,6 +47,7 @@ export class NativePlatformService extends android.app.Service {
 				: new MPC();
 			this.art = new ArtService();
 			this.session = new android.support.v4.media.session.MediaSessionCompat(this, "RemotePlaybackSession");
+			(<any> global).session = this.session;
 
 			const CHANNEL_ID = "persistence";
 			const CHANNEL_NAME = "Background service";
@@ -55,10 +57,10 @@ export class NativePlatformService extends android.app.Service {
 			if (Device.sdkVersion >= "26") {
 				let mChannel = notificationManager.getNotificationChannel(CHANNEL_ID);
 				if (mChannel === null) {
-					mChannel = new android.app.NotificationChannel(
+					mChannel = new (<any> android.app).NotificationChannel(
 						CHANNEL_ID,
 						CHANNEL_NAME,
-						android.app.NotificationManager.IMPORTANCE_LOW,
+						(<any> android.app.NotificationManager).IMPORTANCE_LOW,
 					);
 					mChannel.description = CHANNEL_DESC;
 					notificationManager.createNotificationChannel(mChannel);
@@ -78,7 +80,7 @@ export class NativePlatformService extends android.app.Service {
 		if (this.address) {
 			if (this.mopidy) {
 				this.socket.connect();
-				this.mopidySetup().then(({ track, playing }) => this.mediaNotify(track, playing));
+				this.socket.on("state:online", () => this.mopidySetup().then(({ track, playing }) => this.mediaNotify(track, playing)));
 				this.socket.on("event:playbackStateChanged", () => {
 					this.mopidySetup().then(({ track, playing }) => this.mediaNotify(track, playing));
 				});
@@ -87,10 +89,14 @@ export class NativePlatformService extends android.app.Service {
 				});
 			} else {
 				this.socket.connectWebSocket(this.address);
-				if (this.password) {
-					this.socket.connection.password(this.password);
-				}
-				this.mpdSetup().then(({ track, playing }) => this.mediaNotify(track, playing));
+				this.socket.on("ready", () => {
+					if (this.password) {
+						this.socket.connection.password(this.password)
+							.then(() => this.mpdSetup().then(({ track, playing }) => this.mediaNotify(track, playing)));
+					} else {
+						this.mpdSetup().then(({ track, playing }) => this.mediaNotify(track, playing));
+					}
+				});
 				this.socket.on("changed-player", () => this.mpdSetup().then(({ track, playing }) => this.mediaNotify(track, playing)));
 			}
 			return android.app.Service.START_REDELIVER_INTENT;
@@ -100,6 +106,7 @@ export class NativePlatformService extends android.app.Service {
 
 	onDestroy(): void {
 		super.onDestroy();
+		(<any> global).session = null;
 		if (this.session) {
 			this.session.setActive(false);
 			this.session.release();
@@ -117,14 +124,15 @@ export class NativePlatformService extends android.app.Service {
 
 	mopidySetup(): Promise<{ track: StrippedTrack, playing: boolean }> {
 		return Promise.all([
-			this.socket.playback.getState(),
-			this.socket.playback.getCurrentTrack(),
+			this.socket.playback?.getState(),
+			this.socket.playback?.getCurrentTrack(),
 		]).then(([state, track]: [string, MopidyTrack]) => {
 			if (track) {
-				return this.art.getArt(track.artists[0].name, track.album.name, true).then((arts) => {
+				return this.art.getArt(track.artists[0].name, track.album.name, true).then(async ([lastFM, spotify]) => {
 					let art: android.graphics.Bitmap;
-					if (arts.length) {
-						art = android.graphics.BitmapFactory.decodeFile(arts[1] || arts[0]);
+					if (spotify || lastFM) {
+						const data = await fetch(spotify || lastFM).then((response) => response.arrayBuffer()).then((buff) => new Uint8Array(buff));
+						art = android.graphics.BitmapFactory.decodeByteArray([...data], 0, data.length);
 					} else {
 						const bitmap = android.graphics.Bitmap.createBitmap(720, 720, android.graphics.Bitmap.Config.ARGB_8888);
 						const canvas = new android.graphics.Canvas(bitmap);
@@ -138,7 +146,7 @@ export class NativePlatformService extends android.app.Service {
 						paint.setStyle(android.graphics.Paint.Style.FILL);
 						paint.setColor(android.graphics.Color.WHITE);
 						paint.setTextSize(700);
-						canvas.drawText("\uF025;", 10, 620, paint);
+						canvas.drawText("\u{F0025};", 10, 620, paint);
 						art = bitmap;
 					}
 					return {
@@ -158,14 +166,15 @@ export class NativePlatformService extends android.app.Service {
 
 	mpdSetup(): Promise<{ track: StrippedTrack, playing: boolean }> {
 		return Promise.all([
-			this.socket.status.status(),
-			this.socket.status.currentSong(),
+			this.socket.status?.status(),
+			this.socket.status?.currentSong(),
 		]).then(([song, { state }]: [Song, any ]) => {
 			if (song) {
-				return this.art.getArt(song.artist, song.album, true).then((arts) => {
+				return this.art.getArt(song.artist, song.album, true).then(async ([lastFM, spotify]) => {
 					let art: android.graphics.Bitmap;
-					if (arts.length) {
-						art = android.graphics.BitmapFactory.decodeFile(arts[1] || arts[0]);
+					if (spotify || lastFM) {
+						const data = await fetch(spotify || lastFM).then((response) => response.arrayBuffer()).then((buff) => new Uint8Array(buff));
+						art = android.graphics.BitmapFactory.decodeByteArray([...data], 0, data.length);
 					} else {
 						const bitmap = android.graphics.Bitmap.createBitmap(720, 720, android.graphics.Bitmap.Config.ARGB_8888);
 						const canvas = new android.graphics.Canvas(bitmap);
@@ -179,7 +188,7 @@ export class NativePlatformService extends android.app.Service {
 						paint.setStyle(android.graphics.Paint.Style.FILL);
 						paint.setColor(android.graphics.Color.WHITE);
 						paint.setTextSize(700);
-						canvas.drawText("\uF025;", 10, 620, paint);
+						canvas.drawText("\u{F0025};", 10, 620, paint);
 						art = bitmap;
 					}
 					return {
@@ -207,10 +216,10 @@ export class NativePlatformService extends android.app.Service {
 		if (Device.sdkVersion >= "26") {
 			let mChannel = notificationManager.getNotificationChannel(CHANNEL_ID);
 			if (mChannel === null) {
-				mChannel = new android.app.NotificationChannel(
+				mChannel = new (<any> android.app).NotificationChannel(
 					CHANNEL_ID,
 					CHANNEL_NAME,
-					android.app.NotificationManager.IMPORTANCE_LOW,
+					(<any> android.app.NotificationManager).IMPORTANCE_LOW,
 				);
 				mChannel.description = CHANNEL_DESC;
 				notificationManager.createNotificationChannel(mChannel);
@@ -285,17 +294,18 @@ export class NativePlatformService extends android.app.Service {
 		nextIntent.putExtra("ACTION", "NEXT");
 		const nextPendingIntent = android.app.PendingIntent.getBroadcast(this, 4, nextIntent, 0);
 
-		builder.addAction(android.R.drawable.ic_media_previous, "Previous", prevPendingIntent);
+		builder.addAction(Utils.ad.resources.getDrawableId("previous"), "Previous", prevPendingIntent);
 		if (!playing) {
-			builder.addAction(android.R.drawable.ic_media_play, "Play", playPendingIntent);
+			builder.addAction(Utils.ad.resources.getDrawableId("play"), "Play", playPendingIntent);
 		} else {
-			builder.addAction(android.R.drawable.ic_media_pause, "Pause", pausePendingIntent);
+			builder.addAction(Utils.ad.resources.getDrawableId("pause"), "Pause", pausePendingIntent);
 		}
-		builder.addAction(android.R.drawable.ic_media_next, "Next", nextPendingIntent);
+		builder.addAction(Utils.ad.resources.getDrawableId("next"), "Next", nextPendingIntent);
 	}
 }
 
 
+@NativeClass()
 @JavaProxy("tk.ozymandias.ginger.RestartReceiver")
 export class RestartReceiver extends android.content.BroadcastReceiver {
 	onReceive(context: android.content.Context, intent: android.content.Intent): void {
@@ -306,6 +316,7 @@ export class RestartReceiver extends android.content.BroadcastReceiver {
 }
 
 
+@NativeClass()
 @JavaProxy("tk.ozymandias.ginger.PlaybackReceiver")
 export class PlaybackReceiver extends android.content.BroadcastReceiver {
 	onReceive(context: android.content.Context, intent: android.content.Intent): void {
@@ -330,14 +341,17 @@ export class PlaybackReceiver extends android.content.BroadcastReceiver {
 		};
 		if (mopidy) {
 			const socket = new Mopidy({ webSocketUrl: address });
-			act(socket);
+			socket.on("state:online", () => act(socket));
 		} else {
 			const socket = new MPC();
 			socket.connectWebSocket(address);
-			if (password) {
-				socket.connection.password(password);
-			}
-			act(socket);
+			socket.on("ready", () => {
+				if (password) {
+					socket.connection.password(password).then(() => act(socket));
+				} else {
+					act(socket);
+				}
+			});
 		}
 	}
 }

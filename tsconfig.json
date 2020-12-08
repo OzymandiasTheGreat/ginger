@@ -12,6 +12,7 @@
       "noEmitHelpers": true,
       "noEmitOnError": true,
       "skipLibCheck": true,
+      "importHelpers": false,
       "lib": [
           "es2017",
           "dom",
