@@ -1,27 +1,36 @@
 # ginger
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.0.
+![screenshot1](./screenshots/ginger-electron.png)
+![screenshot2](./screenshots/ginger-nativescript.png)![screenshot3](./screenshots/ginger-nativescript-now-playing.png)
 
-## Development server
+This project came about because I could not find an MPD/Mopidy client that looked good
+and was simple enough for my mother to use. We're a family of gingers, hence the name.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+ginger is sleek, modern and simple (long press/right click menus are the enemy of tech-illiterate).
+ginger runs virtually anywhere, desktop, mobile, you name it.
+However using platform specific builds adds nice integration features (currently MPRIS integration
+on Linux and media notifications on Android).
+While ginger can be built for any platform, official builds currently exist only for
+self-hosted web app and NativeScript Android app.
 
-## Code scaffolding
+## Notes
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Mopidy
 
-## Build
+Not every Mopidy extension implements all of Mopidy core API, therefore depending on the extensions installed some views may be empty.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### MPD
 
-## Running unit tests
+MPD uses TCP sockets to communicate with clients, while ginger runs entirely client-side (think web browser) so it can only make websocket connections.
+That means you need a websocket bridge like [websockify](https://github.com/novnc/websockify).
+Also note that the library ginger uses to communicate with MPD is not yet compatible with latest versions of websockify, therefore you should stick to version < 0.9.0.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Installation
 
-## Running end-to-end tests
+### WebApp
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Download ginger@1.0.0.zip, extract it, serve the directory with e.g. nginx and point you web browser to index.html
 
-## Further help
+### Android
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Currently the ginger@3.0.0.apk is only available on releases page, I do plan to release it to Play Store and f-droid eventually.
