@@ -22,7 +22,7 @@
     "start": "ng serve",
     "build": "ng build -c production",
     "android": "ns run android --no-hmr --env.SPOTIFY_CLIENT_ID=\"$SPOTIFY_CLIENT_ID\" --env.SPOTIFY_CLIENT_SECRET=\"$SPOTIFY_CLIENT_SECRET\" --env.LASTFM_API_KEY=\"$LASTFM_API_KEY\"",
-    "dist:android": "ns build android --no-hmr --env.SPOTIFY_CLIENT_ID=\"$SPOTIFY_CLIENT_ID\" --env.SPOTIFY_CLIENT_SECRET=\"$SPOTIFY_CLIENT_SECRET\" --env.LASTFM_API_KEY=\"$LASTFM_API_KEY\" --key-store-path \"$JKS_PATH\" --key-store-password \"$JKS_PASS\" --key-store-alias \"$JKS_ALIAS\" --key-store-alias-password \"$JKS_PASS\" --release --copy-to dist/${npm_package_name}@${npm_package_version}.apk"
+    "dist:android": "ns build android --no-hmr --env.SPOTIFY_CLIENT_ID=\"$SPOTIFY_CLIENT_ID\" --env.SPOTIFY_CLIENT_SECRET=\"$SPOTIFY_CLIENT_SECRET\" --env.LASTFM_API_KEY=\"$LASTFM_API_KEY\" --key-store-path \"$JKS_PATH\" --key-store-password \"$JKS_PASS\" --key-store-alias \"$JKS_ALIAS\" --key-store-alias-password \"$JKS_PASS\" --clean --release --copy-to dist/${npm_package_name}@${npm_package_version}.apk"
   },
   "private": true,
   "browser": {

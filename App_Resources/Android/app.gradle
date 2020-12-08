@@ -10,6 +10,9 @@ android {
     generatedDensities = []
     applicationId = "tk.ozymandias.ginger"
 
+    minSdkVersion 17
+    targetSdkVersion 29
+
     //override supported platforms
     // ndk {
     //       abiFilters.clear()
